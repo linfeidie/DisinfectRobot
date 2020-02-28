@@ -1,6 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <com.stx.xhb.commontitlebar.CustomTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:titlebar_bg_color="@color/colorPrimary"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/NormalText"
+            android:text="喷雾"/>
+        <com.nex3z.togglebuttongroup.SingleSelectToggleGroup
+            android:id="@+id/group_choices"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:tbgCheckedButton="@+id/choice_a"
+            android:layout_gravity="center_vertical|right">
+
+            <com.nex3z.togglebuttongroup.button.CircularToggle
+                android:id="@+id/choice_a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="关闭"/>
+
+            <com.nex3z.togglebuttongroup.button.CircularToggle
+                android:id="@+id/choice_b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="弱"/>
+            <com.nex3z.togglebuttongroup.button.CircularToggle
+                android:id="@+id/choice_c"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="强"/>
+
+        </com.nex3z.togglebuttongroup.SingleSelectToggleGroup>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/NormalText"
+            android:text="底盘电源"/>
+        <com.nex3z.togglebuttongroup.SingleSelectToggleGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:tbgCheckedButton="@+id/choice_a"
+            android:layout_gravity="center_vertical|right">
+
+            <com.nex3z.togglebuttongroup.button.CircularToggle
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="关闭"/>
+
+            <com.nex3z.togglebuttongroup.button.CircularToggle
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="弱"/>
+            <com.nex3z.togglebuttongroup.button.CircularToggle
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="强"/>
+
+        </com.nex3z.togglebuttongroup.SingleSelectToggleGroup>
+    </FrameLayout>
+    <TextView
+        android:id="@+id/tv_apmt_state"
+        style="@style/NormalText"
+        android:text="预约任务"
+        />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/NormalText"
+            android:text="喷雾风扇"/>
+        <com.suke.widget.SwitchButton
+            android:id="@+id/switch_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/NormalText"
+            android:text="吸水电机"/>
+        <com.suke.widget.SwitchButton
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical|right"/>
+    </FrameLayout>
+
 
 </LinearLayout>

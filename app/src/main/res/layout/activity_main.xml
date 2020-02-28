@@ -50,10 +50,10 @@
                 android:text="一键开启" />
 
             <View
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:layout_gravity="center_horizontal|bottom"
-                android:background="@mipmap/ic_start"></View>
+                android:background="@mipmap/ic_turn_on"></View>
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -75,13 +75,10 @@
                 android:layout_height="50dp"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    style="@style/NormalText"
                     android:drawableLeft="@mipmap/ic_setting_time"
-                    android:drawablePadding="5dp"
-                    android:gravity="center_vertical"
                     android:text="消毒时间"
-                    android:textSize="18sp" />
+                     />
             </FrameLayout>
 
             <FrameLayout
@@ -90,13 +87,11 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    style="@style/NormalText"
                     android:drawableLeft="@mipmap/ic_setting_time"
-                    android:drawablePadding="5dp"
                     android:gravity="center_vertical"
                     android:text="喷雾强度"
-                    android:textSize="18sp" />
+                    />
             </FrameLayout>
 
             <FrameLayout
@@ -105,14 +100,10 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    style="@style/NormalText"
                     android:drawableLeft="@mipmap/ic_setting_time"
-                    android:drawablePadding="5dp"
-                    android:gravity="center_vertical"
                     android:text="消毒箱液位"
-                    android:textSize="18sp" />
-
+                     />
             </FrameLayout>
 
             <FrameLayout
@@ -121,13 +112,10 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    style="@style/NormalText"
                     android:drawableLeft="@mipmap/ic_setting_time"
-                    android:drawablePadding="5dp"
-                    android:gravity="center_vertical"
                     android:text="预约状态"
-                    android:textSize="18sp" />
+                    />
             </FrameLayout>
 
             <FrameLayout
@@ -137,13 +125,10 @@
                 android:visibility="gone">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    style="@style/NormalText"
                     android:drawableLeft="@mipmap/ic_setting_pace"
-                    android:drawablePadding="5dp"
                     android:gravity="center_vertical"
-                    android:text="消毒地点设置"
-                    android:textSize="18sp" />
+                    />
 
                 <ImageView
                     android:layout_width="wrap_content"

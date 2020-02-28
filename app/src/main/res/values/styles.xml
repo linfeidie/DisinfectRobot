@@ -22,4 +22,11 @@
         <item name="titlebar_text_btn_color_state_list">@android:color/background_dark</item>
         <item name="titlebar_image_btn_height">48dp</item>
     </style>
+    <style name="NormalText">
+        <item name="android:textSize">18sp</item>
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>
