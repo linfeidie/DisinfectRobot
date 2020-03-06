@@ -29,10 +29,36 @@
                     android:layout_height="match_parent"
                     android:background="@mipmap/pic" />
 
-                <Button
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="获取地图" />
+                    android:orientation="horizontal">
+                    <Button
+                        style="@style/NormalText"
+                        android:gravity="center"
+                        android:text="地图" />
+                    <Button
+                        style="@style/NormalText"
+                        android:gravity="center"
+                        android:textColor="@android:color/darker_gray"
+                        android:text="红外" />
+                    <Button
+                        style="@style/NormalText"
+                        android:gravity="center"
+                        android:textColor="@android:color/darker_gray"
+                        android:text="视觉" />
+                </LinearLayout>
+
+
+                <me.caibou.rockerview.JoystickView
+                    android:visibility="gone"
+                    android:id="@+id/joystick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|right"
+                    app:edge_radius="65dp"
+                    app:stick_color="@color/colorPrimary"
+                    />
             </FrameLayout>
 
         </LinearLayout>
@@ -47,13 +73,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="一键开启" />
+                android:text="一键关机" />
 
-            <View
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_gravity="center_horizontal|bottom"
-                android:background="@mipmap/ic_turn_on"></View>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <View
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:background="@mipmap/ic_turn_off"></View>
+                <View
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:background="@mipmap/ic_pause"></View>
+            </LinearLayout>
+
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -66,7 +104,7 @@
                     android:drawableLeft="@mipmap/ic_setting"
                     android:drawablePadding="5dp"
                     android:gravity="center_vertical"
-                    android:text="电量"
+                    android:text="电量:85%"
                     android:textSize="18sp" />
             </FrameLayout>
 
@@ -77,7 +115,7 @@
                 <TextView
                     style="@style/NormalText"
                     android:drawableLeft="@mipmap/ic_setting_time"
-                    android:text="消毒时间"
+                    android:text="消毒时间:1小时26分"
                      />
             </FrameLayout>
 
@@ -88,9 +126,9 @@
 
                 <TextView
                     style="@style/NormalText"
-                    android:drawableLeft="@mipmap/ic_setting_time"
+                    android:drawableLeft="@mipmap/ic_fog"
                     android:gravity="center_vertical"
-                    android:text="喷雾强度"
+                    android:text="喷雾强度：强"
                     />
             </FrameLayout>
 
@@ -101,8 +139,8 @@
 
                 <TextView
                     style="@style/NormalText"
-                    android:drawableLeft="@mipmap/ic_setting_time"
-                    android:text="消毒箱液位"
+                    android:drawableLeft="@mipmap/ic_water_level"
+                    android:text="消毒箱液位：中"
                      />
             </FrameLayout>
 
@@ -112,9 +150,17 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:visibility="gone"
+                style="@style/NormalText"
+                android:drawableLeft="@mipmap/ic_apmt"
+
+                android:text="预约状态：8小时32分将执行消毒任务"
+                />
+                <TextView
                     style="@style/NormalText"
-                    android:drawableLeft="@mipmap/ic_setting_time"
-                    android:text="预约状态"
+                    android:drawableLeft="@mipmap/ic_apmt"
+
+                    android:text="预约状态：无"
                     />
             </FrameLayout>
 

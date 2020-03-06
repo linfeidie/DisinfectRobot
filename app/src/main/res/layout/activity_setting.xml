@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:zhy="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -72,11 +73,7 @@
 
         </com.nex3z.togglebuttongroup.SingleSelectToggleGroup>
     </FrameLayout>
-    <TextView
-        android:id="@+id/tv_apmt_state"
-        style="@style/NormalText"
-        android:text="预约任务"
-        />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -86,8 +83,8 @@
             android:text="喷雾风扇"/>
         <com.suke.widget.SwitchButton
             android:id="@+id/switch_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
             android:layout_gravity="center_vertical|right"/>
     </FrameLayout>
     <FrameLayout
@@ -102,6 +99,34 @@
             android:layout_height="50dp"
             android:layout_gravity="center_vertical|right"/>
     </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/NormalText"
+            android:text="是否开启行走路线"/>
+        <com.suke.widget.SwitchButton
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical|right"/>
+    </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"></View>
+    <TextView
+        android:id="@+id/tv_set_apmt"
+        style="@style/NormalText"
+        android:text="预约任务"
 
+        />
 
+    <com.cy.cyflowlayoutlibrary.FlowLayoutScrollView
+        android:id="@+id/tag_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ff00f0"
+        android:layout_marginTop="20dp">
+    </com.cy.cyflowlayoutlibrary.FlowLayoutScrollView>
 </LinearLayout>
