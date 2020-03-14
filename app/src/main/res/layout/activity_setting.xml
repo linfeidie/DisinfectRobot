@@ -11,12 +11,14 @@
         android:layout_height="60dp"
         app:titlebar_bg_color="@color/colorPrimary"/>
     <FrameLayout
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
             style="@style/NormalText"
-            android:text="喷雾"/>
+            android:text="@string/spray"/>
         <com.nex3z.togglebuttongroup.SingleSelectToggleGroup
             android:id="@+id/group_choices"
             android:layout_width="wrap_content"
@@ -28,29 +30,31 @@
                 android:id="@+id/choice_a"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="关闭"/>
+                android:text="@string/close"/>
 
             <com.nex3z.togglebuttongroup.button.CircularToggle
                 android:id="@+id/choice_b"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="弱"/>
+                android:text="@string/weak"/>
             <com.nex3z.togglebuttongroup.button.CircularToggle
                 android:id="@+id/choice_c"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="强"/>
+                android:text="@string/strong"/>
 
         </com.nex3z.togglebuttongroup.SingleSelectToggleGroup>
     </FrameLayout>
 
     <FrameLayout
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
             style="@style/NormalText"
-            android:text="底盘电源"/>
+            android:text="@string/running_peed"/>
         <com.nex3z.togglebuttongroup.SingleSelectToggleGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,27 +64,29 @@
             <com.nex3z.togglebuttongroup.button.CircularToggle
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="关闭"/>
+                android:text="@string/fast"/>
 
             <com.nex3z.togglebuttongroup.button.CircularToggle
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="弱"/>
+                android:text="@string/middle"/>
             <com.nex3z.togglebuttongroup.button.CircularToggle
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="强"/>
+                android:text="@string/slow"/>
 
         </com.nex3z.togglebuttongroup.SingleSelectToggleGroup>
     </FrameLayout>
 
     <FrameLayout
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
             style="@style/NormalText"
-            android:text="喷雾风扇"/>
+            android:text="@string/spray_fan"/>
         <com.suke.widget.SwitchButton
             android:id="@+id/switch_button"
             android:layout_width="80dp"
@@ -88,24 +94,58 @@
             android:layout_gravity="center_vertical|right"/>
     </FrameLayout>
     <FrameLayout
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
             style="@style/NormalText"
-            android:text="吸水电机"/>
+            android:text="@string/operation_mode"/>
+        <com.nex3z.togglebuttongroup.SingleSelectToggleGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:tbgCheckedButton="@+id/choice_a"
+            android:layout_gravity="center_vertical|right">
+
+            <com.nex3z.togglebuttongroup.button.CircularToggle
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/autonomous_navigation"/>
+
+            <com.nex3z.togglebuttongroup.button.CircularToggle
+                android:id="@+id/tv_fixed_point"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cruising_cuise"/>
+
+
+        </com.nex3z.togglebuttongroup.SingleSelectToggleGroup>
+    </FrameLayout>
+    <FrameLayout
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/NormalText"
+            android:text="@string/automatic_recharge"/>
         <com.suke.widget.SwitchButton
             android:layout_width="80dp"
             android:layout_height="50dp"
             android:layout_gravity="center_vertical|right"/>
     </FrameLayout>
     <FrameLayout
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
             style="@style/NormalText"
-            android:text="是否开启行走路线"/>
+            android:text="@string/walking_route"/>
         <com.suke.widget.SwitchButton
             android:layout_width="80dp"
             android:layout_height="50dp"
@@ -115,18 +155,33 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"></View>
-    <TextView
-        android:id="@+id/tv_set_apmt"
-        style="@style/NormalText"
-        android:text="预约任务"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        >
 
-        />
+        <TextView
+            android:id="@+id/tv_set_apmt"
+            style="@style/NormalText"
+            android:drawableLeft="@mipmap/ic_setting_pace"
+            android:text="@string/appointment_task"
+            android:gravity="center_vertical"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:src="@mipmap/ic_right" />
+    </FrameLayout>
+
 
     <com.cy.cyflowlayoutlibrary.FlowLayoutScrollView
         android:id="@+id/tag_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ff00f0"
+        android:background="@android:color/white"
         android:layout_marginTop="20dp">
     </com.cy.cyflowlayoutlibrary.FlowLayoutScrollView>
 </LinearLayout>

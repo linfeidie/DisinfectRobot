@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Intelligent mobile disinfection robot</string>
+    <string name="spray">spray</string>
+    <string name="close">close</string>
+    <string name="weak">weak</string>
+    <string name="strong">strong</string>
+    <string name="running_peed">running peed</string>
+    <string name="fast">fast</string>
+    <string name="middle">middle</string>
+    <string name="slow">slow</string>
+    <string name="spray_fan">spray fan</string>
+    <string name="operation_mode">operation mode</string>
+    <string name="autonomous_navigation">autonomous navigation</string>
+    <string name="cruising_cuise">cruising cuise</string>
+    <string name="automatic_recharge">automatic recharge</string>
+    <string name="walking_route">walking route</string>
+    <string name="appointment_task">appointment task</string>
+    <string name="add_appointment_task">add appointment task</string>
+    <string name="Is_it_done">is it done？</string>
+    <string name="set_the_initial_position">set the initial position</string>
+    <string name="long_press_to_set_the_tracing_point">long press to set the tracing point</string>
+    <string name="tracing_points_to_complete">tracing points to complete</string>
+    <string name="turn_it_off">turn it off</string>
+    <string name="turn_it_on">turn_it_on</string>
+    <string name="please_select_cruise_mode">please select cruise mode</string>
+    <string name="manual_point_cruise">manual point cruise</string>
+    <string name="automatic_fixed_point_cruise">automatic fixed point cruise</string>
+    <string name="determine">determine</string>
+    <string name="setting">setting</string>
+    <string name="map">map</string>
+    <string name="fixed_point_cruise_map">fixed point cruise map</string>
+    <string name="sure_the_map_is_complete">sure the map is complete</string>
+    <string name="cancel">cancel</string>
+</resources>

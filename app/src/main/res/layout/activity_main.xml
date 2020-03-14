@@ -36,13 +36,22 @@
                     <Button
                         style="@style/NormalText"
                         android:gravity="center"
-                        android:text="地图" />
+                        android:text="@string/map" />
+                    <ezy.ui.view.RoundButton
+                        android:visibility="gone"
+                        style="@style/RoundButton"
+                        android:text="Text2222"
+                        app:btnCornerRadius="10dp"
+                        app:btnPressedRatio="1.5"
+                        app:btnSolidColor="#3F51B5"/>
                     <Button
+                        android:visibility="gone"
                         style="@style/NormalText"
                         android:gravity="center"
                         android:textColor="@android:color/darker_gray"
                         android:text="红外" />
                     <Button
+                        android:visibility="gone"
                         style="@style/NormalText"
                         android:gravity="center"
                         android:textColor="@android:color/darker_gray"
@@ -51,8 +60,8 @@
 
 
                 <me.caibou.rockerview.JoystickView
-                    android:visibility="gone"
                     android:id="@+id/joystick"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|right"
@@ -73,7 +82,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="一键关机" />
+                android:text="@string/turn_it_on" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -83,8 +92,9 @@
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_gravity="center_horizontal|bottom"
-                    android:background="@mipmap/ic_turn_off"></View>
+                    android:background="@mipmap/ic_turn_on"></View>
                 <View
+                    android:visibility="gone"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_marginLeft="30dp"
@@ -104,7 +114,7 @@
                     android:drawableLeft="@mipmap/ic_setting"
                     android:drawablePadding="5dp"
                     android:gravity="center_vertical"
-                    android:text="电量:85%"
+                    android:text="electricity:85%"
                     android:textSize="18sp" />
             </FrameLayout>
 
@@ -115,7 +125,7 @@
                 <TextView
                     style="@style/NormalText"
                     android:drawableLeft="@mipmap/ic_setting_time"
-                    android:text="消毒时间:1小时26分"
+                    android:text="Disinfection time :1 hour 26 minutes"
                      />
             </FrameLayout>
 
@@ -128,7 +138,7 @@
                     style="@style/NormalText"
                     android:drawableLeft="@mipmap/ic_fog"
                     android:gravity="center_vertical"
-                    android:text="喷雾强度：强"
+                    android:text="Spray strength: strong"
                     />
             </FrameLayout>
 
@@ -140,10 +150,20 @@
                 <TextView
                     style="@style/NormalText"
                     android:drawableLeft="@mipmap/ic_water_level"
-                    android:text="消毒箱液位：中"
+                    android:text="Disinfection tank level: medium"
                      />
             </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
 
+                <TextView
+                    style="@style/NormalText"
+                    android:drawableLeft="@mipmap/ic_model"
+                    android:text="Operation mode: auto cruise"
+                    />
+            </FrameLayout>
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -154,13 +174,13 @@
                 style="@style/NormalText"
                 android:drawableLeft="@mipmap/ic_apmt"
 
-                android:text="预约状态：8小时32分将执行消毒任务"
+                android:text="Appointment status: disinfection will be performed in 8 hours and 32 minutes"
                 />
                 <TextView
                     style="@style/NormalText"
                     android:drawableLeft="@mipmap/ic_apmt"
 
-                    android:text="预约状态：无"
+                    android:text="Reservation status: 9 reservations"
                     />
             </FrameLayout>
 
@@ -169,7 +189,6 @@
                 android:layout_height="50dp"
                 android:orientation="horizontal"
                 android:visibility="gone">
-
                 <TextView
                     style="@style/NormalText"
                     android:drawableLeft="@mipmap/ic_setting_pace"

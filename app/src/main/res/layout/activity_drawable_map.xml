@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.stx.xhb.commontitlebar.CustomTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:titlebar_bg_color="@color/colorPrimary"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@mipmap/pic" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                style="@style/NormalText"
+                android:id="@+id/bt_sure"
+                android:layout_margin="20dp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="@string/Is_it_done" />
+            <TextView
+                style="@style/NormalText"
+                android:id="@+id/tv_des"
+                android:layout_margin="20dp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:visibility="gone"
+                android:text="@string/set_the_initial_position" />
+            <TextView
+                android:visibility="gone"
+                style="@style/NormalText"
+                android:layout_margin="20dp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="@string/long_press_to_set_the_tracing_point" />
+
+            <Button
+                android:visibility="gone"
+                style="@style/NormalText"
+                android:layout_margin="20dp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="@string/tracing_points_to_complete" />
+        </LinearLayout>
+
+        <me.caibou.rockerview.JoystickView
+            android:visibility="gone"
+            android:id="@+id/joystick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            app:edge_radius="65dp"
+            app:stick_color="@color/colorPrimary"
+            />
+    </FrameLayout>
+</LinearLayout>

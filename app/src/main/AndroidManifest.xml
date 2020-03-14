@@ -28,6 +28,10 @@
             android:screenOrientation="landscape">
 
         </activity>
+        <activity android:name=".ApmtActivity"
+            android:screenOrientation="landscape"></activity>
+        <activity android:name=".DrawableMapActivity"
+            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>

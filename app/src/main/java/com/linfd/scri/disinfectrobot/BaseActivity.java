@@ -4,16 +4,20 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
 import com.stx.xhb.commontitlebar.CustomTitleBar;
+import com.td.framework.module.dialog.DialogHelper;
+import com.td.framework.module.dialog.inf.OnDialogCancelListener;
 
 /*
 *
 * */
-public  class BaseActivity extends AppCompatActivity {
+public  class BaseActivity extends AppCompatActivity implements OnDialogCancelListener {
     protected CustomTitleBar mTopBar;
+    protected DialogHelper mDialogHelper;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +26,9 @@ public  class BaseActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         initView();
+        if (mDialogHelper == null) {
+            mDialogHelper = new DialogHelper(BaseActivity.this, this);
+        }
     }
 
     public void initView() {
@@ -36,4 +43,8 @@ public  class BaseActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    @Override
+    public void onDialogCancelListener(AlertDialog dialog) {
+
+    }
 }
