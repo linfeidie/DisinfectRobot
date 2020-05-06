@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#C98DED</color>
+    <color name="colorPrimary">#1B88EE</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="colorMajor">@color/config_color_50_blue</color>//真正主题色
 </resources>

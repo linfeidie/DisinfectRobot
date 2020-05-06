@@ -41,4 +41,7 @@ dependencies {
     implementation 'com.github.AnJiaoDe:MultiFlowLayout:V1.1.2'
     implementation project(':library-core')
     implementation 'com.github.czy1121:roundbutton:1.1.0'  //https://github.com/czy1121/roundbutton
+    implementation 'com.xyz.step:step:1.0.4'//https://github.com/zhangxuyang321/StepView
+    //implementation 'org.ros.rosjava_core:rosjava_tutorial_pubsub:[0.3,0.4)'
+    implementation 'com.github.iwgang:countdownview:2.1.6'  //https://github.com/iwgang/CountdownView
 }

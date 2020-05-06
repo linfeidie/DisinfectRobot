@@ -9,7 +9,16 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        app:titlebar_bg_color="@color/colorPrimary"/>
+        app:titlebar_bg_color="@color/colorMajor"/>
+    <ezy.ui.view.RoundButton
+        android:id="@+id/bt_run_mode"
+        style="@style/RoundButton"
+        android:text="@string/operation_mode"
+        app:btnCornerRadius="10dp"
+        app:btnPressedRatio="0.5"
+        android:layout_height="50dp"
+        app:btnSolidColor="@color/config_color_50_blue"
+        />
     <FrameLayout
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -92,36 +101,6 @@
             android:layout_width="80dp"
             android:layout_height="50dp"
             android:layout_gravity="center_vertical|right"/>
-    </FrameLayout>
-    <FrameLayout
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            style="@style/NormalText"
-            android:text="@string/operation_mode"/>
-        <com.nex3z.togglebuttongroup.SingleSelectToggleGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:tbgCheckedButton="@+id/choice_a"
-            android:layout_gravity="center_vertical|right">
-
-            <com.nex3z.togglebuttongroup.button.CircularToggle
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/autonomous_navigation"/>
-
-            <com.nex3z.togglebuttongroup.button.CircularToggle
-                android:id="@+id/tv_fixed_point"
-                android:layout_marginLeft="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cruising_cuise"/>
-
-
-        </com.nex3z.togglebuttongroup.SingleSelectToggleGroup>
     </FrameLayout>
     <FrameLayout
         android:paddingLeft="10dp"

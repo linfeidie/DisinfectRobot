@@ -17,10 +17,10 @@
     <string name="walking_route">是否开启行走路线</string>
     <string name="appointment_task">预约任务</string>
     <string name="add_appointment_task">添加预约任务</string>
-    <string name="Is_it_done">是否完成？</string>
+    <string name="Is_it_done">点击建图完成</string>
     <string name="set_the_initial_position">设置初始位置</string>
     <string name="long_press_to_set_the_tracing_point">长按设置描点</string>
-    <string name="tracing_points_to_complete">描点完成</string>
+    <string name="tracing_points_to_complete">完成</string>
     <string name="turn_it_off">一键关机</string>
     <string name="turn_it_on">一键开机</string>
     <string name="please_select_cruise_mode">请选择巡航方式</string>
@@ -32,4 +32,11 @@
     <string name="fixed_point_cruise_map">定点巡航地图</string>
     <string name="sure_the_map_is_complete">是否确定地图完成</string>
     <string name="cancel">取消</string>
+
+    <string-array name="make_map">
+        <item>创建地图</item>
+        <item>设置初始点</item>
+        <item>设置巡航点</item>
+        <item>完成</item>
+    </string-array>
 </resources>

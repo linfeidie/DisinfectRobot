@@ -6,6 +6,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.stx.xhb.commontitlebar.CustomTitleBar;
@@ -29,6 +30,10 @@ public  class BaseActivity extends AppCompatActivity implements OnDialogCancelLi
         if (mDialogHelper == null) {
             mDialogHelper = new DialogHelper(BaseActivity.this, this);
         }
+        initData();
+    }
+
+    protected void initData() {
     }
 
     public void initView() {

@@ -6,68 +6,58 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
+
     <com.stx.xhb.commontitlebar.CustomTitleBar
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        app:titlebar_bg_color="@color/colorPrimary"/>
+        app:titlebar_bg_color="@color/colorPrimary" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3">
+            android:layout_weight="4">
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@mipmap/pic" />
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <Button
-                        style="@style/NormalText"
-                        android:gravity="center"
-                        android:text="@string/map" />
+                    android:padding="10dp"
+                    android:orientation="vertical">
                     <ezy.ui.view.RoundButton
-                        android:visibility="gone"
                         style="@style/RoundButton"
-                        android:text="Text2222"
+                        android:text="@string/map"
                         app:btnCornerRadius="10dp"
-                        app:btnPressedRatio="1.5"
-                        app:btnSolidColor="#3F51B5"/>
-                    <Button
-                        android:visibility="gone"
-                        style="@style/NormalText"
-                        android:gravity="center"
-                        android:textColor="@android:color/darker_gray"
-                        android:text="红外" />
-                    <Button
-                        android:visibility="gone"
-                        style="@style/NormalText"
-                        android:gravity="center"
-                        android:textColor="@android:color/darker_gray"
-                        android:text="视觉" />
+                        app:btnPressedRatio="0.5"
+                        android:layout_width="80dp"
+                        android:layout_height="50dp"
+                        android:textSize="18sp"
+                        app:btnSolidColor="@color/colorPrimary"
+                        />
+                    <ezy.ui.view.RoundButton
+                        style="@style/RoundButton"
+                        android:id="@+id/bt_set"
+                        android:text="@string/setting"
+                        app:btnCornerRadius="10dp"
+                        app:btnPressedRatio="0.5"
+                        android:layout_width="80dp"
+                        android:layout_height="50dp"
+                        android:textSize="18sp"
+                        app:btnSolidColor="@color/config_color_15_white"
+                        />
                 </LinearLayout>
 
-
-                <me.caibou.rockerview.JoystickView
-                    android:id="@+id/joystick"
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top|right"
-                    app:edge_radius="65dp"
-                    app:stick_color="@color/colorPrimary"
-                    />
             </FrameLayout>
 
         </LinearLayout>
@@ -79,121 +69,94 @@
             android:orientation="vertical"
             android:padding="5dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/turn_it_on" />
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ezy.ui.view.RoundButton
+                    style="@style/RoundButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="0"
+                    android:text="一键启动"
+                    app:btnCornerRadius="stadium"
+                    app:btnPressedRatio="0.7"
+                    app:btnSolidColor="@color/colorMajor"/>
+
+            </LinearLayout>
+
+                <cn.iwgang.countdownview.CountdownView
+                    android:id="@+id/countdown_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    app:isHideTimeBackground="false"
+                    app:isShowDay="false"
+                    app:isShowHour="true"
+                    app:isShowMillisecond="false"
+                    app:isShowMinute="true"
+                    app:isShowSecond="true"
+                    app:isShowTimeBgDivisionLine="false"
+                    app:suffixGravity="center"
+                    app:suffixTextColor="#000000"
+                    app:suffixTextSize="20sp"
+                    app:timeBgColor="#FF5000"
+                    app:timeTextColor="#FFFFFF"
+                    app:timeTextSize="20sp" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <View
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:background="@mipmap/ic_turn_on"></View>
-                <View
-                    android:visibility="gone"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:background="@mipmap/ic_pause"></View>
-            </LinearLayout>
-
-
-            <FrameLayout
-                android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:drawableLeft="@mipmap/ic_setting"
-                    android:drawablePadding="5dp"
-                    android:gravity="center_vertical"
-                    android:text="electricity:85%"
-                    android:textSize="18sp" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-                <TextView
-                    style="@style/NormalText"
-                    android:drawableLeft="@mipmap/ic_setting_time"
-                    android:text="Disinfection time :1 hour 26 minutes"
-                     />
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/NormalText"
                     android:drawableLeft="@mipmap/ic_fog"
-                    android:gravity="center_vertical"
-                    android:text="Spray strength: strong"
-                    />
-            </FrameLayout>
+                    android:gravity="center_horizontal"
+                    android:text="喷雾强度" />
+                <View
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/circle"
+                    ></View>
+                <View
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/circle_gray"
+                    ></View>
+            </LinearLayout>
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/NormalText"
-                    android:drawableLeft="@mipmap/ic_water_level"
-                    android:text="Disinfection tank level: medium"
-                     />
-            </FrameLayout>
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/NormalText"
-                    android:drawableLeft="@mipmap/ic_model"
-                    android:text="Operation mode: auto cruise"
-                    />
-            </FrameLayout>
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:visibility="gone"
+            <TextView
                 style="@style/NormalText"
-                android:drawableLeft="@mipmap/ic_apmt"
-
-                android:text="Appointment status: disinfection will be performed in 8 hours and 32 minutes"
-                />
-                <TextView
-                    style="@style/NormalText"
-                    android:drawableLeft="@mipmap/ic_apmt"
-
-                    android:text="Reservation status: 9 reservations"
-                    />
-            </FrameLayout>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="自动巡航"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/colorMajor"
+                 />
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal"
                 android:visibility="gone">
+
                 <TextView
                     style="@style/NormalText"
                     android:drawableLeft="@mipmap/ic_setting_pace"
-                    android:gravity="center_vertical"
-                    />
+                    android:gravity="center_vertical" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -206,7 +169,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray"></View>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+                <com.linfd.scri.disinfectrobot.WaterWaveView
+                    android:id="@+id/wave_view_electric"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    app:waveName="电量"
+                    ></com.linfd.scri.disinfectrobot.WaterWaveView>
+                <com.linfd.scri.disinfectrobot.WaterWaveView
+                    android:id="@+id/wave_view_water"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    app:waveName="水位"
+                    ></com.linfd.scri.disinfectrobot.WaterWaveView>
 
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

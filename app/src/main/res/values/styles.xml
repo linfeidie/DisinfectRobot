@@ -23,7 +23,7 @@
         <item name="titlebar_image_btn_height">48dp</item>
     </style>
     <style name="NormalText">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:drawablePadding">5dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_width">wrap_content</item>
@@ -50,15 +50,22 @@
         <item name="android:windowSoftInputMode">adjustPan</item>
         <item name="android:windowIsFloating">true</item>
     </style>
+
+    <style name="RoundButton.Two">
+        <item name="android:layout_height">30dp</item>
+        <item name="btnStrokeWidth">1px</item>
+    </style>
     <style name="RoundButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">30dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_margin">5dp</item>
-        <item name="android:layout_gravity">center</item>
         <item name="android:gravity">center</item>
         <item name="android:clickable">true</item>
         <item name="android:enabled">true</item>
-        <item name="android:textColor">#ccffffff</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:drawablePadding">5dp</item>
     </style>
 </resources>

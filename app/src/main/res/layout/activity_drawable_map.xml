@@ -9,6 +9,21 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         app:titlebar_bg_color="@color/colorPrimary"/>
+    <com.xyz.step.FlowViewHorizontal
+        android:id="@+id/hflowview"
+        android:layout_width="380dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="30dp"
+        app:h_bg_radius="6dp"
+        app:h_bg_width='4dp'
+        app:h_max_step="3"
+        app:h_pro_color="@color/colorMajor"
+        app:h_pro_radius='6dp'
+        app:h_pro_width="5dp"
+        app:h_text_padding='10dp'
+        app:h_textsize='10dp'
+        app:h_time_padding='17dp' />
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -21,36 +36,50 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:orientation="horizontal">
-            <Button
-                style="@style/NormalText"
-                android:id="@+id/bt_sure"
-                android:layout_margin="20dp"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:text="@string/Is_it_done" />
-            <TextView
-                style="@style/NormalText"
-                android:id="@+id/tv_des"
-                android:layout_margin="20dp"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="@string/set_the_initial_position" />
-            <TextView
-                android:visibility="gone"
-                style="@style/NormalText"
-                android:layout_margin="20dp"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:text="@string/long_press_to_set_the_tracing_point" />
 
-            <Button
+            <ezy.ui.view.RoundButton
+                android:id="@+id/bt_sure"
+                style="@style/RoundButton"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                app:btnCornerRadius="10dp"
+                app:btnPressedRatio="0.5"
+                app:btnSolidColor="@color/config_color_50_blue"
+                android:text="@string/Is_it_done"
+                />
+            <ezy.ui.view.RoundButton
+                android:id="@+id/tv_clear_points"
+                style="@style/RoundButton"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                app:btnCornerRadius="10dp"
+                app:btnPressedRatio="0.5"
+                app:btnSolidColor="@color/config_color_50_blue"
+                android:text="清除描点"
+                android:visibility="gone"/>
+
+            <ezy.ui.view.RoundButton
+                android:id="@+id/tv_remove_points"
+                style="@style/RoundButton"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                app:btnCornerRadius="10dp"
+                app:btnPressedRatio="0.5"
+                app:btnSolidColor="@color/config_color_50_blue"
+                android:text="撤回描点"
+                android:visibility="gone"/>
+
+            <ezy.ui.view.RoundButton
+                android:id="@+id/tv_finish"
                 android:visibility="gone"
-                style="@style/NormalText"
-                android:layout_margin="20dp"
-                android:textColor="@color/white"
-                android:gravity="center"
+                style="@style/RoundButton"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                app:btnCornerRadius="10dp"
+                app:btnPressedRatio="0.5"
+                app:btnSolidColor="@color/config_color_50_blue"
                 android:text="@string/tracing_points_to_complete" />
         </LinearLayout>
 
