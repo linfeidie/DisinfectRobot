@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.linfd.scri.disinfectrobot.manager.AckListenerService;
+import com.linfd.scri.disinfectrobot.manager.GetFromServerData;
 import com.linfd.scri.disinfectrobot.manager.ObtainStatusStamp;
 
 
@@ -21,6 +22,7 @@ public class BaseApplication extends Application {
     handler=new Handler();
     ObtainStatusStamp.init();
     AckListenerService.init();
+    GetFromServerData.listener();
   }
 
   public static Context getApplication() {

@@ -30,12 +30,15 @@ public  class BaseActivity extends AppCompatActivity implements OnDialogCancelLi
         if (mDialogHelper == null) {
             mDialogHelper = new DialogHelper(BaseActivity.this, this);
         }
+        initListener();
         initData();
     }
 
     protected void initData() {
     }
+    protected void initListener(){
 
+    };
     public void initView() {
         mTopBar = (CustomTitleBar) findViewById(R.id.titlebar);
         mTopBar.setTitle(R.string.app_name);
