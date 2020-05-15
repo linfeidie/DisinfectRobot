@@ -5,25 +5,25 @@ package com.linfd.scri.disinfectrobot.entity;
 * \*/
 public class DesinStateCallbackEntity extends TypeEntity {
 
+
     /**
-     * id : xxx
-     * to_id :
-     * spray_level : 0
-     * water_level : 0
-     * ray_state : 0
-     * lift : 0
-     * filter : 0
-     * disin_time : 0
-     * disin_area : 0
+     * {
+     * "id":"xxx",
+     * "to_id":"",
+     * "type":"desin_state",
+     * "spray_level":0,//喷雾强度，０没有强度，１小，２大
+     * "box_spary":0,//雾化器液位，０无，1低，2高
+     * "box_store":0,//蓄水室液位，０无，1低，2高
+     * "disin_time":0,//消毒时间,单位秒
+     * "disin_area":0//消毒面积,单位平方米
+     * }
      */
 
     private String id;
     private String to_id;
     private int spray_level;
-    private int water_level;
-    private int ray_state;
-    private int lift;
-    private int filter;
+    private int box_spary;
+    private int box_store;
     private int disin_time;
     private int disin_area;
 
@@ -51,36 +51,20 @@ public class DesinStateCallbackEntity extends TypeEntity {
         this.spray_level = spray_level;
     }
 
-    public int getWater_level() {
-        return water_level;
+    public int getBox_spary() {
+        return box_spary;
     }
 
-    public void setWater_level(int water_level) {
-        this.water_level = water_level;
+    public void setBox_spary(int box_spary) {
+        this.box_spary = box_spary;
     }
 
-    public int getRay_state() {
-        return ray_state;
+    public int getBox_store() {
+        return box_store;
     }
 
-    public void setRay_state(int ray_state) {
-        this.ray_state = ray_state;
-    }
-
-    public int getLift() {
-        return lift;
-    }
-
-    public void setLift(int lift) {
-        this.lift = lift;
-    }
-
-    public int getFilter() {
-        return filter;
-    }
-
-    public void setFilter(int filter) {
-        this.filter = filter;
+    public void setBox_store(int box_store) {
+        this.box_store = box_store;
     }
 
     public int getDisin_time() {
@@ -105,10 +89,8 @@ public class DesinStateCallbackEntity extends TypeEntity {
                 "id='" + id + '\'' +
                 ", to_id='" + to_id + '\'' +
                 ", spray_level=" + spray_level +
-                ", water_level=" + water_level +
-                ", ray_state=" + ray_state +
-                ", lift=" + lift +
-                ", filter=" + filter +
+                ", box_spary=" + box_spary +
+                ", box_store=" + box_store +
                 ", disin_time=" + disin_time +
                 ", disin_area=" + disin_area +
                 '}';

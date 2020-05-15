@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('E:\\project\\DisinfectRobot\\disinfectrobot.jks')
+            storePassword '123456'
+            keyAlias = 'linfd'
+            keyPassword '123456'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.linfd.scri.disinfectrobot"
@@ -9,6 +17,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.release
     }
     buildTypes {
         release {
@@ -46,4 +55,5 @@ dependencies {
     implementation 'com.github.iwgang:countdownview:2.1.6'  //https://github.com/iwgang/CountdownView
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation project(':lib')
+    implementation 'org.greenrobot:eventbus:3.1.1'
 }

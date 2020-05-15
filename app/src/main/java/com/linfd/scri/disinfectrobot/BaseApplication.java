@@ -4,9 +4,15 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 
+import com.linfd.scri.disinfectrobot.listener.SimpleUdpListener;
 import com.linfd.scri.disinfectrobot.manager.AckListenerService;
 import com.linfd.scri.disinfectrobot.manager.GetFromServerData;
+import com.linfd.scri.disinfectrobot.manager.LooperDisinStatusService;
+import com.linfd.scri.disinfectrobot.manager.LooperStatusService;
 import com.linfd.scri.disinfectrobot.manager.ObtainStatusStamp;
+import com.linfd.scri.disinfectrobot.manager.ServerListeners;
+import com.linfd.scri.disinfectrobot.manager.TimerManager;
+import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
 
 
 public class BaseApplication extends Application {
@@ -23,7 +29,12 @@ public class BaseApplication extends Application {
     ObtainStatusStamp.init();
     AckListenerService.init();
     GetFromServerData.listener();
+
+    //LooperDisinStatusService.obtainStatus();
+    LooperStatusService.obtainStatus();
+    ServerListeners.register();
   }
+
 
   public static Context getApplication() {
     return application;

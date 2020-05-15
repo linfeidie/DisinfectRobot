@@ -2,6 +2,7 @@ package com.linfd.scri.disinfectrobot.manager;
 
 import android.os.Handler;
 
+import com.linfd.scri.disinfectrobot.BaseApplication;
 import com.linfd.scri.disinfectrobot.Contanst;
 
 
@@ -14,7 +15,7 @@ import com.linfd.scri.disinfectrobot.Contanst;
  */
 public class TimerManager {
     private static final TimerManager ourInstance = new TimerManager();
-    public  Handler mHandler = new Handler();
+    public  Handler mHandler = BaseApplication.getHandler();
     private Runnable r;
     public static TimerManager getInstance() {
         return ourInstance;

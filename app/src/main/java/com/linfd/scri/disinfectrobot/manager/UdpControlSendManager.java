@@ -55,6 +55,7 @@ public class UdpControlSendManager {
 
     private XUdp mXUdp;
 
+    int count = 0;
 
     public static UdpControlSendManager getInstance() {
 
@@ -380,15 +381,14 @@ public class UdpControlSendManager {
         this.set_action_cmd(id,to_id,"exit_cur");
     }
     /*
-    * 设置消毒设备命令  与任务隔离
-    * */
-    private void set_disin_cmd(String id, String to_id,int spray,int spray_fan,int spray_motor){
+     * 设置消毒设备命令  与任务隔离
+     * */
+    private void set_disin_cmd(String id, String to_id,int cmd,int spray_level){
         SetDisinCmdEntity entity = new SetDisinCmdEntity();
         entity.setId(id);
         entity.setTo_id(to_id);
-        entity.setSpray(spray);
-        entity.setSpray_fan(spray_fan);
-        entity.setSpray_motor(spray_motor);
+        entity.setCmd(cmd);
+        entity.setSpray_level(spray_level);
         sendOrder(entity);
     }
 
@@ -396,38 +396,38 @@ public class UdpControlSendManager {
             * 设置消毒设备命令  与任务隔离  喷雾 开
      * */
     public void set_disin_cmd_spray_on(String id, String to_id){
-        this.set_disin_cmd(id,to_id,1,1,1);
+        this.set_disin_cmd(id,to_id,1,1);
     }
     /*
      * 设置消毒设备命令  与任务隔离  喷雾 关
      * */
     public void set_disin_cmd_spray_off(String id, String to_id,int spray,int spray_fan,int spray_motor){
-        this.set_disin_cmd(id,to_id,0,0,0);
+        this.set_disin_cmd(id,to_id,0,0);
     }
     /*
      * 设置消毒设备命令  与任务隔离  喷雾风扇 开
      * */
     private void set_disin_cmd_spray_fan_on(String id, String to_id,int spray,int spray_fan,int spray_motor){
-        this.set_disin_cmd(id,to_id,0,1,0);
+      //  this.set_disin_cmd(id,to_id,0,1,0);
     }
     /*
      * 设置消毒设备命令  与任务隔离  喷雾风扇 关
      * */
     private void set_disin_cmd_spray_fan_off(String id, String to_id,int spray,int spray_fan,int spray_motor){
-        this.set_disin_cmd(id,to_id,0,0,0);
+       // this.set_disin_cmd(id,to_id,0,0,0);
     }
 
     /*
      * 设置消毒设备命令  与任务隔离  吸水电机 开
      * */
     private void set_disin_cmd_spray_motor_on(String id, String to_id,int spray,int spray_fan,int spray_motor){
-        this.set_disin_cmd(id,to_id,0,0,1);
+       // this.set_disin_cmd(id,to_id,0,0,1);
     }
     /*
      * 设置消毒设备命令  与任务隔离  吸水电机 关
      * */
     private void set_disin_cmd_spray_motor_off(String id, String to_id,int spray,int spray_fan,int spray_motor){
-        this.set_disin_cmd(id,to_id,0,0,0);
+      //  this.set_disin_cmd(id,to_id,0,0,0);
     }
     /*
      *设置底盘命令
@@ -472,7 +472,7 @@ public class UdpControlSendManager {
     /*
     * 目标点任务
     * */
-    int count = 0;
+
     public void set_goal_action(String id, String to_id,double x,double y){
         SetGoalActionEntity entity = new SetGoalActionEntity();
         entity.setId(id);

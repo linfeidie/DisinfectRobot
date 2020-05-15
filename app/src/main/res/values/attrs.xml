@@ -3,5 +3,8 @@
     <declare-styleable name="WaterWaveView">
         <attr name="waveName" format="string"></attr>
     </declare-styleable>
+    <declare-styleable name="MyStatusLayout">
+        <attr name="showName" format="string"></attr>
+    </declare-styleable>
 
 </resources>

@@ -8,31 +8,31 @@ import com.linfd.scri.disinfectrobot.Contanst;
 * */
 public class SetDisinActionEntity extends TypeEntity {
 
+
     /**
-     * id : xxx
-     * to_id : xxx
-     * disin_mode : auto/manual
-     * rays : true/false
-     * lift : 0
-     * spray : 0
-     * filter : true/false
+     {
+     "id":"xxx",
+     "to_id":"xxx",
+     "type":"set_disin_action",//消毒任务
+     "disin_mode":"auto/manual",//消毒任务模式,auto自动覆盖消毒,manual手动定点消毒
+     "spray":0,//喷雾开启，0,停止，１小，２大
+     "action_id": 0,//任务id号,int,从0开始
+     "follow":-1 //表示关联上一个任务,int,-1表示不关联,其他数值表示关联的任务id
+     }
      */
 
     private String id;
     private String to_id;
     private String disin_mode;
-    private String rays;
-    private int lift;
     private int spray;
-    private String filter;
+    private int action_id;
+    private int follow;
 
     public SetDisinActionEntity() {
         this.setType(Contanst.set_disin_action);
-        //先设置默认
-        this.setFilter("false");
-        this.setLift(0);
-        this.setRays("false");
-        this.setDisin_mode("auto");
+        this.setSpray(2);
+        this.setAction_id(0);
+        this.setFollow(-1);
     }
 
     public String getId() {
@@ -59,22 +59,6 @@ public class SetDisinActionEntity extends TypeEntity {
         this.disin_mode = disin_mode;
     }
 
-    public String getRays() {
-        return rays;
-    }
-
-    public void setRays(String rays) {
-        this.rays = rays;
-    }
-
-    public int getLift() {
-        return lift;
-    }
-
-    public void setLift(int lift) {
-        this.lift = lift;
-    }
-
     public int getSpray() {
         return spray;
     }
@@ -83,11 +67,31 @@ public class SetDisinActionEntity extends TypeEntity {
         this.spray = spray;
     }
 
-    public String getFilter() {
-        return filter;
+    public int getAction_id() {
+        return action_id;
     }
 
-    public void setFilter(String filter) {
-        this.filter = filter;
+    public void setAction_id(int action_id) {
+        this.action_id = action_id;
+    }
+
+    public int getFollow() {
+        return follow;
+    }
+
+    public void setFollow(int follow) {
+        this.follow = follow;
+    }
+
+    @Override
+    public String toString() {
+        return "SetDisinActionEntity{" +
+                "id='" + id + '\'' +
+                ", to_id='" + to_id + '\'' +
+                ", disin_mode='" + disin_mode + '\'' +
+                ", spray=" + spray +
+                ", action_id=" + action_id +
+                ", follow=" + follow +
+                '}';
     }
 }

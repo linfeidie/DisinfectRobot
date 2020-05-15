@@ -19,6 +19,8 @@ import com.linfd.scri.disinfectrobot.entity.SetHeartbeatCallbackEntity;
 import com.linfd.scri.disinfectrobot.observer.DataChanger;
 import com.linfd.scri.disinfectrobot.observer.DataWatcher;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 public class GetFromServerData {
@@ -49,6 +51,7 @@ public class GetFromServerData {
                     }else if (((DataEntity) data).getType().equalsIgnoreCase(Contanst.robot_status)){
                         RobotStatusCallbackEntity entity = GsonUtil.GsonToBean(dataEntity.getMessage(),RobotStatusCallbackEntity.class);
                         if (entity != null){
+                            EventBus.getDefault().post(entity);
                             //showTest(entity.toString());
                         }else{
                             Tools.showToast("异常：状态为空");
@@ -60,7 +63,8 @@ public class GetFromServerData {
                         Log.e(TAG,"心跳返回"+entity.toString());
                     }else if (((DataEntity) data).getType().equalsIgnoreCase(Contanst.disin_state)){
                         DesinStateCallbackEntity entity = GsonUtil.GsonToBean(dataEntity.getMessage(),DesinStateCallbackEntity.class);
-                       // showTest("消毒状态返回"+entity.toString());
+                        Log.e(TAG,"消毒状态返回"+entity.toString());
+                        EventBus.getDefault().post(entity);
                     } else if (((DataEntity) data).getType().equalsIgnoreCase(Contanst.apmt_state)){
                         ApmtStateCallbackEntity entity = GsonUtil.GsonToBean(dataEntity.getMessage(),ApmtStateCallbackEntity.class);
                         //showTest("预约状态返回"+entity.toString());

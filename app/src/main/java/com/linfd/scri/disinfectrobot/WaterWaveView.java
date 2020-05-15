@@ -50,10 +50,10 @@ public class WaterWaveView extends View {
     private float mWaterLevel = 0.5F;// 水高(0~1)
     private Path mPath;
 
+    //private String flowNum = "50%";
     private String flowNum = "50%";
     //private String flowLeft = "还剩余";
 
-//    private String flowNum = "";
     private String flowLeft = "";
 
     /**
@@ -92,13 +92,16 @@ public class WaterWaveView extends View {
         init(mContext);
     }
 
-    public void setflowNum(String num){
-        this.flowNum = num;
-        invalidate();
-    }
 
     public void setmWaterLevel(float mWaterLevel) {
         this.mWaterLevel = mWaterLevel;
+        this.flowNum = mWaterLevel*100 + "%";
+//        if (mWaterLevel <= 0.99){
+//            mWaveColor = getContext().getResources().getColor(R.color.config_color_red);
+//        }else {
+//            mWaveColor = getContext().getResources().getColor(R.color.colorPrimary);
+//        }
+        invalidate();
     }
 
     private void init(Context context) {

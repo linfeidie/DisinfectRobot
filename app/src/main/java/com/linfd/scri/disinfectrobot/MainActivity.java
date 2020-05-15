@@ -3,58 +3,49 @@ package com.linfd.scri.disinfectrobot;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
-import android.os.CountDownTimer;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
-import com.linfd.scri.disinfectrobot.entity.ApmtStateCallbackEntity;
-import com.linfd.scri.disinfectrobot.entity.ChargerPoseCallbackEntity;
-import com.linfd.scri.disinfectrobot.entity.DataEntity;
 import com.linfd.scri.disinfectrobot.entity.DesinStateCallbackEntity;
-import com.linfd.scri.disinfectrobot.entity.LoginCallbackEntity;
-import com.linfd.scri.disinfectrobot.entity.MachTypeCallbackEntity;
-import com.linfd.scri.disinfectrobot.entity.OnlineIdsCallbackEntity;
-import com.linfd.scri.disinfectrobot.entity.RobotAckCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
-import com.linfd.scri.disinfectrobot.entity.SetBindCallbackEntity;
-import com.linfd.scri.disinfectrobot.entity.SetHeartbeatCallbackEntity;
-import com.linfd.scri.disinfectrobot.listener.SimpleUdpListener;
-import com.linfd.scri.disinfectrobot.manager.HeartbeatManager;
+import com.linfd.scri.disinfectrobot.eventbus.EventMessage;
 import com.linfd.scri.disinfectrobot.manager.MapDataObtainManager;
-import com.linfd.scri.disinfectrobot.manager.TimerManager;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
 import com.linfd.scri.disinfectrobot.manager.UpdateStateControlManager;
-import com.linfd.scri.disinfectrobot.observer.DataChanger;
-import com.linfd.scri.disinfectrobot.observer.DataWatcher;
+import com.linfd.scri.disinfectrobot.view.MyStatusLayout;
 import com.linfd.scri.disinfectrobot.view.PinchImageView;
 import com.linfd.scri.disinfectrobot.view.SmButton;
 
-import java.util.List;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import cn.iwgang.countdownview.CountdownView;
 import ezy.ui.view.RoundButton;
 
 
 public class MainActivity extends BaseActivity {
-    private WaterWaveView wave_view_electric,wave_view_water;
+
+    public static final String TAG = MainActivity.class.getSimpleName();
+    private WaterWaveView wave_view_electric;
     private RoundButton bt_set;
     private CountdownView countdown_view;
     private PinchImageView pinchImageView;
     private RoundButton tv_get_map;
+    private MyStatusLayout status_layout_spary,status_layout_box_spary,status_layout_box_store;
 
     public void initView() {
         setContentView(R.layout.activity_main);
         wave_view_electric = findViewById(R.id.wave_view_electric);
-        wave_view_water = findViewById(R.id.wave_view_water);
         bt_set = findViewById(R.id.bt_set);
         countdown_view = findViewById(R.id.countdown_view);
         pinchImageView = findViewById(R.id.iv_bitmap);
         tv_get_map = findViewById(R.id.tv_get_map);
+        status_layout_spary = findViewById(R.id.status_layout_spary);
+        status_layout_box_spary = findViewById(R.id.status_layout_box_spary);
+        status_layout_box_store = findViewById(R.id.status_layout_box_store);
         super.initView();
 
 //        mTopBar.addRightImageButton(R.mipmap.ic_setting,R.id.topbar_right_button).setOnClickListener(new View.OnClickListener() {
@@ -119,7 +110,7 @@ public class MainActivity extends BaseActivity {
                // Tools.showToast("获取地图");
                 //pinchImageView.setImageBitmap(Tools.drawableToBitmap(getResources().getDrawable(R.drawable.logo)));
                 //MapDataObtainManager.getInstance().start();
-                UdpControlSendManager.getInstance().get_charger_pose(Contanst.id,Contanst.to_id);
+                //UdpControlSendManager.getInstance().get_charger_pose(Contanst.id,Contanst.to_id);
 
             }
         });
@@ -127,31 +118,48 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        wave_view_electric.setmWaterLevel(0.1f);
         wave_view_electric.startWave();
-        wave_view_water.startWave();
         bt_set.setOnClickListener(new View.OnClickListener() {
-            LooperRunnable r = new LooperRunnable() {
-                @Override
-                public void call() {
-                    UdpControlSendManager.getInstance().get_robot_status(Contanst.id,Contanst.to_id);
-                }
-            };
+
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this,SettingActivity.class);
-//                startActivity(intent);
-                Tools.showToast("机器人状态");
-                TimerManager.getInstance().start(r);
-
-
+                Intent intent = new Intent(MainActivity.this,SettingActivity.class);
+                startActivity(intent);
             }
         });
-        countdown_view.start(995550000);
-        setCallBack();
-
+        countdown_view.updateShow(60*1000);
+        status_layout_spary.changeStatus(2);
     }
 
-    private void setCallBack() {
-        UdpControlSendManager.getInstance().addUdpClientListener(new SimpleUdpListener());
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+    /*
+    * 接收消毒状态
+    * */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiveMsg(DesinStateCallbackEntity entity) {
+       // Log.e(TAG, "onReceiveMsg: " + entity.toString());
+        status_layout_spary.changeStatus(entity.getSpray_level());
+        status_layout_box_spary.changeStatus(entity.getBox_spary());
+        status_layout_box_store.changeStatus(entity.getBox_store());
+        countdown_view.updateShow(entity.getDisin_time());
+    }
+
+    /*
+     * 接收机器人状态
+     * */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiveMsg(RobotStatusCallbackEntity entity) {
+        wave_view_electric.setmWaterLevel((float) (entity.getBattery_percent()/1000));//(float) (entity.getBattery_percent()/10)
     }
 }

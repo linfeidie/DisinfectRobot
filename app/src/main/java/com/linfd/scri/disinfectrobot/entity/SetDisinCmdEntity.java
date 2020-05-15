@@ -9,23 +9,30 @@ import com.linfd.scri.disinfectrobot.Contanst;
 public class SetDisinCmdEntity extends TypeEntity {
 
 
-    public SetDisinCmdEntity() {
-        this.setType(Contanst.set_disin_cmd);
-    }
-
     /**
-     * id : xxx
-     * to_id : xxx
-     * spray : 0
-     * spray_fan : 0
-     * spray_motor : 0
+     {
+     "id":"xxx",
+     "to_id
+
+
+     ":"xxx",
+     "type":"set_disin_cmd",
+
+
+     "cmd":0,//0无,1自动消毒,2清空雾化室的蓄水,gaagsghshgshgshshs
+     "spray_level":0,//喷雾开启,0,无动作,1小,2大
+     }
      */
 
     private String id;
     private String to_id;
-    private int spray;
-    private int spray_fan;
-    private int spray_motor;
+    private int cmd;
+    private int spray_level;
+
+    public SetDisinCmdEntity() {
+        this.setType(Contanst.set_disin_cmd);
+    }
+
 
     public String getId() {
         return id;
@@ -43,27 +50,29 @@ public class SetDisinCmdEntity extends TypeEntity {
         this.to_id = to_id;
     }
 
-    public int getSpray() {
-        return spray;
+    public int getCmd() {
+        return cmd;
     }
 
-    public void setSpray(int spray) {
-        this.spray = spray;
+    public void setCmd(int cmd) {
+        this.cmd = cmd;
     }
 
-    public int getSpray_fan() {
-        return spray_fan;
+    public int getSpray_level() {
+        return spray_level;
     }
 
-    public void setSpray_fan(int spray_fan) {
-        this.spray_fan = spray_fan;
+    public void setSpray_level(int spray_level) {
+        this.spray_level = spray_level;
     }
 
-    public int getSpray_motor() {
-        return spray_motor;
-    }
-
-    public void setSpray_motor(int spray_motor) {
-        this.spray_motor = spray_motor;
+    @Override
+    public String toString() {
+        return "SetDisinCmdEntity{" +
+                "id='" + id + '\'' +
+                ", to_id='" + to_id + '\'' +
+                ", cmd=" + cmd +
+                ", spray_level=" + spray_level +
+                '}';
     }
 }
