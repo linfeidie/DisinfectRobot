@@ -11,6 +11,7 @@
         android:layout_height="60dp"
         app:titlebar_bg_color="@color/colorMajor"/>
     <ezy.ui.view.RoundButton
+        android:visibility="gone"
         android:id="@+id/bt_run_mode"
         style="@style/RoundButton"
         android:text="@string/operation_mode"
@@ -19,104 +20,101 @@
         android:layout_height="50dp"
         app:btnSolidColor="@color/config_color_50_blue"
         />
-    <FrameLayout
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_width="match_parent"
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
-        <TextView
-            style="@style/NormalText"
-            android:text="@string/spray"/>
-        <com.nex3z.togglebuttongroup.SingleSelectToggleGroup
-            android:id="@+id/group_choices"
+
+        <ezy.ui.view.RoundButton
+            android:id="@+id/tv_manual_q"
+            style="@style/RoundButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:tbgCheckedButton="@+id/choice_a"
-            android:layout_gravity="center_vertical|right">
-
-            <com.nex3z.togglebuttongroup.button.CircularToggle
-                android:id="@+id/choice_a"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/close"/>
-
-            <com.nex3z.togglebuttongroup.button.CircularToggle
-                android:id="@+id/choice_b"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/weak"/>
-            <com.nex3z.togglebuttongroup.button.CircularToggle
-                android:id="@+id/choice_c"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/strong"/>
-
-        </com.nex3z.togglebuttongroup.SingleSelectToggleGroup>
-    </FrameLayout>
-
-    <FrameLayout
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            style="@style/NormalText"
-            android:text="@string/running_peed"/>
-        <com.nex3z.togglebuttongroup.SingleSelectToggleGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:tbgCheckedButton="@+id/choice_a"
-            android:layout_gravity="center_vertical|right">
-
-            <com.nex3z.togglebuttongroup.button.CircularToggle
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fast"/>
-
-            <com.nex3z.togglebuttongroup.button.CircularToggle
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/middle"/>
-            <com.nex3z.togglebuttongroup.button.CircularToggle
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/slow"/>
-
-        </com.nex3z.togglebuttongroup.SingleSelectToggleGroup>
-    </FrameLayout>
-
-    <FrameLayout
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            style="@style/NormalText"
-            android:text="@string/spray_fan"/>
-        <com.suke.widget.SwitchButton
-            android:id="@+id/switch_button"
-            android:layout_width="80dp"
             android:layout_height="50dp"
-            android:layout_gravity="center_vertical|right"/>
-    </FrameLayout>
-    <FrameLayout
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            style="@style/NormalText"
-            android:text="@string/automatic_recharge"/>
-        <com.suke.widget.SwitchButton
-            android:layout_width="80dp"
+            android:text="手动喷雾_强"
+            app:btnCornerRadius="10dp"
+            app:btnPressedRatio="0.5"
+            app:btnSolidColor="@color/config_color_50_blue" />
+        <ezy.ui.view.RoundButton
+            android:id="@+id/tv_manual_r"
+            style="@style/RoundButton"
+            android:layout_width="120dp"
+            android:text="手动喷雾_弱"
+            app:btnCornerRadius="10dp"
+            app:btnPressedRatio="0.5"
             android:layout_height="50dp"
-            android:layout_gravity="center_vertical|right"/>
-    </FrameLayout>
+            app:btnSolidColor="@color/config_color_50_blue"
+            />
+        <ezy.ui.view.RoundButton
+            android:id="@+id/tv_auto_q"
+            style="@style/RoundButton"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:text="行走喷雾_强"
+            app:btnCornerRadius="10dp"
+            app:btnPressedRatio="0.5"
+            app:btnSolidColor="@color/config_color_50_blue" />
+        <ezy.ui.view.RoundButton
+            android:id="@+id/tv_auto_r"
+            style="@style/RoundButton"
+            android:layout_width="120dp"
+            android:text="行走喷雾_弱"
+            app:btnCornerRadius="10dp"
+            app:btnPressedRatio="0.5"
+            android:layout_height="50dp"
+            app:btnSolidColor="@color/config_color_50_blue"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp">
+        <ezy.ui.view.RoundButton
+            android:id="@+id/bt_set_disin_cmd_pump"
+            style="@style/RoundButton"
+            android:text="@string/pump"
+            app:btnCornerRadius="10dp"
+            app:btnPressedRatio="0.5"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:textSize="18sp"
+            app:btnSolidColor="@color/colorMajor"
+            />
+        <ezy.ui.view.RoundButton
+            android:id="@+id/bt_set_disin_cmd_drainage"
+            style="@style/RoundButton"
+            android:text="@string/drainage"
+            app:btnCornerRadius="10dp"
+            app:btnPressedRatio="0.5"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:textSize="18sp"
+            android:layout_marginLeft="10dp"
+            app:btnSolidColor="@color/colorMajor"
+            />
+        <ezy.ui.view.RoundButton
+            android:id="@+id/bt_set_disin_cmd_close"
+            style="@style/RoundButton"
+            android:text="关闭喷雾"
+            app:btnCornerRadius="10dp"
+            app:btnPressedRatio="0.5"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:textSize="18sp"
+            app:btnSolidColor="@color/colorMajor"
+            />
+    </LinearLayout>
+
+
+
+
     <FrameLayout
+        android:visibility="gone"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:layout_width="match_parent"
@@ -131,31 +129,90 @@
             android:layout_gravity="center_vertical|right"/>
     </FrameLayout>
     <View
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"></View>
-    <FrameLayout
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
+        android:layout_height="match_parent"
         >
-
-        <TextView
-            android:id="@+id/tv_set_apmt"
-            style="@style/NormalText"
-            android:drawableLeft="@mipmap/ic_setting_pace"
-            android:text="@string/appointment_task"
-            android:gravity="center_vertical"
-            />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|right"
-            android:src="@mipmap/ic_right" />
-    </FrameLayout>
+        <!-- 这个是在容器中央的 -->
+        <ezy.ui.view.RoundButton
+            android:id="@+id/img1"
+            android:visibility="invisible"
+            style="@style/RoundButton"
+            android:layout_centerInParent="true"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_weight="0"
+            android:text="一键启动"
+            app:btnCornerRadius="stadium"
+            app:btnPressedRatio="0.7"
+            app:btnSolidColor="@color/colorMajor"/>
 
 
+        <!-- 在中间图片的左边 -->
+        <ezy.ui.view.RoundButton
+            android:id="@+id/tv_leftward"
+            style="@style/RoundButton"
+            android:layout_centerInParent="true"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_toLeftOf="@id/img1"
+            android:layout_centerVertical="true"
+            android:layout_weight="0"
+            android:text="@string/left"
+            app:btnCornerRadius="stadium"
+            app:btnPressedRatio="0.7"
+            app:btnSolidColor="@color/colorMajor"/>
+
+
+        <!-- 在中间图片的右边 -->
+        <ezy.ui.view.RoundButton
+            android:id="@+id/tv_rightward"
+            style="@style/RoundButton"
+            android:layout_toRightOf="@id/img1"
+            android:layout_centerVertical="true"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_weight="0"
+            android:text="@string/right"
+            app:btnCornerRadius="stadium"
+            app:btnPressedRatio="0.7"
+            app:btnSolidColor="@color/colorMajor"/>
+
+        <!-- 在中间图片的上面-->
+        <ezy.ui.view.RoundButton
+            android:id="@+id/tv_forward"
+            style="@style/RoundButton"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_above="@id/img1"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="0"
+            android:text="@string/forward"
+            app:btnCornerRadius="stadium"
+            app:btnPressedRatio="0.7"
+            app:btnSolidColor="@color/colorMajor"/>
+
+        <!-- 在中间图片的下面 -->
+        <ezy.ui.view.RoundButton
+            android:id="@+id/tv_backward"
+            style="@style/RoundButton"
+            android:layout_centerInParent="true"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/img1"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="0"
+            android:text="@string/backward"
+            app:btnCornerRadius="stadium"
+            app:btnPressedRatio="0.7"
+            app:btnSolidColor="@color/colorMajor"/>
+    </RelativeLayout>
     <com.cy.cyflowlayoutlibrary.FlowLayoutScrollView
         android:id="@+id/tag_layout"
         android:layout_width="match_parent"

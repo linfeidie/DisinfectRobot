@@ -19,7 +19,7 @@ public class SetDisinCmdEntity extends TypeEntity {
      "type":"set_disin_cmd",
 
 
-     "cmd":0,//0无,1自动消毒,2清空雾化室的蓄水,gaagsghshgshgshshs
+     "cmd":0,//0无,1自动消毒,2清空雾化室的蓄水,3 手动喷雾
      "spray_level":0,//喷雾开启,0,无动作,1小,2大
      }
      */

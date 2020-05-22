@@ -22,6 +22,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 import cn.iwgang.countdownview.CountdownView;
 import ezy.ui.view.RoundButton;
 
@@ -35,14 +37,12 @@ public class MainActivity extends BaseActivity {
     private PinchImageView pinchImageView;
     private RoundButton tv_get_map;
     private MyStatusLayout status_layout_spary,status_layout_box_spary,status_layout_box_store;
-
     public void initView() {
         setContentView(R.layout.activity_main);
         wave_view_electric = findViewById(R.id.wave_view_electric);
         bt_set = findViewById(R.id.bt_set);
         countdown_view = findViewById(R.id.countdown_view);
         pinchImageView = findViewById(R.id.iv_bitmap);
-        tv_get_map = findViewById(R.id.tv_get_map);
         status_layout_spary = findViewById(R.id.status_layout_spary);
         status_layout_box_spary = findViewById(R.id.status_layout_box_spary);
         status_layout_box_store = findViewById(R.id.status_layout_box_store);
@@ -101,25 +101,11 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initListener() {
         super.initListener();
-        /*
-         * 获取地图
-         * */
-        tv_get_map.setOnClickListener(new SmButton.OnSmClickListener() {
-            @Override
-            public void onSmClick(View v) {
-               // Tools.showToast("获取地图");
-                //pinchImageView.setImageBitmap(Tools.drawableToBitmap(getResources().getDrawable(R.drawable.logo)));
-                //MapDataObtainManager.getInstance().start();
-                //UdpControlSendManager.getInstance().get_charger_pose(Contanst.id,Contanst.to_id);
 
-            }
-        });
     }
 
     @Override
     protected void initData() {
-        wave_view_electric.setmWaterLevel(0.1f);
-        wave_view_electric.startWave();
         bt_set.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -129,13 +115,16 @@ public class MainActivity extends BaseActivity {
             }
         });
         countdown_view.updateShow(60*1000);
-        status_layout_spary.changeStatus(2);
+        //status_layout_spary.changeStatus(2);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this))
+        {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
@@ -152,7 +141,7 @@ public class MainActivity extends BaseActivity {
         status_layout_spary.changeStatus(entity.getSpray_level());
         status_layout_box_spary.changeStatus(entity.getBox_spary());
         status_layout_box_store.changeStatus(entity.getBox_store());
-        countdown_view.updateShow(entity.getDisin_time());
+        countdown_view.updateShow((int)entity.getDisin_time());
     }
 
     /*
@@ -162,4 +151,5 @@ public class MainActivity extends BaseActivity {
     public void onReceiveMsg(RobotStatusCallbackEntity entity) {
         wave_view_electric.setmWaterLevel((float) (entity.getBattery_percent()/1000));//(float) (entity.getBattery_percent()/10)
     }
+
 }

@@ -30,7 +30,7 @@ public class SetDisinActionEntity extends TypeEntity {
 
     public SetDisinActionEntity() {
         this.setType(Contanst.set_disin_action);
-        this.setSpray(2);
+       // this.setSpray(2);
         this.setAction_id(0);
         this.setFollow(-1);
     }

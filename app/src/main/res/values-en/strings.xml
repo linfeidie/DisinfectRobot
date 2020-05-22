@@ -32,4 +32,17 @@
     <string name="fixed_point_cruise_map">fixed point cruise map</string>
     <string name="sure_the_map_is_complete">sure the map is complete</string>
     <string name="cancel">cancel</string>
+    <string name="control">control</string>
+    <string name="autonomy">autonomy</string>
+    <string name="manual">manual</string>
+    <string name="spray_intensity">Spray intensity</string>
+    <string name="atomizer_level">Atomizer level</string>
+    <string name="reservoir_level">Reservoir level</string>
+    <string name="pump">pump</string>
+    <string name="drainage">drainage</string>
+    <string name="forward">forward</string>
+    <string name="backward">backward</string>
+    <string name="right">right</string>
+    <string name="left">left</string>
+    <string name="electric_quantity">electric</string>
 </resources>

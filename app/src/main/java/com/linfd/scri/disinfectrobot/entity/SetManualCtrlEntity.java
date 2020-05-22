@@ -20,9 +20,9 @@ public class SetManualCtrlEntity extends TypeEntity {
   private String to_id;
   private double linear_speed;
   private double angular_speed;
-  private double timeout;
-  private double dist;
-  private double angle;
+//  private double timeout;
+//  private double dist;
+//  private double angle;
 
   public SetManualCtrlEntity() {
     setType("set_manual_ctrl");
@@ -60,27 +60,5 @@ public class SetManualCtrlEntity extends TypeEntity {
     this.angular_speed = angular_speed;
   }
 
-  public double getTimeout() {
-    return timeout;
-  }
 
-  public void setTimeout(double timeout) {
-    this.timeout = timeout;
-  }
-
-  public double getDist() {
-    return dist;
-  }
-
-  public void setDist(double dist) {
-    this.dist = dist;
-  }
-
-  public double getAngle() {
-    return angle;
-  }
-
-  public void setAngle(double angle) {
-    this.angle = angle;
-  }
 }

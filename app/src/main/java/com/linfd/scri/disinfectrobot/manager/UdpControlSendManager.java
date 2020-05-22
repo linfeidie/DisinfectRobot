@@ -29,6 +29,7 @@ import com.linfd.scri.disinfectrobot.entity.SetCycleActionEntity;
 import com.linfd.scri.disinfectrobot.entity.SetDisinActionEntity;
 import com.linfd.scri.disinfectrobot.entity.SetDisinCmdEntity;
 import com.linfd.scri.disinfectrobot.entity.SetGoalActionEntity;
+import com.linfd.scri.disinfectrobot.entity.SetGoalEntity;
 import com.linfd.scri.disinfectrobot.entity.SetHeartbeatEntity;
 import com.linfd.scri.disinfectrobot.entity.SetInitPoseEntity;
 import com.linfd.scri.disinfectrobot.entity.SetManualCtrlEntity;
@@ -159,40 +160,45 @@ public class UdpControlSendManager {
     }
 
     /*
-     * 手动控制模式控制
+     * 手动控制模式控制 新
      * */
-    public void set_manual_ctrl(String id, String to_id, double linear_speed, double angular_speed, double angle, double dist) {
+    public void set_manual_ctrl(String id, String to_id, double linear_speed, double angular_speed) {
         SetManualCtrlEntity entity = new SetManualCtrlEntity();
-        entity.setAngle(angle);
         entity.setAngular_speed(angular_speed);
-        entity.setDist(dist);
         entity.setId(id);
         entity.setLinear_speed(linear_speed);
-        entity.setTimeout(2);
         entity.setTo_id(to_id);
         sendOrder(entity);
     }
+
+    /*
+     * 手动控制模式控制 新 停止
+     * */
+    public void set_manual_ctrl_stop(String id, String to_id) {
+        set_manual_ctrl(id, to_id, 0, 0);
+    }
+
 
     /*
      *向右转
      * */
 
     public void rightward(String id, String to_id, double angular_speed) {
-        set_manual_ctrl(id, to_id, 0, -angular_speed, 0, 0);
+        set_manual_ctrl(id, to_id, 0, -angular_speed);
     }
 
     /*
      * 向左转
      * */
     public void leftward(String id, String to_id, double angular_speed) {
-        set_manual_ctrl(id, to_id, 0, angular_speed, 0, 0);
+        set_manual_ctrl(id, to_id, 0, angular_speed);
     }
 
     /*
      * 向前走
      * */
     public void forward(String id, String to_id, double linear_speed) {
-        set_manual_ctrl(id, to_id, linear_speed, 0, 0, 0);
+        set_manual_ctrl(id, to_id, linear_speed, 0);
     }
 
 
@@ -201,7 +207,7 @@ public class UdpControlSendManager {
      * */
 
     public void backward(String id, String to_id, double linear_speed) {
-        set_manual_ctrl(id, to_id, -linear_speed, 0, 0, 0);
+        set_manual_ctrl(id, to_id, -linear_speed, 0);
     }
 
     /*
@@ -310,13 +316,19 @@ public class UdpControlSendManager {
     }
 
     /*
-     * 设置消毒任务 spray喷雾开启，0,停止，１小，２大
+     * 设置消毒任务 spray喷雾开启，0,停止，１小，２大  1是手动  2是自动
      * */
-    private void set_disin_action(String id, String to_id, int spray) {
+    private void set_disin_action(String id, String to_id, int spray,int mode) {
         SetDisinActionEntity entity = new SetDisinActionEntity();
         entity.setId(id);
         entity.setTo_id(to_id);
         entity.setSpray(spray);
+        if (mode == 1){
+            entity.setDisin_mode("manual");
+        }else if(mode == 2){
+            entity.setDisin_mode("auto");
+        }
+
         sendOrder(entity);
     }
 
@@ -324,20 +336,27 @@ public class UdpControlSendManager {
      * 设置消毒任务     喷雾_停
      * */
     public void set_disin_action_stop(String id, String to_id) {
-        this.set_disin_action(id,to_id,0);
+        this.set_disin_action(id,to_id,0,1);
     }
     /*
      * 设置消毒任务     喷雾_弱
      * */
     public void set_disin_action_weak(String id, String to_id) {
-        this.set_disin_action(id,to_id,1);
+        this.set_disin_action(id,to_id,1,1);
     }
 
     /*
      * 设置消毒任务     喷雾_强
      * */
     public void set_disin_action_strong(String id, String to_id) {
-        this.set_disin_action(id,to_id,2);
+        this.set_disin_action(id,to_id,2,1);
+    }
+
+    /*
+     * 设置自动消毒任务     喷雾_强
+     * */
+    public void set_disin_action_auto(String id, String to_id) {
+        this.set_disin_action(id,to_id,2,2);
     }
     /*
      * 启动或停止任务队列
@@ -383,7 +402,7 @@ public class UdpControlSendManager {
     /*
      * 设置消毒设备命令  与任务隔离
      * */
-    private void set_disin_cmd(String id, String to_id,int cmd,int spray_level){
+    public void set_disin_cmd(String id, String to_id,int cmd,int spray_level){
         SetDisinCmdEntity entity = new SetDisinCmdEntity();
         entity.setId(id);
         entity.setTo_id(to_id);
@@ -396,13 +415,25 @@ public class UdpControlSendManager {
             * 设置消毒设备命令  与任务隔离  喷雾 开
      * */
     public void set_disin_cmd_spray_on(String id, String to_id){
-        this.set_disin_cmd(id,to_id,1,1);
+        this.set_disin_cmd(id,to_id,3,1);
     }
     /*
      * 设置消毒设备命令  与任务隔离  喷雾 关
      * */
-    public void set_disin_cmd_spray_off(String id, String to_id,int spray,int spray_fan,int spray_motor){
+    public void set_disin_cmd_spray_off(String id, String to_id){
         this.set_disin_cmd(id,to_id,0,0);
+    }
+    /*
+     * 设置消毒设备命令  抽水
+     * */
+    public void set_disin_cmd_pump(String id, String to_id){
+        this.set_disin_cmd(id,to_id,1,0);
+    }
+    /*
+     * 设置消毒设备命令  排水
+     * */
+    public void set_disin_cmd_drainage(String id, String to_id){
+        this.set_disin_cmd(id,to_id,2,0);
     }
     /*
      * 设置消毒设备命令  与任务隔离  喷雾风扇 开
@@ -434,12 +465,12 @@ public class UdpControlSendManager {
      * "power":0,//底盘电源,0无动作,1关机,2休眠
     "ext_power":true,//设置外部电源开关,true
      * */
-    private void set_base_cmd(String id, String to_id,int power,boolean ext_power){
+    private void set_base_cmd(String id, String to_id,int power,boolean charge_enable){
         SetBaseCmdEntity entity = new SetBaseCmdEntity();
         entity.setId(id);
         entity.setTo_id(to_id);
         entity.setPower(power);
-        entity.setExt_power(ext_power);
+        entity.setCharge_enable(charge_enable);
         sendOrder(entity);
     }
     public void set_base_cmd_power_on(String id, String to_id){
@@ -473,7 +504,7 @@ public class UdpControlSendManager {
     * 目标点任务
     * */
 
-    public void set_goal_action(String id, String to_id,double x,double y){
+    public void set_goal_action(String id, String to_id,double x,double y,boolean uipose){
         SetGoalActionEntity entity = new SetGoalActionEntity();
         entity.setId(id);
         entity.setTo_id(to_id);
@@ -481,7 +512,9 @@ public class UdpControlSendManager {
         entity.setMove_type("flex");
         entity.setMax_a(0.3d);
         entity.setMax_l(0.3d);
-        entity.setTime_out(0d);
+        entity.setTime_out(0d);//A 点到B 点时间
+        entity.setUi_pose(uipose);
+        entity.setFollow(-1);
         List<Double> post = new ArrayList<>();
         post.add(x);
         post.add(y);
@@ -490,6 +523,14 @@ public class UdpControlSendManager {
         sendOrder(entity);
         count++;//每次加1
     }
+
+    public void set_goal_action_manual(String id, String to_id,double x,double y){
+        this.set_goal_action(id,to_id,x,y,true);
+    }
+    public void set_goal_action_robot(String id, String to_id){
+        this.set_goal_action(id,to_id,0,0,false);
+    }
+
     /*
     * 设置机器人导航模式 localization  true 定位模式,false建图模式(默认)
     * */
@@ -553,5 +594,13 @@ public class UdpControlSendManager {
         entity.setTo_id(to_id);
         sendOrder(entity);
     }
-
+    /*
+     * 设置描点
+     * */
+    public void set_goal(String id, String to_id){
+        SetGoalEntity entity = new SetGoalEntity();
+        entity.setId(id);
+        entity.setTo_id(to_id);
+        sendOrder(entity);
+    }
 }

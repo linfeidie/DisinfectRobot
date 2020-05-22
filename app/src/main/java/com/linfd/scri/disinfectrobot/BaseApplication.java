@@ -2,6 +2,7 @@ package com.linfd.scri.disinfectrobot;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Handler;
 
 import com.linfd.scri.disinfectrobot.listener.SimpleUdpListener;
@@ -19,6 +20,8 @@ public class BaseApplication extends Application {
   private static BaseApplication application;
   private static int mainTid;
   private static Handler handler;
+  public static Rect chargerect;//充电桩位置
+  public static boolean isdrawPaht = false;//当前地图是否绘制行走路径
 
   @Override
   public void onCreate() {
@@ -26,6 +29,7 @@ public class BaseApplication extends Application {
     application=this;
     mainTid = android.os.Process.myTid();
     handler=new Handler();
+   // CrashHandler.getInstance().initCrashHandler(this);
     ObtainStatusStamp.init();
     AckListenerService.init();
     GetFromServerData.listener();

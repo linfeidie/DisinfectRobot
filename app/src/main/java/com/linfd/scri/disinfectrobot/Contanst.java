@@ -77,6 +77,8 @@ public class Contanst {
     public static final String get_map_exist = "get_map_exist";//获取历史地图记录
 
     public static final String set_charge_water_action = "set_charge_water_action"; //对接换水任务(清扫机器人用)
+
+    public static final String set_goal = "set_goal";//设置描点
     /*
     * 指令类型  返回类型
     * */

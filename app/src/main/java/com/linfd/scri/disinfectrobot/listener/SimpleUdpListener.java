@@ -1,6 +1,7 @@
 package com.linfd.scri.disinfectrobot.listener;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.blanke.xsocket.udp.client.XUdp;
 import com.blanke.xsocket.udp.client.bean.UdpMsg;
@@ -45,6 +46,7 @@ public  class SimpleUdpListener implements UdpClientListener {
             dataEntity.setType(entity.getType());
             dataEntity.setMessage(udpMsg.getSourceDataString());
             DataChanger.getInstance().postData(dataEntity);
+           // Log.e(TAG,"原始数据："+udpMsg.getSourceDataString());
         }
 
     } ;

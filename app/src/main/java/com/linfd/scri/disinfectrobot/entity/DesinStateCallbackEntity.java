@@ -22,9 +22,9 @@ public class DesinStateCallbackEntity extends TypeEntity {
     private String id;
     private String to_id;
     private int spray_level;
-    private int box_spary;
+    private int box_spray;
     private int box_store;
-    private int disin_time;
+    private double disin_time;
     private int disin_area;
 
     public String getId() {
@@ -52,11 +52,11 @@ public class DesinStateCallbackEntity extends TypeEntity {
     }
 
     public int getBox_spary() {
-        return box_spary;
+        return box_spray;
     }
 
     public void setBox_spary(int box_spary) {
-        this.box_spary = box_spary;
+        this.box_spray = box_spary;
     }
 
     public int getBox_store() {
@@ -67,11 +67,11 @@ public class DesinStateCallbackEntity extends TypeEntity {
         this.box_store = box_store;
     }
 
-    public int getDisin_time() {
+    public double getDisin_time() {
         return disin_time;
     }
 
-    public void setDisin_time(int disin_time) {
+    public void setDisin_time(double disin_time) {
         this.disin_time = disin_time;
     }
 
@@ -89,7 +89,7 @@ public class DesinStateCallbackEntity extends TypeEntity {
                 "id='" + id + '\'' +
                 ", to_id='" + to_id + '\'' +
                 ", spray_level=" + spray_level +
-                ", box_spary=" + box_spary +
+                ", box_spary=" + box_spray +
                 ", box_store=" + box_store +
                 ", disin_time=" + disin_time +
                 ", disin_area=" + disin_area +

@@ -18,6 +18,11 @@ import com.linfd.scri.disinfectrobot.BaseApplication;
 import com.linfd.scri.disinfectrobot.Contanst;
 import com.linfd.scri.disinfectrobot.R;
 import com.linfd.scri.disinfectrobot.Tools;
+import com.linfd.scri.disinfectrobot.eventbus.EventPoint;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,6 +51,7 @@ public class ComBitmapManager {
     private Paint paint;//画描点的笔
     //private Canvas cv;
     public Path path;
+    private Rect curRect;//记录当前多位置
 
 
     public static ComBitmapManager getInstance() {
@@ -69,6 +75,7 @@ public class ComBitmapManager {
         paint.setPathEffect(new CornerPathEffect(5));
         PathEffect effects = new DashPathEffect(new float[] { 1, 2, 4, 8}, 1);
         paint.setPathEffect(effects);
+        EventBus.getDefault().register(this);
 
     }
 
@@ -160,7 +167,7 @@ public class ComBitmapManager {
         if (background == null) {
             return null;
         }
-
+        curRect = rect;
         int bgWidth = background.getWidth();
         int bgHeight = background.getHeight();
         int fgWidth = foreground.getWidth();
@@ -173,7 +180,12 @@ public class ComBitmapManager {
         //draw fg into
         cv.drawBitmap(adjustPhotoRotation(foreground, angle), rect.left - fgWidth / 2, rect.top - fgHeight / 2, null);//在 0，0坐标开始画入fg ，可以从任意位置画入
         //画充电桩位置
-        //cv.drawBitmap();
+        if(BaseApplication.chargerect != null) {
+            paint.setColor(Color.BLUE);
+            //  cv.drawPoint(BaseApplication.chargerect.left, BaseApplication.chargerect.top, paint);
+            cv.drawBitmap(Tools.drawableToBitmap(BaseApplication.getApplication().getResources().getDrawable(R.drawable.ic_harging_post)),BaseApplication.chargerect.left-8, BaseApplication.chargerect.top-8,null);
+            // paint.setColor(Color.GREEN);
+        }
         if (isRecord){
             /*
             * 第一次自动描点  要深度拷贝  坑得一逼  搞一天
@@ -181,7 +193,13 @@ public class ComBitmapManager {
             ComBitmapManager.getInstance().addTouchPoint((Rect) Tools.copy(rect));
             isRecord = false;
         }
-        cv = DrawPathManager.getInstance().drawPath(cv,rect);
+        /*
+        * 路径不是什么情况下都要画的  比如用户在描点的时候就不用画
+        *
+        * */
+        if (BaseApplication.isdrawPaht){
+            cv = DrawPathManager.getInstance().drawPath(cv,rect);
+        }
 
         //save all clip
 //        cv.save(Canvas.ALL_SAVE_FLAG);//保存
@@ -257,6 +275,14 @@ public class ComBitmapManager {
         } catch (OutOfMemoryError ex) {
         }
         return null;
+    }
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onReceiveMsg(EventPoint eventPoint) {
+        if (curRect != null){
+            ComBitmapManager.getInstance().addTouchPoint((Rect) Tools.copy(curRect));
+        }
+
+
     }
 
 

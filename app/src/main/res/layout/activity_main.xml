@@ -37,27 +37,17 @@
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:orientation="vertical">
-                    <ezy.ui.view.RoundButton
-                        android:id="@+id/tv_get_map"
-                        style="@style/RoundButton"
-                        android:text="@string/map"
-                        app:btnCornerRadius="10dp"
-                        app:btnPressedRatio="0.5"
-                        android:layout_width="80dp"
-                        android:layout_height="50dp"
-                        android:textSize="18sp"
-                        app:btnSolidColor="@color/colorPrimary"
-                        />
+
                     <ezy.ui.view.RoundButton
                         style="@style/RoundButton"
                         android:id="@+id/bt_set"
-                        android:text="@string/setting"
+                        android:text="@string/control"
                         app:btnCornerRadius="10dp"
                         app:btnPressedRatio="0.5"
                         android:layout_width="80dp"
                         android:layout_height="50dp"
                         android:textSize="18sp"
-                        app:btnSolidColor="@color/config_color_15_white"
+                        app:btnSolidColor="@color/colorMajor"
                         />
                 </LinearLayout>
 
@@ -77,14 +67,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center_horizontal"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <ezy.ui.view.RoundButton
                     style="@style/RoundButton"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_weight="0"
-                    android:text="一键启动"
+                    android:text="@string/autonomy"
+                    app:btnCornerRadius="stadium"
+                    app:btnPressedRatio="0.7"
+                    app:btnSolidColor="@color/colorMajor"/>
+                <ezy.ui.view.RoundButton
+                    style="@style/RoundButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="0"
+                    android:text="@string/manual"
                     app:btnCornerRadius="stadium"
                     app:btnPressedRatio="0.7"
                     app:btnSolidColor="@color/colorMajor"/>
@@ -116,24 +115,24 @@
                android:id="@+id/status_layout_spary"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               app:showName="喷雾化强度"></com.linfd.scri.disinfectrobot.view.MyStatusLayout>
+               app:showName="@string/spray_intensity"></com.linfd.scri.disinfectrobot.view.MyStatusLayout>
             <com.linfd.scri.disinfectrobot.view.MyStatusLayout
                 android:id="@+id/status_layout_box_spary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:showName="雾化器液位"></com.linfd.scri.disinfectrobot.view.MyStatusLayout>
+                app:showName="@string/atomizer_level"></com.linfd.scri.disinfectrobot.view.MyStatusLayout>
             <com.linfd.scri.disinfectrobot.view.MyStatusLayout
                 android:id="@+id/status_layout_box_store"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:showName="蓄水室液位"></com.linfd.scri.disinfectrobot.view.MyStatusLayout>
+                app:showName="@string/reservoir_level"></com.linfd.scri.disinfectrobot.view.MyStatusLayout>
 
 
             <TextView
                 style="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="自动巡航"
+                android:text="@string/autonomy"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/colorMajor"
@@ -170,7 +169,7 @@
                     android:id="@+id/wave_view_electric"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
-                    app:waveName="电量"
+                    app:waveName="@string/electric_quantity"
                     ></com.linfd.scri.disinfectrobot.WaterWaveView>
 
             </LinearLayout>

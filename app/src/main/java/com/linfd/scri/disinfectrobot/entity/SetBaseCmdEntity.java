@@ -10,25 +10,34 @@ import com.linfd.scri.disinfectrobot.Contanst;
 public class SetBaseCmdEntity extends TypeEntity {
 
     /**
-     * id :
-     * to_id :
-     * power : 0
-     * ext_power : true
-     * motor_lock : false
-     * obs_enable : true
+     {
+     "id":"",
+     "to_id":"",
+     "type":"set_base_cmd",
+     "power":0,//底盘电源,0无动作,1关机,2休眠
+     "ext_power":false,//设置外部电源开关,true
+     "motor_lock":false,//电机锁开关
+     "obs_disable":false,//失能红外/超声波
+     "charge_enable": false,//充电使能
+     "charger_dock_enable": false,//充电桩使能
+     }
      */
 
     private String id;
     private String to_id;
     private int power;
-    private boolean ext_power;
-    private boolean motor_lock;
-    private boolean obs_enable;
+//    private boolean ext_power;
+//    private boolean motor_lock;
+//    private boolean obs_enable;
+    private boolean charge_enable;
+//    private boolean charger_dock_enable;
 
     public SetBaseCmdEntity() {
         this.setType(Contanst.set_base_cmd);
-        this.setMotor_lock(false);
-        this.setObs_enable(true);
+//        this.setMotor_lock(false);
+//        this.setObs_enable(false);
+//        this.setExt_power(false);
+//        this.setCharger_dock_enable(false);
     }
 
     public String getId() {
@@ -55,27 +64,14 @@ public class SetBaseCmdEntity extends TypeEntity {
         this.power = power;
     }
 
-    public boolean isExt_power() {
-        return ext_power;
+
+    public boolean isCharge_enable() {
+        return charge_enable;
     }
 
-    public void setExt_power(boolean ext_power) {
-        this.ext_power = ext_power;
+    public void setCharge_enable(boolean charge_enable) {
+        this.charge_enable = charge_enable;
     }
 
-    public boolean isMotor_lock() {
-        return motor_lock;
-    }
 
-    public void setMotor_lock(boolean motor_lock) {
-        this.motor_lock = motor_lock;
-    }
-
-    public boolean isObs_enable() {
-        return obs_enable;
-    }
-
-    public void setObs_enable(boolean obs_enable) {
-        this.obs_enable = obs_enable;
-    }
 }

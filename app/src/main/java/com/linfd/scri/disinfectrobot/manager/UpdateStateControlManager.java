@@ -99,15 +99,10 @@ public class UpdateStateControlManager {
 * 注意：satusEntity.getRobot_pose().get(0)，satusEntity.getRobot_pose().get(1)可能顺序有误
 *
 * */
-                int width = BGSelectorManager.getInstance().getMapWH().get(0);
-                int height = BGSelectorManager.getInstance().getMapWH().get(1);
-                double left = width - (-(Contanst.MAPPARAMENTITY.getOrigin().get(1) - satusEntity.getRobot_pose().get(1)) / Contanst.MAPPARAMENTITY.getResolution());
-                double top = height - (-(Contanst.MAPPARAMENTITY.getOrigin().get(0) - satusEntity.getRobot_pose().get(0)) / Contanst.MAPPARAMENTITY.getResolution());
+                rect = HandlePositionHelper.handle(satusEntity.getRobot_pose());
 
                 //弧度转角度
                 float angle = (float) (360 * satusEntity.getRobot_pose().get(3) / (2 * Math.PI));
-                rect.left = (int) left;
-                rect.top = (int) top;
 
                 Log.e("linfd",rect.left+"=======left");
                 Log.e("linfd",rect.top+"=======ltop");
