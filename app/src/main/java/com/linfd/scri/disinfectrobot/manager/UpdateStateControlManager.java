@@ -12,6 +12,9 @@ import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
 import com.linfd.scri.disinfectrobot.observer.DataChanger;
 import com.linfd.scri.disinfectrobot.observer.DataWatcher;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /*
 * 状态管理类  输入地图箭头bitmap
@@ -23,6 +26,8 @@ public class UpdateStateControlManager {
     private Rect rect = new Rect();//覆盖的位置  运行的位置
     private BitmapCallback bitmapCallback;
     private double map_update = -1;
+    private List<BitmapCallback> bitmapCallbackObservers = new ArrayList<>();//要被回调的观察者集合
+
 
     public static UpdateStateControlManager getInstance() {
         if (ourInstance == null){
@@ -40,7 +45,11 @@ public class UpdateStateControlManager {
     }
 
     public void setBitmapCallback(BitmapCallback bitmapCallback) {
-        this.bitmapCallback = bitmapCallback;
+        //this.bitmapCallback = bitmapCallback; 如果没有包含就加入
+        if (!bitmapCallbackObservers.contains(bitmapCallback)){
+            bitmapCallbackObservers.add(bitmapCallback);
+        }
+
     }
 
     /*
@@ -112,9 +121,12 @@ public class UpdateStateControlManager {
                 ComBitmapManager.getInstance().startComposite(rect, angle, new ComBitmapManager.CompositeMapListener() {
                     @Override
                     public void compositeMapCallBack(Bitmap mapComposite) {
-                        if (bitmapCallback != null) {
-                            bitmapCallback.bitmapFinish(mapComposite);
+                        for (int i = 0; i < bitmapCallbackObservers.size(); i++) {
+                            bitmapCallbackObservers.get(i).bitmapFinish(mapComposite);
                         }
+//                        if (bitmapCallback != null) {
+//                            bitmapCallback.bitmapFinish(mapComposite);
+//                        }
 
                     }
                 });

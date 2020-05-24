@@ -13,6 +13,8 @@ import com.stx.xhb.commontitlebar.CustomTitleBar;
 import com.td.framework.module.dialog.DialogHelper;
 import com.td.framework.module.dialog.inf.OnDialogCancelListener;
 
+import org.greenrobot.eventbus.EventBus;
+
 /*
 *
 * */
@@ -45,10 +47,19 @@ public  class BaseActivity extends AppCompatActivity implements OnDialogCancelLi
 
     };
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this))
+        {
+            EventBus.getDefault().register(this);
+        }
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

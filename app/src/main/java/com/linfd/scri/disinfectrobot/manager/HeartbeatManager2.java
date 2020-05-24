@@ -51,7 +51,7 @@ public class HeartbeatManager2 {
         public void run() {
             //充电桩
             UdpControlSendManager.getInstance().get_charger_pose(Contanst.id,Contanst.to_id);
-            mHandler.postDelayed(this, Contanst.HEARTBEAT);
+            mHandler.postDelayed(this, Contanst.CHARGEPOLLING);
         }
     }
 }

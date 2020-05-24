@@ -601,6 +601,7 @@ public class UdpControlSendManager {
         SetGoalEntity entity = new SetGoalEntity();
         entity.setId(id);
         entity.setTo_id(to_id);
+        entity.setUi_pose(false);
         sendOrder(entity);
     }
 }

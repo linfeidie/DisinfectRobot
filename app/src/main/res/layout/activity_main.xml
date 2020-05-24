@@ -77,13 +77,15 @@
                     android:text="@string/autonomy"
                     app:btnCornerRadius="stadium"
                     app:btnPressedRatio="0.7"
-                    app:btnSolidColor="@color/colorMajor"/>
+                    app:btnSolidColor="@color/colorMajor"
+                    android:visibility="gone"/>
                 <ezy.ui.view.RoundButton
+                    android:id="@+id/bt_manual"
                     style="@style/RoundButton"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_weight="0"
-                    android:text="@string/manual"
+                    android:text="定点消毒"
                     app:btnCornerRadius="stadium"
                     app:btnPressedRatio="0.7"
                     app:btnSolidColor="@color/colorMajor"/>

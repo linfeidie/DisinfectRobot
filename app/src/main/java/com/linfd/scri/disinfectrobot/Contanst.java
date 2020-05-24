@@ -30,6 +30,8 @@ public class Contanst {
 
     public static final int HEARTBEAT = 10000; //心跳
 
+    public static final int CHARGEPOLLING = 1000; //充电桩轮询
+
     public static final int GETMAPFREQUENCY =  1000*3*1;//地图更新检查频率 10s
 
     public static final int DRAWPATHFREQUENCY = 2*1000; //绘制路径的刷新频率

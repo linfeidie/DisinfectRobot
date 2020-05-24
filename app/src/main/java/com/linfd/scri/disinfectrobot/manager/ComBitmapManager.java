@@ -162,7 +162,7 @@ public class ComBitmapManager {
      * 背景图和定位图结合
      * */
     //记录第一个描点
-    boolean isRecord = true;
+    boolean isRecord = false;//新的描点方法不需要了，如果需要设为真就好了
     private Bitmap toConformBitmap(Bitmap background, Bitmap foreground, Rect rect, float angle) {
         if (background == null) {
             return null;

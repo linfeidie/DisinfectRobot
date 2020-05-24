@@ -2,6 +2,7 @@ package com.linfd.scri.disinfectrobot.manager;
 
 import android.util.Log;
 
+import com.linfd.scri.disinfectrobot.BaseApplication;
 import com.linfd.scri.disinfectrobot.Contanst;
 import com.linfd.scri.disinfectrobot.GsonUtil;
 import com.linfd.scri.disinfectrobot.Tools;
@@ -77,6 +78,10 @@ public class GetFromServerData {
                         //showTest("机器人类型"+entity.toString());
                     }else if (((DataEntity) data).getType().equalsIgnoreCase(Contanst.charger_pose)){
                         ChargerPoseCallbackEntity entity = GsonUtil.GsonToBean(dataEntity.getMessage(),ChargerPoseCallbackEntity.class);
+                        EventBus.getDefault().post(entity);
+                        BaseApplication.chargerect = HandlePositionHelper.handle(entity.getPose());
+//
+                        Log.e(TAG, "充电座位置" + entity.toString()+Thread.currentThread().getName());
                         //showTest("充电座位置"+entity.toString());
                     }
 

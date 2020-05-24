@@ -32,10 +32,9 @@ public class MainActivity extends BaseActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
     private WaterWaveView wave_view_electric;
-    private RoundButton bt_set;
+    private RoundButton bt_set,bt_manual;
     private CountdownView countdown_view;
     private PinchImageView pinchImageView;
-    private RoundButton tv_get_map;
     private MyStatusLayout status_layout_spary,status_layout_box_spary,status_layout_box_store;
     public void initView() {
         setContentView(R.layout.activity_main);
@@ -46,6 +45,7 @@ public class MainActivity extends BaseActivity {
         status_layout_spary = findViewById(R.id.status_layout_spary);
         status_layout_box_spary = findViewById(R.id.status_layout_box_spary);
         status_layout_box_store = findViewById(R.id.status_layout_box_store);
+        bt_manual = findViewById(R.id.bt_manual);//手动巡航
         super.initView();
 
 //        mTopBar.addRightImageButton(R.mipmap.ic_setting,R.id.topbar_right_button).setOnClickListener(new View.OnClickListener() {
@@ -65,6 +65,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void bitmapFinish(Bitmap bitmap) {
                 //currentBitmap = bitmap;
+                Log.e("cs","bitmapFinish()回调MainActivity");
                 pinchImageView.setImageBitmap(bitmap);
             }
         });
@@ -101,11 +102,13 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initListener() {
         super.initListener();
-
-    }
-
-    @Override
-    protected void initData() {
+        bt_manual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,DrawableMapActivity.class);
+                startActivity(intent);
+            }
+        });
         bt_set.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -114,6 +117,11 @@ public class MainActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void initData() {
+
         countdown_view.updateShow(60*1000);
         //status_layout_spary.changeStatus(2);
     }
@@ -121,16 +129,11 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (!EventBus.getDefault().isRegistered(this))
-        {
-            EventBus.getDefault().register(this);
-        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
     /*
     * 接收消毒状态

@@ -47,9 +47,10 @@
     <string name="electric_quantity">电量</string>
 
     <string-array name="make_map">
-        <item>创建地图</item>
-        <item>设置初始点</item>
-        <item>设置巡航点</item>
+        <item>开始</item>
+        <item>正在寻找充电桩</item>
+        <item>开始描点</item>
+        <item>回到充电桩附近</item>、
         <item>完成</item>
     </string-array>
 </resources>
