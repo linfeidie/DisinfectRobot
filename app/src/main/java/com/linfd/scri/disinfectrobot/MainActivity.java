@@ -3,6 +3,7 @@ package com.linfd.scri.disinfectrobot;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -17,6 +18,8 @@ import com.linfd.scri.disinfectrobot.manager.UpdateStateControlManager;
 import com.linfd.scri.disinfectrobot.view.MyStatusLayout;
 import com.linfd.scri.disinfectrobot.view.PinchImageView;
 import com.linfd.scri.disinfectrobot.view.SmButton;
+import com.td.framework.module.dialog.inf.OnDialogCancelListener;
+import com.td.framework.module.dialog.inf.OnDialogConfirmListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -70,7 +73,6 @@ public class MainActivity extends BaseActivity {
             @Override
             public void bitmapFinish(Bitmap bitmap) {
                 //currentBitmap = bitmap;
-                Log.e("cs", "bitmapFinish()回调MainActivity");
                 pinchImageView.setImageBitmap(bitmap);
             }
         });
@@ -111,8 +113,37 @@ public class MainActivity extends BaseActivity {
         bt_manual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, DrawableMapActivity.class);
-                startActivity(intent);
+                mDialogHelper.showConfirmDialog("使用上一次的描点?","重新描点","好的", new OnDialogConfirmListener() {
+                    @Override
+                    public void onDialogConfirmListener(AlertDialog dialog) {
+                        Intent intent = new Intent(MainActivity.this, DrawableMapActivity.class);
+                        startActivity(intent);
+                    }
+                }, new OnDialogCancelListener() {
+                    @Override
+                    public void onDialogCancelListener(AlertDialog dialog) {
+                        //有历史描点
+                        if (Contanst.hasHistoryPoints){
+                            UdpControlSendManager.getInstance().set_disin_action_strong(Contanst.id, Contanst.to_id);
+                            UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
+                            Tools.showToast("启动了");
+                            bt_manual.setVisibility(View.GONE);
+                            bt_set_action_cmd_resume.setVisibility((View.GONE));
+                            bt_set_action_cmd_pause.setVisibility(View.VISIBLE);
+                            bt_set_action_cmd_stop.setVisibility(View.VISIBLE);
+                        }else {
+                            mDialogHelper.showWarningDialog("没有历史描点信息,请选择描点", new OnDialogConfirmListener() {
+                                @Override
+                                public void onDialogConfirmListener(AlertDialog dialog) {
+                                    Intent intent = new Intent(MainActivity.this, DrawableMapActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+                        }
+
+                    }
+                });
+
             }
         });
         bt_set.setOnClickListener(new View.OnClickListener() {
@@ -215,7 +246,7 @@ public class MainActivity extends BaseActivity {
         status_layout_spary.changeStatus(entity.getSpray_level());
         status_layout_box_spary.changeStatus(entity.getBox_spary());
         status_layout_box_store.changeStatus(entity.getBox_store());
-        countdown_view.updateShow((int) entity.getDisin_time());
+        countdown_view.updateShow((int) entity.getDisin_time() * 1000);
     }
 
     /*

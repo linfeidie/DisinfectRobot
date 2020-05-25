@@ -80,6 +80,7 @@
                     app:btnCornerRadius="stadium"
                     app:btnPressedRatio="0.7"
                     app:btnSolidColor="@color/colorMajor"/>
+
                 <ezy.ui.view.RoundButton
                     android:visibility="gone"
                     android:id="@+id/bt_set_action_cmd_pause"

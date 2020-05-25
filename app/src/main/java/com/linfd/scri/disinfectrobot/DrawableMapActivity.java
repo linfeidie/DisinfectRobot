@@ -37,6 +37,7 @@ public class DrawableMapActivity extends BaseActivity {
     private FlowViewHorizontal flowView_horizontal;
     private PinchImageView pinchImageView;
     private RoundButton bt_set_goal,bt_finish;
+    private boolean isrRcordPoint = false; //记录下是否描点了
 
     public void initView() {
         setContentView(R.layout.activity_drawable_map);
@@ -121,10 +122,22 @@ public class DrawableMapActivity extends BaseActivity {
         bt_set_goal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //只发一次建图模式
+                if (!isrRcordPoint){
+                    //清除描点
+                    UdpControlSendManager.getInstance().set_goal_new(Contanst.id,Contanst.to_id);
+                    Contanst.hasHistoryPoints = true;
+                    //只有是定位模式才是切换成建图模式
+                    if (UpdateStateControlManager.getInstance().localization){
+                        UdpControlSendManager.getInstance().set_navi_mode_build(Contanst.id,Contanst.to_id);
+                    }
+
+                }
                 Tools.showToast("描点");
-                UdpControlSendManager.getInstance().set_goal(Contanst.id,Contanst.to_id);
+                UdpControlSendManager.getInstance().set_goal_back(Contanst.id,Contanst.to_id);
                 EventPoint event = new EventPoint();
                 EventBus.getDefault().post(event);
+                isrRcordPoint = true;
             }
         });
         /*
@@ -133,33 +146,40 @@ public class DrawableMapActivity extends BaseActivity {
         bt_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDialogHelper.showConfirmDialog("是否确定已把机器人推至充电桩附近?", new OnDialogConfirmListener() {
-                    @Override
-                    public void onDialogConfirmListener(AlertDialog dialog) {
-                        BaseApplication.isdrawPaht = true;
-                        flowView_horizontal.setProgress(4, 5, getResources().getStringArray(R.array.make_map), null);
-                        // 1. 发送消毒任务命令  2. 自动开启任务  3. 保存地图  4. 设置location模式
-                        UdpControlSendManager.getInstance().set_disin_action_strong(Contanst.id, Contanst.to_id);
-                        UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
-                      //  UdpControlSendManager.getInstance().set_save_map(Contanst.id,Contanst.to_id);  不要了
-                      //  UdpControlSendManager.getInstance().set_navi_mode_loc(Contanst.id,Contanst.to_id);  不要了
-                        mDialogHelper.showLoadingDialog("");
-                        BaseApplication.getHandler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mDialogHelper.dismissDialog();
-                                Intent intent = new Intent(DrawableMapActivity.this,MainActivity.class);
-                                intent.setAction(Contanst.KEY_SHOW01);
-                                startActivity(intent);
-                            }
-                        },1000);
-                    }
-                });
+                if (isrRcordPoint){
+                    handlerPointed();
+                }else{
+                    mDialogHelper.showWarningDialog("请描点");
+                }
+
 
             }
         });
     }
-
+    private void handlerPointed(){
+        mDialogHelper.showConfirmDialog("是否确定已把机器人推至充电桩附近?", new OnDialogConfirmListener() {
+            @Override
+            public void onDialogConfirmListener(AlertDialog dialog) {
+                BaseApplication.isdrawPaht = true;
+                flowView_horizontal.setProgress(4, 5, getResources().getStringArray(R.array.make_map), null);
+                // 1. 发送消毒任务命令  2. 自动开启任务  3. 保存地图  4. 设置location模式
+                UdpControlSendManager.getInstance().set_disin_action_strong(Contanst.id, Contanst.to_id);
+                UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
+                  UdpControlSendManager.getInstance().set_save_map(Contanst.id,Contanst.to_id);  //不要了
+                //  UdpControlSendManager.getInstance().set_navi_mode_loc(Contanst.id,Contanst.to_id);  不要了
+                mDialogHelper.showLoadingDialog("");
+                BaseApplication.getHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDialogHelper.dismissDialog();
+                        Intent intent = new Intent(DrawableMapActivity.this,MainActivity.class);
+                        intent.setAction(Contanst.KEY_SHOW01);
+                        startActivity(intent);
+                    }
+                },1000);
+            }
+        });
+    }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveMsg(ChargerPoseCallbackEntity entity) {
         if (entity.getState()){

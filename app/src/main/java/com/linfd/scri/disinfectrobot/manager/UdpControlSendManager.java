@@ -597,11 +597,24 @@ public class UdpControlSendManager {
     /*
      * 设置描点
      * */
-    public void set_goal(String id, String to_id){
+    public void set_goal(String id, String to_id,int insert){
         SetGoalEntity entity = new SetGoalEntity();
         entity.setId(id);
         entity.setTo_id(to_id);
         entity.setUi_pose(false);
+        entity.setInsert(insert);
         sendOrder(entity);
+    }
+    /*
+     * 设置描点  插在后面
+     * */
+    public void set_goal_back(String id, String to_id){
+        this.set_goal(id,to_id,1);
+    }
+    /*
+     * 设置描点  插在 新建描点
+     * */
+    public void set_goal_new(String id, String to_id){
+        this.set_goal(id,to_id,0);
     }
 }

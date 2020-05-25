@@ -24,8 +24,8 @@ public class UpdateStateControlManager {
     private static  UpdateStateControlManager ourInstance;
 
     private Rect rect = new Rect();//覆盖的位置  运行的位置
-    private BitmapCallback bitmapCallback;
     private double map_update = -1;
+    public boolean localization = true; //现在是什么模式  建图还是location
     private List<BitmapCallback> bitmapCallbackObservers = new ArrayList<>();//要被回调的观察者集合
 
 
@@ -72,6 +72,7 @@ public class UpdateStateControlManager {
                         final RobotStatusCallbackEntity satusEntity = GsonUtil.GsonToBean(dataEntity.getMessage(), RobotStatusCallbackEntity.class);
 //
                         updateLocation(satusEntity);
+                        localization = satusEntity.isLocalization();//赋值
                         Log.e("linfd", Tools.getDateToString((long) satusEntity.get_hand_map_update()));
                         double map_update_now = satusEntity.get_hand_map_update();
                         //大于5分钟
