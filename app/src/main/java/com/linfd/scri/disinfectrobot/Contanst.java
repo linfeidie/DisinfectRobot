@@ -110,4 +110,7 @@ public class Contanst {
 
     public static final String charger_pose = "charger_pose"; //充电座位置
 
+
+    public static final String KEY_SHOW01 = "show01"; //页面跳转  要主界面显示暂停和停止按钮
+
 }

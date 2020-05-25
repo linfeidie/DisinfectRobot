@@ -16,6 +16,7 @@ import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
 import com.linfd.scri.disinfectrobot.manager.UpdateStateControlManager;
 import com.linfd.scri.disinfectrobot.view.PinchImageView;
 import com.td.framework.module.dialog.DialogHelper;
+import com.td.framework.module.dialog.inf.OnDialogCancelListener;
 import com.td.framework.module.dialog.inf.OnDialogConfirmListener;
 import com.xyz.step.FlowViewHorizontal;
 
@@ -73,9 +74,26 @@ public class DrawableMapActivity extends BaseActivity {
             @Override
             public void onDialogConfirmListener(AlertDialog dialog) {
                 dialog.dismiss();
-                mDialogHelper.showLoadingDialog("寻找充电桩...");
+                mDialogHelper.showWarningDialog("寻找充电桩...",false, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        finish();
+                    }
+                });
                 flowView_horizontal.setProgress(2, 5, getResources().getStringArray(R.array.make_map), null);
                 HeartbeatManager2.getInstance().start();
+            }
+
+
+        }, new OnDialogCancelListener() {
+            @Override
+            public void onDialogCancelListener(AlertDialog dialog) {
+               mDialogHelper.showWarningDialog("请务必把机器人移到充电桩附近", new OnDialogConfirmListener() {
+                   @Override
+                   public void onDialogConfirmListener(AlertDialog dialog) {
+                       finish();
+                   }
+               });
             }
         });
 
@@ -123,8 +141,18 @@ public class DrawableMapActivity extends BaseActivity {
                         // 1. 发送消毒任务命令  2. 自动开启任务  3. 保存地图  4. 设置location模式
                         UdpControlSendManager.getInstance().set_disin_action_strong(Contanst.id, Contanst.to_id);
                         UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
-                        UdpControlSendManager.getInstance().set_save_map(Contanst.id,Contanst.to_id);
+                      //  UdpControlSendManager.getInstance().set_save_map(Contanst.id,Contanst.to_id);  不要了
                       //  UdpControlSendManager.getInstance().set_navi_mode_loc(Contanst.id,Contanst.to_id);  不要了
+                        mDialogHelper.showLoadingDialog("");
+                        BaseApplication.getHandler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mDialogHelper.dismissDialog();
+                                Intent intent = new Intent(DrawableMapActivity.this,MainActivity.class);
+                                intent.setAction(Contanst.KEY_SHOW01);
+                                startActivity(intent);
+                            }
+                        },1000);
                     }
                 });
 

@@ -1,5 +1,6 @@
 package com.linfd.scri.disinfectrobot;
 
+import android.content.Context;
 import android.content.Intent;
 import android.opengl.GLES20;
 import android.os.Bundle;
@@ -58,7 +59,7 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
     private CircularToggle tv_fixed_point;
     private RoundButton tv_leftward,tv_rightward,tv_forward,tv_backward;
     private RoundButton bt_set_disin_cmd_pump,bt_set_disin_cmd_drainage,bt_set_disin_cmd_close;
-    private RoundButton tv_manual_q,tv_manual_r,tv_auto_q,tv_auto_r;
+    private RoundButton tv_manual_q,tv_manual_r,tv_auto_q,tv_auto_r,bt_set_base_cmd_power_off;
 
     private FlowLayoutAdapter<String> flowLayoutAdapter;
     private FlowLayoutScrollView tag_layout;
@@ -97,6 +98,27 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
         tv_manual_r = findViewById(R.id.tv_manual_r);
         tv_auto_q = findViewById(R.id.tv_auto_q);
         tv_auto_r = findViewById(R.id.tv_auto_r);
+        bt_set_base_cmd_power_off = findViewById(R.id.bt_set_base_cmd_power_off);
+        bt_set_base_cmd_power_off.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDialogHelper.showConfirmDialog("确定关机", new OnDialogConfirmListener() {
+                    @Override
+                    public void onDialogConfirmListener(AlertDialog dialog) {
+                        Tools.showToast("关机");
+                        UdpControlSendManager.getInstance().set_base_cmd_power_off(Contanst.id, Contanst.to_id);
+                        dialog.dismiss();
+                    }
+                }, new OnDialogCancelListener() {
+                    @Override
+                    public void onDialogCancelListener(AlertDialog dialog) {
+                        Intent intent = new Intent(SettingActivity.this,MainActivity.class);
+                        intent.setAction(Contanst.KEY_SHOW01);
+                        startActivity(intent);
+                    }
+                });
+            }
+        });
 
         tv_manual_q.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,7 +197,7 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
             @Override
             public void onClick(View view) {
                 UdpControlSendManager.getInstance().set_disin_cmd_spray_off(Contanst.id, Contanst.to_id);
-                 Tools.showToast("关闭喷雾");
+                Tools.showToast("关闭喷雾");
             }
         });
         tv_leftward.setOnTouchListener(this);

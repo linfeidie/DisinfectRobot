@@ -70,16 +70,7 @@
                 android:orientation="horizontal">
 
                 <ezy.ui.view.RoundButton
-                    style="@style/RoundButton"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="0"
-                    android:text="@string/autonomy"
-                    app:btnCornerRadius="stadium"
-                    app:btnPressedRatio="0.7"
-                    app:btnSolidColor="@color/colorMajor"
-                    android:visibility="gone"/>
-                <ezy.ui.view.RoundButton
+                    android:visibility="visible"
                     android:id="@+id/bt_manual"
                     style="@style/RoundButton"
                     android:layout_width="100dp"
@@ -89,6 +80,39 @@
                     app:btnCornerRadius="stadium"
                     app:btnPressedRatio="0.7"
                     app:btnSolidColor="@color/colorMajor"/>
+                <ezy.ui.view.RoundButton
+                    android:visibility="gone"
+                    android:id="@+id/bt_set_action_cmd_pause"
+                    style="@style/RoundButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="0"
+                    android:text="暂停"
+                    app:btnCornerRadius="stadium"
+                    app:btnPressedRatio="0.7"
+                    app:btnSolidColor="@android:color/holo_orange_light"/>
+                <ezy.ui.view.RoundButton
+                    android:visibility="gone"
+                    android:id="@+id/bt_set_action_cmd_resume"
+                    style="@style/RoundButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="0"
+                    android:text="恢复"
+                    app:btnCornerRadius="stadium"
+                    app:btnPressedRatio="0.7"
+                    app:btnSolidColor="@android:color/holo_green_light"/>
+                <ezy.ui.view.RoundButton
+                    android:visibility="gone"
+                    android:id="@+id/bt_set_action_cmd_stop"
+                    style="@style/RoundButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="0"
+                    android:text="停止"
+                    app:btnCornerRadius="stadium"
+                    app:btnPressedRatio="0.7"
+                    app:btnSolidColor="@android:color/holo_red_light"/>
 
             </LinearLayout>
 

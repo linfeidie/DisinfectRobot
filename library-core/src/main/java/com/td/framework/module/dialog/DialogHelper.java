@@ -80,10 +80,21 @@ public class DialogHelper implements DialogInterface.OnCancelListener {
      * @param cancelable 能不能点击空白的地方
      */
     public void showLoadingDialog(String loadingTip, Boolean cancelable) {
+      this.showWarningDialog(loadingTip,cancelable,null);
+    }
+    //zj  添加取消
+    public void showWarningDialog(String loadingTip, Boolean cancelable,View.OnClickListener cancelListener) {
         //解析布局
         View mDialogView = mInflater.inflate(R.layout.dialog_loading_layout, null);
         //消息
         mDialogView.<TextView>findViewById(R.id.tv_dialog_loading).setText(loadingTip);
+        TextView tv_cancel = mDialogView.<TextView>findViewById(R.id.tv_cancel);
+        if (cancelListener == null){
+            tv_cancel.setVisibility(View.GONE);
+        }else {
+            tv_cancel.setVisibility(View.VISIBLE);
+            tv_cancel.setOnClickListener(cancelListener);
+        }
         createAndShowDialog(mDialogView, cancelable);
     }
 
@@ -235,6 +246,11 @@ public class DialogHelper implements DialogInterface.OnCancelListener {
     public void showConfirmDialog(String message,
                                   OnDialogConfirmListener confirmListener) {
         showConfirmDialog(message, "确定", "取消", confirmListener, null);
+    }
+    //zj  带取消监听
+    public void showConfirmDialog(String message,
+                                  OnDialogConfirmListener confirmListener,OnDialogCancelListener cancelListener) {
+        showConfirmDialog(message, "确定", "取消", confirmListener, cancelListener);
     }
 
 
