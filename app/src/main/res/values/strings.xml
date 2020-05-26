@@ -65,6 +65,9 @@
     <string name="manual_spray_weak">手动喷雾_弱</string>
     <string name="walking_strong">行走喷雾_强</string>
     <string name="walking_spray_weak">行走喷雾_弱</string>
+    <string name="turn_off">关机</string>
+    <string name="close_spray">关闭喷雾</string>
+    <string name="sure_turn_off">确定关机</string>
 
     <string-array name="make_map">
         <item>开始</item>

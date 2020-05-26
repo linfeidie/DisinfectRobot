@@ -28,6 +28,7 @@ public class DrawPathManager {
     private Paint paint;//画描点的笔
 
     private Path trailpath;//轨迹路径
+
     private List<Rect> trails = new ArrayList<>();//记录轨迹
     private List<Double> speed;
     private long time_stamp = 0;
@@ -59,7 +60,7 @@ public class DrawPathManager {
     private DrawPathManager() {
         trailpath = new Path();
         paint = new Paint();
-        paint.setColor(BaseApplication.getApplication().getResources().getColor(R.color.colorPrimary));
+        paint.setColor(BaseApplication.getApplication().getResources().getColor(android.R.color.holo_red_light));
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(0.5f);
         paint.setAntiAlias(true);
@@ -85,5 +86,11 @@ public class DrawPathManager {
         }
         canvas.drawPath(trailpath, paint);
         return canvas;
+    }
+    /*
+    * 清除路径
+    * */
+    public void cleanTrails() {
+        this.trails.clear();
     }
 }

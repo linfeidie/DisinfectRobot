@@ -66,6 +66,9 @@
     <string name="manual_spray_weak">manual weak</string>
     <string name="walking_strong">walking strong</string>
     <string name="walking_spray_weak">walking weak</string>
+    <string name="turn_off">turn off</string>
+    <string name="close_spray">close spray</string>
+    <string name="sure_turn_off">sure turn off?</string>
 
     <string-array name="make_map">
         <item>start</item>

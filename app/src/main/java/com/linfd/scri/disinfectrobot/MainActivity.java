@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import com.linfd.scri.disinfectrobot.entity.DesinStateCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
 import com.linfd.scri.disinfectrobot.eventbus.EventMessage;
+import com.linfd.scri.disinfectrobot.manager.DrawPathManager;
 import com.linfd.scri.disinfectrobot.manager.MapDataObtainManager;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
 import com.linfd.scri.disinfectrobot.manager.UpdateStateControlManager;
@@ -114,6 +115,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 BaseApplication.isdrawPaht = false;//放这个位置要检测  我也不知道放哪里好
+                DrawPathManager.getInstance().cleanTrails();//清除之前的行走路径
                 mDialogHelper.showConfirmDialog(getString(R.string.tips1),getString(R.string.redraw_point),getString(R.string.sure), new OnDialogConfirmListener() {
                     @Override
                     public void onDialogConfirmListener(AlertDialog dialog) {

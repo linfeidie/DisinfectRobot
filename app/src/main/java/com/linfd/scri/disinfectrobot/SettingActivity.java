@@ -53,15 +53,10 @@ import ezy.ui.view.RoundButton;
 public class SettingActivity extends BaseActivity implements View.OnTouchListener {
 
     public static final String TAG = SettingActivity.class.getSimpleName();
-    private TextView tv_set_apmt;
-    private TagFlowLayout mFlowLayout;
-    private CircularToggle tv_fixed_point;
     private RoundButton tv_leftward,tv_rightward,tv_forward,tv_backward;
     private RoundButton bt_set_disin_cmd_pump,bt_set_disin_cmd_drainage,bt_set_disin_cmd_close;
     private RoundButton tv_manual_q,tv_manual_r,tv_auto_q,tv_auto_r,bt_set_base_cmd_power_off;
 
-    private FlowLayoutAdapter<String> flowLayoutAdapter;
-    private SingleSelectToggleGroup selectToggleGroup;
 
     public void initView() {
         setContentView(R.layout.activity_setting);
@@ -81,7 +76,6 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
         mTopBar.addLeftView(textView,1,layoutParams);
-       tv_set_apmt = findViewById(R.id.tv_set_apmt);
         tv_leftward = findViewById(R.id.tv_leftward);
         tv_rightward = findViewById(R.id.tv_rightward);
         tv_forward = findViewById(R.id.tv_forward);
@@ -98,7 +92,7 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
         bt_set_base_cmd_power_off.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDialogHelper.showConfirmDialog("确定关机", new OnDialogConfirmListener() {
+                mDialogHelper.showConfirmDialog(getString(R.string.sure_turn_off), new OnDialogConfirmListener() {
                     @Override
                     public void onDialogConfirmListener(AlertDialog dialog) {
                         Tools.showToast("关机");
@@ -162,25 +156,6 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
         tv_forward.setOnTouchListener(this);
         tv_backward.setOnTouchListener(this);
 
-//        selectToggleGroup.setOnCheckedChangeListener(new SingleSelectToggleGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(SingleSelectToggleGroup group, int checkedId) {
-//                switch (checkedId){
-//                    case R.id.choice_a:
-//                        UdpControlSendManager.getInstance().set_disin_cmd_spray_off(Contanst.id, Contanst.to_id);
-//                       // Tools.showToast("11");
-//                        break;
-//                    case R.id.choice_b:
-//                        UdpControlSendManager.getInstance().set_disin_cmd_spray_on(Contanst.id, Contanst.to_id);
-//                       // Tools.showToast("22");
-//                        break;
-//                    case R.id.choice_c:
-//                        UdpControlSendManager.getInstance().set_disin_cmd_spray_on(Contanst.id, Contanst.to_id);
-//                       // Tools.showToast("33");
-//                        break;
-//                }
-//            }
-//        });
 
         bt_set_disin_cmd_pump.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -275,7 +250,6 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveMsg(RobotStatusCallbackEntity entity) {
         mTopBar.setSubTitle("lectric:"+ (entity.getBattery_percent()/1000)*100+"%");
-       // wave_view_electric.setmWaterLevel((int) (entity.getBattery_percent()/1000));//(float) (entity.getBattery_percent()/10)
     }
     @Override
     protected void onStart() {

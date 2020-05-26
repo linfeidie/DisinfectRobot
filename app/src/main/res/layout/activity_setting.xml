@@ -89,7 +89,7 @@
         <ezy.ui.view.RoundButton
             android:id="@+id/bt_set_disin_cmd_close"
             style="@style/RoundButton"
-            android:text="关闭喷雾"
+            android:text="@string/close_spray"
             app:btnCornerRadius="10dp"
             app:btnPressedRatio="0.5"
             android:layout_width="100dp"
@@ -207,7 +207,7 @@
             style="@style/RoundButton"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:text="关机"
+            android:text="@string/turn_off"
             android:textSize="18sp"
             app:btnCornerRadius="10dp"
             app:btnPressedRatio="0.5"
