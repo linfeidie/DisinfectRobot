@@ -31,7 +31,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitCenter"
-                    android:src="@mipmap/pic" />
+                    android:src="@drawable/ic_no_map"/>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_weight="0"
-                    android:text="定点消毒"
+                    android:text="@string/disinfection"
                     app:btnCornerRadius="stadium"
                     app:btnPressedRatio="0.7"
                     app:btnSolidColor="@color/colorMajor"/>
@@ -88,7 +88,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_weight="0"
-                    android:text="暂停"
+                    android:text="@string/suspend"
                     app:btnCornerRadius="stadium"
                     app:btnPressedRatio="0.7"
                     app:btnSolidColor="@android:color/holo_orange_light"/>
@@ -99,7 +99,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_weight="0"
-                    android:text="恢复"
+                    android:text="@string/resume"
                     app:btnCornerRadius="stadium"
                     app:btnPressedRatio="0.7"
                     app:btnSolidColor="@android:color/holo_green_light"/>
@@ -110,7 +110,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_weight="0"
-                    android:text="停止"
+                    android:text="@string/stop"
                     app:btnCornerRadius="stadium"
                     app:btnPressedRatio="0.7"
                     app:btnSolidColor="@android:color/holo_red_light"/>

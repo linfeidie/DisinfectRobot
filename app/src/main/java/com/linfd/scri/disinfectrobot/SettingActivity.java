@@ -54,7 +54,6 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
 
     public static final String TAG = SettingActivity.class.getSimpleName();
     private TextView tv_set_apmt;
-    private TextView bt_run_mode;//运行模式
     private TagFlowLayout mFlowLayout;
     private CircularToggle tv_fixed_point;
     private RoundButton tv_leftward,tv_rightward,tv_forward,tv_backward;
@@ -62,7 +61,6 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
     private RoundButton tv_manual_q,tv_manual_r,tv_auto_q,tv_auto_r,bt_set_base_cmd_power_off;
 
     private FlowLayoutAdapter<String> flowLayoutAdapter;
-    private FlowLayoutScrollView tag_layout;
     private SingleSelectToggleGroup selectToggleGroup;
 
     public void initView() {
@@ -84,8 +82,6 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
         layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
         mTopBar.addLeftView(textView,1,layoutParams);
        tv_set_apmt = findViewById(R.id.tv_set_apmt);
-        tag_layout = findViewById(R.id.tag_layout);
-        bt_run_mode = findViewById(R.id.bt_run_mode);
         tv_leftward = findViewById(R.id.tv_leftward);
         tv_rightward = findViewById(R.id.tv_rightward);
         tv_forward = findViewById(R.id.tv_forward);
@@ -108,13 +104,6 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
                         Tools.showToast("关机");
                         UdpControlSendManager.getInstance().set_base_cmd_power_off(Contanst.id, Contanst.to_id);
                         dialog.dismiss();
-                    }
-                }, new OnDialogCancelListener() {
-                    @Override
-                    public void onDialogCancelListener(AlertDialog dialog) {
-                        Intent intent = new Intent(SettingActivity.this,MainActivity.class);
-                        intent.setAction(Contanst.KEY_SHOW01);
-                        startActivity(intent);
                     }
                 });
             }
@@ -147,38 +136,6 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
                 Tools.showToast("行走喷雾弱");
                 UdpControlSendManager.getInstance().set_disin_cmd(Contanst.id, Contanst.to_id,1,1);
             }
-        });
-        bt_run_mode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //if 判断有无
-                //如果有 选择
-                //如果无，直接手建地图
-                NiceDialog.init().setLayoutId(R.layout.dialog_fixed_point).setConvertListener(new ViewConvertListener() {
-                    @Override
-                    public void convertView(ViewHolder holder, final BaseNiceDialog dialog) {
-                        holder.getView(R.id.tv_sure).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(SettingActivity.this,DrawableMapActivity.class);
-                                startActivity(intent);
-                                dialog.dismiss();
-                            }
-                        }
-
-                        );
-                        holder.getView(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                dialog.dismiss();
-                            }
-                        });
-                    }
-
-                }).setOutCancel(true).setPosition(Gravity.CENTER).setWidth(270).setHeight(260).
-                        show(getSupportFragmentManager());
-            }
-
         });
 
 
@@ -305,14 +262,12 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
-        Log.e(TAG,"退出了");
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.e(TAG,"退出了2");
     }
     /*
      * 接收机器人状态
@@ -325,10 +280,7 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
     @Override
     protected void onStart() {
         super.onStart();
-        if (!EventBus.getDefault().isRegistered(this))
-        {
-            EventBus.getDefault().register(this);
-        }
+
     }
 
 

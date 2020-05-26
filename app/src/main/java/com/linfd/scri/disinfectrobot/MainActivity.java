@@ -113,7 +113,8 @@ public class MainActivity extends BaseActivity {
         bt_manual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDialogHelper.showConfirmDialog("使用上一次的描点?","重新描点","好的", new OnDialogConfirmListener() {
+                BaseApplication.isdrawPaht = false;//放这个位置要检测  我也不知道放哪里好
+                mDialogHelper.showConfirmDialog(getString(R.string.tips1),getString(R.string.redraw_point),getString(R.string.sure), new OnDialogConfirmListener() {
                     @Override
                     public void onDialogConfirmListener(AlertDialog dialog) {
                         Intent intent = new Intent(MainActivity.this, DrawableMapActivity.class);
@@ -126,13 +127,15 @@ public class MainActivity extends BaseActivity {
                         if (Contanst.hasHistoryPoints){
                             UdpControlSendManager.getInstance().set_disin_action_strong(Contanst.id, Contanst.to_id);
                             UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
-                            Tools.showToast("启动了");
+                            //没有描点过程了，要话路径
+                            BaseApplication.isdrawPaht = true;
+                            Tools.showToast(getString(R.string.start));
                             bt_manual.setVisibility(View.GONE);
                             bt_set_action_cmd_resume.setVisibility((View.GONE));
                             bt_set_action_cmd_pause.setVisibility(View.VISIBLE);
                             bt_set_action_cmd_stop.setVisibility(View.VISIBLE);
                         }else {
-                            mDialogHelper.showWarningDialog("没有历史描点信息,请选择描点", new OnDialogConfirmListener() {
+                            mDialogHelper.showWarningDialog(getString(R.string.tips2), new OnDialogConfirmListener() {
                                 @Override
                                 public void onDialogConfirmListener(AlertDialog dialog) {
                                     Intent intent = new Intent(MainActivity.this, DrawableMapActivity.class);
@@ -142,7 +145,7 @@ public class MainActivity extends BaseActivity {
                         }
 
                     }
-                });
+                },true);
 
             }
         });
@@ -158,7 +161,7 @@ public class MainActivity extends BaseActivity {
         bt_set_action_cmd_pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Tools.showToast("任务暂停");
+                Tools.showToast(getString(R.string.suspend));
                 UdpControlSendManager.getInstance().set_action_cmd_pause(Contanst.id, Contanst.to_id);
                 bt_set_action_cmd_resume.setVisibility((View.VISIBLE));
                 bt_manual.setVisibility(View.GONE);
@@ -171,7 +174,7 @@ public class MainActivity extends BaseActivity {
         bt_set_action_cmd_resume.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Tools.showToast("任务恢复");
+                Tools.showToast(getString(R.string.resume));
                 UdpControlSendManager.getInstance().set_action_cmd_resume(Contanst.id, Contanst.to_id);
                 bt_manual.setVisibility(View.GONE);
                 bt_set_action_cmd_resume.setVisibility((View.GONE));
@@ -184,7 +187,7 @@ public class MainActivity extends BaseActivity {
         bt_set_action_cmd_stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Tools.showToast("任务停止");
+                Tools.showToast(getString(R.string.stop));
                 UdpControlSendManager.getInstance().set_action_cmd_stop(Contanst.id, Contanst.to_id);
                 bt_set_action_cmd_resume.setVisibility((View.GONE));
                 bt_manual.setVisibility(View.VISIBLE);

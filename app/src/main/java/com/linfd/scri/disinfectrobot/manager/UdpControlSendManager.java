@@ -477,7 +477,7 @@ public class UdpControlSendManager {
         this.set_base_cmd(id,to_id,1,false);
     }
     public void set_base_cmd_power_off(String id, String to_id){
-        this.set_base_cmd(id,to_id,0,false);
+        this.set_base_cmd(id,to_id,1,false);
     }
     public void set_base_cmd_power_sleep(String id, String to_id){
         this.set_base_cmd(id,to_id,0,false);
@@ -609,7 +609,7 @@ public class UdpControlSendManager {
      * 设置描点  插在后面
      * */
     public void set_goal_back(String id, String to_id){
-        this.set_goal(id,to_id,1);
+        set_goal(id,to_id,1);
     }
     /*
      * 设置描点  插在 新建描点

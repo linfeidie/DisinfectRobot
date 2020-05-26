@@ -49,7 +49,7 @@
             android:textSize="18sp"
             android:padding="5dp"
             android:visibility="gone"
-            android:text="取消"></TextView>
+            android:text="@string/cancel"></TextView>
     </LinearLayout>
 
 

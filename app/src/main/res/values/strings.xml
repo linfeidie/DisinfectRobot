@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">智能移动消毒机器人</string>
     <string name="spray">喷雾</string>
     <string name="close">关</string>
@@ -45,6 +45,26 @@
     <string name="right">右转</string>
     <string name="left">左转</string>
     <string name="electric_quantity">电量</string>
+    <string name="tips1">使用上一次的描点?</string>
+    <string name="redraw_point">重新描点</string>
+    <string name="sure">好的</string>
+    <string name="start">启动了</string>
+    <string name="tips2">没有历史描点信息,请选择描点</string>
+    <string name="suspend">任务暂停</string>
+    <string name="resume">任务恢复</string>
+    <string name="stop">任务停止</string>
+    <string name="tips3">请把机器人移到充电桩附近</string>
+    <string name="tips4">寻找充电桩...</string>
+    <string name="tips5">请务必把机器人移到充电桩附近</string>
+    <string name="tracing_point">描点</string>
+    <string name="please_trace">请描点</string>
+    <string name="tips6">是否确定已把机器人推至充电桩附近?</string>
+    <string name="tips7">找到充电桩来啦,可以描点了</string>
+    <string name="disinfection">定点消毒</string>
+    <string name="manual_spray_strong">手动喷雾_强</string>
+    <string name="manual_spray_weak">手动喷雾_弱</string>
+    <string name="walking_strong">行走喷雾_强</string>
+    <string name="walking_spray_weak">行走喷雾_弱</string>
 
     <string-array name="make_map">
         <item>开始</item>

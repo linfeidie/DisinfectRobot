@@ -49,13 +49,6 @@ public  class SimpleUdpListener implements UdpClientListener {
             DataChanger.getInstance().postData(dataEntity);
            // Log.e(TAG,"原始数据："+udpMsg.getSourceDataString());
         }
-        if (entity.getType().equalsIgnoreCase("charger_pose")){
-            ChargerPoseCallbackEntity entity1 = GsonUtil.GsonToBean(dataEntity.getMessage(),ChargerPoseCallbackEntity.class);
-            Log.e(TAG,"充电桩位置"+entity1.toString());
-        }
-        if (entity.getType().equalsIgnoreCase("robot_status")){
-            Log.e(TAG,"机器人状态"+entity.toString());
-        }
     } ;
 
     @Override

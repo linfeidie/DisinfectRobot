@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
     <string name="app_name">Intelligent mobile disinfection robot</string>
     <string name="spray">spray</string>
@@ -45,4 +46,32 @@
     <string name="right">right</string>
     <string name="left">left</string>
     <string name="electric_quantity">electric</string>
+    <string name="tips1">Use last trace point?</string>
+    <string name="redraw_point">Redraw point</string>
+    <string name="sure">sure</string>
+    <string name="start">start</string>
+    <string name="tips2">no historical trace point ,select trace point</string>
+    <string name="suspend">suspend</string>
+    <string name="resume">resume</string>
+    <string name="stop">stop</string>
+    <string name="tips3">move the robot near the charging post</string>
+    <string name="tips4">Looking for charging point...</string>
+    <string name="tips5">be sure to move the robot near the charging post</string>
+    <string name="tracing_point">tracing point</string>
+    <string name="please_trace">Please trace it</string>
+    <string name="tips6">Are you sure pushed the robot near the charging post?</string>
+    <string name="tips7">got the charging post. We can trace it</string>
+    <string name="disinfection">Fixed point</string>
+    <string name="manual_spray_strong">manual strong</string>
+    <string name="manual_spray_weak">manual weak</string>
+    <string name="walking_strong">walking strong</string>
+    <string name="walking_spray_weak">walking weak</string>
+
+    <string-array name="make_map">
+        <item>start</item>
+        <item>Looking for charging posts</item>
+        <item>Start tracing point</item>
+        <item>Return to the charging post</item>、
+        <item>complete</item>
+    </string-array>
 </resources>

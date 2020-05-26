@@ -10,17 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         app:titlebar_bg_color="@color/colorMajor"/>
-    <ezy.ui.view.RoundButton
-        android:visibility="gone"
-        android:id="@+id/bt_run_mode"
-        style="@style/RoundButton"
-        android:text="@string/operation_mode"
-        app:btnCornerRadius="10dp"
-        app:btnPressedRatio="0.5"
-        android:layout_height="50dp"
-        app:btnSolidColor="@color/config_color_50_blue"
-        />
-
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -34,7 +23,7 @@
             style="@style/RoundButton"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:text="手动喷雾_强"
+            android:text="@string/manual_spray_strong"
             app:btnCornerRadius="10dp"
             app:btnPressedRatio="0.5"
             app:btnSolidColor="@color/config_color_50_blue" />
@@ -42,7 +31,7 @@
             android:id="@+id/tv_manual_r"
             style="@style/RoundButton"
             android:layout_width="120dp"
-            android:text="手动喷雾_弱"
+            android:text="@string/manual_spray_weak"
             app:btnCornerRadius="10dp"
             app:btnPressedRatio="0.5"
             android:layout_height="50dp"
@@ -53,7 +42,7 @@
             style="@style/RoundButton"
             android:layout_width="120dp"
             android:layout_height="50dp"
-            android:text="行走喷雾_强"
+            android:text="@string/walking_strong"
             app:btnCornerRadius="10dp"
             app:btnPressedRatio="0.5"
             app:btnSolidColor="@color/config_color_50_blue" />
@@ -61,7 +50,7 @@
             android:id="@+id/tv_auto_r"
             style="@style/RoundButton"
             android:layout_width="120dp"
-            android:text="行走喷雾_弱"
+            android:text="@string/walking_spray_weak"
             app:btnCornerRadius="10dp"
             app:btnPressedRatio="0.5"
             android:layout_height="50dp"
@@ -107,17 +96,6 @@
             android:layout_height="50dp"
             android:textSize="18sp"
             app:btnSolidColor="@color/colorMajor"
-            />
-        <ezy.ui.view.RoundButton
-            android:id="@+id/bt_set_base_cmd_power_off"
-            style="@style/RoundButton"
-            android:text="关机"
-            app:btnCornerRadius="10dp"
-            app:btnPressedRatio="0.5"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:textSize="18sp"
-            app:btnSolidColor="@android:color/holo_red_light"
             />
     </LinearLayout>
 
@@ -223,12 +201,18 @@
             app:btnCornerRadius="stadium"
             app:btnPressedRatio="0.7"
             app:btnSolidColor="@color/colorMajor"/>
+
+        <ezy.ui.view.RoundButton
+            android:id="@+id/bt_set_base_cmd_power_off"
+            style="@style/RoundButton"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="关机"
+            android:textSize="18sp"
+            app:btnCornerRadius="10dp"
+            app:btnPressedRatio="0.5"
+            app:btnSolidColor="@android:color/holo_red_light"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="20dp"/>
     </RelativeLayout>
-    <com.cy.cyflowlayoutlibrary.FlowLayoutScrollView
-        android:id="@+id/tag_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:layout_marginTop="20dp">
-    </com.cy.cyflowlayoutlibrary.FlowLayoutScrollView>
 </LinearLayout>

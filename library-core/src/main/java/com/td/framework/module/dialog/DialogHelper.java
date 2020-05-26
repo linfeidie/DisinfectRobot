@@ -173,9 +173,8 @@ public class DialogHelper implements DialogInterface.OnCancelListener {
     public void showErrorDialog(String message, OnDialogConfirmListener confirmListener) {
         createHasIconDialog(R.mipmap.icon_dialog_error, message, confirmListener);
     }
-
     /**
-     * 显示确认弹窗
+     * 显示确认弹窗  zj
      *
      * @param message         提示信息
      * @param confirmText     确认按钮文字
@@ -187,7 +186,7 @@ public class DialogHelper implements DialogInterface.OnCancelListener {
                                   String confirmText,
                                   String cancelText,
                                   final OnDialogConfirmListener confirmListener,
-                                  final OnDialogCancelListener cancelListener) {
+                                  final OnDialogCancelListener cancelListener,Boolean cancelable) {
 
         //解析布局
         View mDialogView = mInflater.inflate(R.layout.dialog_confirm_layout, null);
@@ -205,6 +204,7 @@ public class DialogHelper implements DialogInterface.OnCancelListener {
             }
         });
 
+
         // 取消按钮
         Button cancelButton = mDialogView.findViewById(R.id.btn_cancel);
         initActionButton(cancelButton, cancelText, new View.OnClickListener() {
@@ -217,7 +217,26 @@ public class DialogHelper implements DialogInterface.OnCancelListener {
         });
 
         // 创建和显示弹窗
-        createAndShowDialog(mDialogView, false);
+        createAndShowDialog(mDialogView, cancelable);
+
+    }
+
+    /**
+     * 显示确认弹窗
+     *
+     * @param message         提示信息
+     * @param confirmText     确认按钮文字
+     * @param cancelText      取消按钮文字
+     * @param confirmListener 确认按钮点击回调
+     * @param cancelListener  取消按钮点击回调
+     */
+    public void showConfirmDialog(String message,
+                                  String confirmText,
+                                  String cancelText,
+                                  final OnDialogConfirmListener confirmListener,
+                                  final OnDialogCancelListener cancelListener) {
+
+        showConfirmDialog( message,confirmText, cancelText,confirmListener,cancelListener,false);
 
     }
 
@@ -245,12 +264,12 @@ public class DialogHelper implements DialogInterface.OnCancelListener {
      */
     public void showConfirmDialog(String message,
                                   OnDialogConfirmListener confirmListener) {
-        showConfirmDialog(message, "确定", "取消", confirmListener, null);
+        showConfirmDialog(message, mActivity.getString(R.string.sure), mActivity.getString(R.string.cancel), confirmListener, null);
     }
     //zj  带取消监听
     public void showConfirmDialog(String message,
                                   OnDialogConfirmListener confirmListener,OnDialogCancelListener cancelListener) {
-        showConfirmDialog(message, "确定", "取消", confirmListener, cancelListener);
+        showConfirmDialog(message, mActivity.getString(R.string.sure), mActivity.getString(R.string.cancel), confirmListener, cancelListener);
     }
 
 
@@ -272,7 +291,7 @@ public class DialogHelper implements DialogInterface.OnCancelListener {
         //消息
         mDialogView.<TextView>findViewById(R.id.tv_dialog_message).setText(message);
         //确认按钮
-        initActionButton(mDialogView.<Button>findViewById(R.id.btn_confirm), "确定",
+        initActionButton(mDialogView.<Button>findViewById(R.id.btn_confirm), mActivity.getString(R.string.sure),
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -311,7 +330,7 @@ public class DialogHelper implements DialogInterface.OnCancelListener {
      * @param showText 显示的文字
      */
     private void initActionButton(Button button, String showText, final View.OnClickListener onClickListener) {
-        button.setText(showText == null ? "确定" : showText);
+        button.setText(showText == null ? mActivity.getString(R.string.sure) : showText);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

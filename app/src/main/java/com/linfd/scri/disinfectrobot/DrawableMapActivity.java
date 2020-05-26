@@ -32,12 +32,11 @@ public class DrawableMapActivity extends BaseActivity {
 
 
     private TextView tv_remove_points,tv_clear_points;
-    private TextView tv_des;
     private JoystickView joystick;
     private FlowViewHorizontal flowView_horizontal;
     private PinchImageView pinchImageView;
     private RoundButton bt_set_goal,bt_finish;
-    private boolean isrRcordPoint = false; //记录下是否描点了
+    private boolean hasPointed = false; //记录下是否描点了
 
     public void initView() {
         setContentView(R.layout.activity_drawable_map);
@@ -71,11 +70,11 @@ public class DrawableMapActivity extends BaseActivity {
     * 寻找充电桩
     * */
     private void findChargingPost(){
-        mDialogHelper.showConfirmDialog("请把机器人移到充电桩附近", new OnDialogConfirmListener() {
+        mDialogHelper.showConfirmDialog(getString(R.string.tips3), new OnDialogConfirmListener() {
             @Override
             public void onDialogConfirmListener(AlertDialog dialog) {
                 dialog.dismiss();
-                mDialogHelper.showWarningDialog("寻找充电桩...",false, new View.OnClickListener() {
+                mDialogHelper.showWarningDialog(getString(R.string.tips4),false, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         finish();
@@ -89,7 +88,7 @@ public class DrawableMapActivity extends BaseActivity {
         }, new OnDialogCancelListener() {
             @Override
             public void onDialogCancelListener(AlertDialog dialog) {
-               mDialogHelper.showWarningDialog("请务必把机器人移到充电桩附近", new OnDialogConfirmListener() {
+               mDialogHelper.showWarningDialog(getString(R.string.tips5), new OnDialogConfirmListener() {
                    @Override
                    public void onDialogConfirmListener(AlertDialog dialog) {
                        finish();
@@ -123,7 +122,8 @@ public class DrawableMapActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 //只发一次建图模式
-                if (!isrRcordPoint){
+                Tools.showToast(getString(R.string.tracing_point));
+                if (!hasPointed){
                     //清除描点
                     UdpControlSendManager.getInstance().set_goal_new(Contanst.id,Contanst.to_id);
                     Contanst.hasHistoryPoints = true;
@@ -131,13 +131,12 @@ public class DrawableMapActivity extends BaseActivity {
                     if (UpdateStateControlManager.getInstance().localization){
                         UdpControlSendManager.getInstance().set_navi_mode_build(Contanst.id,Contanst.to_id);
                     }
-
+                    hasPointed = true;
+                }else {
+                    UdpControlSendManager.getInstance().set_goal_back(Contanst.id,Contanst.to_id);
                 }
-                Tools.showToast("描点");
-                UdpControlSendManager.getInstance().set_goal_back(Contanst.id,Contanst.to_id);
                 EventPoint event = new EventPoint();
                 EventBus.getDefault().post(event);
-                isrRcordPoint = true;
             }
         });
         /*
@@ -146,10 +145,10 @@ public class DrawableMapActivity extends BaseActivity {
         bt_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isrRcordPoint){
+                if (hasPointed){
                     handlerPointed();
                 }else{
-                    mDialogHelper.showWarningDialog("请描点");
+                    mDialogHelper.showWarningDialog(getString(R.string.please_trace));
                 }
 
 
@@ -157,7 +156,7 @@ public class DrawableMapActivity extends BaseActivity {
         });
     }
     private void handlerPointed(){
-        mDialogHelper.showConfirmDialog("是否确定已把机器人推至充电桩附近?", new OnDialogConfirmListener() {
+        mDialogHelper.showConfirmDialog(getString(R.string.tips6), new OnDialogConfirmListener() {
             @Override
             public void onDialogConfirmListener(AlertDialog dialog) {
                 BaseApplication.isdrawPaht = true;
@@ -185,7 +184,7 @@ public class DrawableMapActivity extends BaseActivity {
         if (entity.getState()){
             HeartbeatManager2.getInstance().stop();
             mDialogHelper.dismissDialog();
-            mDialogHelper.showConfirmDialog("找到充电桩来啦,可以描点了", new OnDialogConfirmListener() {
+            mDialogHelper.showConfirmDialog(getString(R.string.tips7), new OnDialogConfirmListener() {
                 @Override
                 public void onDialogConfirmListener(AlertDialog dialog) {
                     dialog.dismiss();
