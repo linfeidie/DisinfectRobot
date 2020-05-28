@@ -254,7 +254,6 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 
 

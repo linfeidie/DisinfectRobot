@@ -7,6 +7,7 @@ import com.blanke.xsocket.udp.client.XUdp;
 import com.blanke.xsocket.udp.client.bean.UdpMsg;
 import com.blanke.xsocket.udp.client.listener.UdpClientListener;
 import com.linfd.scri.disinfectrobot.GsonUtil;
+import com.linfd.scri.disinfectrobot.Tools;
 import com.linfd.scri.disinfectrobot.entity.ChargerPoseCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.DataEntity;
 import com.linfd.scri.disinfectrobot.entity.TypeEntity;
@@ -47,12 +48,13 @@ public  class SimpleUdpListener implements UdpClientListener {
             dataEntity.setType(entity.getType());
             dataEntity.setMessage(udpMsg.getSourceDataString());
             DataChanger.getInstance().postData(dataEntity);
-           // Log.e(TAG,"原始数据："+udpMsg.getSourceDataString());
+            Log.e(TAG,"原始数据："+Thread.currentThread().getName()+udpMsg.getSourceDataString());
         }
     } ;
 
     @Override
-    public void onError(XUdp client, String msg, Exception e) {
+    public void onError(XUdp client, String msg, Exception e){
+        Tools.showToast("返回错误数据");
         Log.e(TAG,"返回错误数据："+e.toString());
     }
 }

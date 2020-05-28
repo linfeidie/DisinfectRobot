@@ -86,10 +86,16 @@ public class UdpControlSendManager {
                 .setLocalPort(Contanst.LocalPort).create());
     }
 
-    public void sendOrder(Object object) {
-        String order = GsonUtil.GsonString(object);
-        Log.e(TAG, "order" + order);
-        mXUdp.sendMsg(new UdpMsg(GsonUtil.GsonString(object) + "\n", targetInfo, TcpMsg.MsgType.Send), true);
+    public void sendOrder(final Object object) {
+        ThreadManager.getInstance().createLongPool().execute(new Runnable() {
+            @Override
+            public void run() {
+                String order = GsonUtil.GsonString(object);
+                Log.e(TAG, "order:"+Thread.currentThread().getName() + order);
+                mXUdp.sendMsg(new UdpMsg(GsonUtil.GsonString(object) + "\n", targetInfo, TcpMsg.MsgType.Send), true);
+            }
+        });
+
     }
 
     /*

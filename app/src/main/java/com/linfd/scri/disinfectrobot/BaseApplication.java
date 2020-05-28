@@ -35,6 +35,7 @@ public class BaseApplication extends Application {
     GetFromServerData.listener();
 
     //LooperDisinStatusService.obtainStatus();
+   //开机就获取机器人状态和消毒状态
     LooperStatusService.obtainStatus();
     ServerListeners.register();
   }

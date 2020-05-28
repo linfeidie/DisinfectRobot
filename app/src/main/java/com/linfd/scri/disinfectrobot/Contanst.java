@@ -113,6 +113,8 @@ public class Contanst {
 
     public static final String KEY_SHOW01 = "show01"; //页面跳转  要主界面显示暂停和停止按钮
 
-    public static  boolean hasHistoryPoints = false;//这个要本地永久化保存
+    public static  String KEY_HASHISTORY_POINTS ;//是否有历史保存
+
+
 
 }

@@ -126,7 +126,7 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void onDialogCancelListener(AlertDialog dialog) {
                         //有历史描点
-                        if (Contanst.hasHistoryPoints){
+                        if (SPUtils.get(Contanst.KEY_HASHISTORY_POINTS,false)){//Contanst.hasHistoryPoints
                             UdpControlSendManager.getInstance().set_disin_action_strong(Contanst.id, Contanst.to_id);
                             UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
                             //没有描点过程了，要话路径

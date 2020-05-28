@@ -126,7 +126,8 @@ public class DrawableMapActivity extends BaseActivity {
                 if (!hasPointed){
                     //清除描点
                     UdpControlSendManager.getInstance().set_goal_new(Contanst.id,Contanst.to_id);
-                    Contanst.hasHistoryPoints = true;
+
+                   // Contanst.hasHistoryPoints = true;
                     //只有是定位模式才是切换成建图模式
                     if (UpdateStateControlManager.getInstance().localization){
                         UdpControlSendManager.getInstance().set_navi_mode_build(Contanst.id,Contanst.to_id);
@@ -159,13 +160,15 @@ public class DrawableMapActivity extends BaseActivity {
         mDialogHelper.showConfirmDialog(getString(R.string.tips6), new OnDialogConfirmListener() {
             @Override
             public void onDialogConfirmListener(AlertDialog dialog) {
+                //记录有历史描点了
+                SPUtils.put(Contanst.KEY_HASHISTORY_POINTS,true);
                 BaseApplication.isdrawPaht = true;
                 flowView_horizontal.setProgress(4, 5, getResources().getStringArray(R.array.make_map), null);
                 // 1. 发送消毒任务命令  2. 自动开启任务  3. 保存地图  4. 设置location模式
                 UdpControlSendManager.getInstance().set_disin_action_strong(Contanst.id, Contanst.to_id);
                 UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
                   UdpControlSendManager.getInstance().set_save_map(Contanst.id,Contanst.to_id);  //不要了
-                //  UdpControlSendManager.getInstance().set_navi_mode_loc(Contanst.id,Contanst.to_id);  不要了
+                //  UdpControlSendManager.getInstance().set_navi_mode_loc(Contanst.id,Contanst=.to_id);  不要了
                 mDialogHelper.showLoadingDialog("");
                 BaseApplication.getHandler().postDelayed(new Runnable() {
                     @Override
@@ -181,7 +184,8 @@ public class DrawableMapActivity extends BaseActivity {
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveMsg(ChargerPoseCallbackEntity entity) {
-        if (entity.getState()){
+        //防止多次弹出
+        if (entity.getState() && !mDialogHelper.isShowing()){
             HeartbeatManager2.getInstance().stop();
             mDialogHelper.dismissDialog();
             mDialogHelper.showConfirmDialog(getString(R.string.tips7), new OnDialogConfirmListener() {

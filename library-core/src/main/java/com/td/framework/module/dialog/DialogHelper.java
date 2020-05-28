@@ -359,4 +359,14 @@ public class DialogHelper implements DialogInterface.OnCancelListener {
             mDialogCancelListener.onDialogCancelListener(mDialog);
         }
     }
+
+    /*
+    * zj
+    * */
+    public boolean isShowing(){
+        if (mDialog != null){
+            return this.mDialog.isShowing();
+        }
+        return false;
+    }
 }
