@@ -3,6 +3,7 @@ package com.linfd.scri.disinfectrobot.entity;
 
 import com.linfd.scri.disinfectrobot.Tools;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -10,7 +11,7 @@ import java.util.List;
  * */
 public class RobotStatusCallbackEntity extends TypeEntity {
 
-
+//  注意：此类不要删  更新好了
     /**
      * id : xxx
      * to_id : xxx
@@ -21,6 +22,7 @@ public class RobotStatusCallbackEntity extends TypeEntity {
      * exception_code : 10000
      * stamp : 1.58892384034235E9
      * map_update : 1.58892384034235E9
+     * action_state  0 idle ,  1 running , 2 pause ,3  finish ,4  stop
      */
 
     private String id;
@@ -30,11 +32,14 @@ public class RobotStatusCallbackEntity extends TypeEntity {
     private int exception_code;
     private double stamp;
     private double map_update;
-    private List<Double> speed;
+    private List<Integer> speed;
+    private List<Double> speed_real = new ArrayList<>();//真正的  给外界调用的
     private List<Double> robot_pose;
+    private List<Double> robot_pose_real = new ArrayList<>();//真正的  给外界调用的;
     private boolean localization;
     private int temperature;
     private int humidity;
+    private int action_state;
 
 
 
@@ -94,16 +99,28 @@ public class RobotStatusCallbackEntity extends TypeEntity {
         this.map_update = map_update;
     }
 
-    public List<Double> getSpeed() {
+    public List<Integer> getSpeed() {
         return speed;
     }
+    public List<Double> getSpeedReal() {
+        for (int i = 0; i < speed.size(); i++) {
+            speed_real.add(i, (double) (speed.get(i)/1000));
+        }
+        return speed_real;
+    }
 
-    public void setSpeed(List<Double> speed) {
+    public void setSpeed(List<Integer> speed) {
         this.speed = speed;
     }
 
-    public List<Double> getRobot_pose() {
+    private List<Double> getRobot_pose() {
         return robot_pose;
+    }
+    public List<Double> getRobot_pose_real() {
+        for (int i = 0; i < robot_pose.size(); i++) {
+            robot_pose_real.add(i, (double) (robot_pose.get(i)/1000));
+        }
+        return robot_pose_real;
     }
 
     public void setRobot_pose(List<Double> robot_pose) {
@@ -147,6 +164,14 @@ public class RobotStatusCallbackEntity extends TypeEntity {
         this.humidity = humidity;
     }
 
+    public int getAction_state() {
+        return action_state;
+    }
+
+    public void setAction_state(int action_state) {
+        this.action_state = action_state;
+    }
+
     @Override
     public String toString() {
         return "RobotStatusCallbackEntity{" +
@@ -162,6 +187,7 @@ public class RobotStatusCallbackEntity extends TypeEntity {
                 ", localization=" + localization +
                 ", temperature=" + temperature +
                 ", humidity=" + humidity +
+                ", action_state=" + action_state +
                 '}';
     }
 }

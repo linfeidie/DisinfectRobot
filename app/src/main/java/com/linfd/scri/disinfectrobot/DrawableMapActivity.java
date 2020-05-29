@@ -10,7 +10,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.linfd.scri.disinfectrobot.entity.ChargerPoseCallbackEntity;
+import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
 import com.linfd.scri.disinfectrobot.eventbus.EventPoint;
+import com.linfd.scri.disinfectrobot.manager.AckListenerService;
 import com.linfd.scri.disinfectrobot.manager.HeartbeatManager2;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
 import com.linfd.scri.disinfectrobot.manager.UpdateStateControlManager;
@@ -35,7 +37,7 @@ public class DrawableMapActivity extends BaseActivity {
     private JoystickView joystick;
     private FlowViewHorizontal flowView_horizontal;
     private PinchImageView pinchImageView;
-    private RoundButton bt_set_goal,bt_finish;
+    private RoundButton bt_set_goal,bt_finish,bt_quit;
     private boolean hasPointed = false; //记录下是否描点了
 
     public void initView() {
@@ -50,7 +52,7 @@ public class DrawableMapActivity extends BaseActivity {
         flowView_horizontal = findViewById(R.id.hflowview);
         pinchImageView = findViewById(R.id.iv_bitmap);
         bt_set_goal = findViewById(R.id.bt_set_goal);
-
+        bt_quit = findViewById(R.id.bt_quit);
         setListener();
     }
 
@@ -155,6 +157,13 @@ public class DrawableMapActivity extends BaseActivity {
 
             }
         });
+
+        bt_quit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
     private void handlerPointed(){
         mDialogHelper.showConfirmDialog(getString(R.string.tips6), new OnDialogConfirmListener() {
@@ -166,13 +175,25 @@ public class DrawableMapActivity extends BaseActivity {
                 flowView_horizontal.setProgress(4, 5, getResources().getStringArray(R.array.make_map), null);
                 // 1. 发送消毒任务命令  2. 自动开启任务  3. 保存地图  4. 设置location模式
                 UdpControlSendManager.getInstance().set_disin_action_strong(Contanst.id, Contanst.to_id);
-                UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
-                  UdpControlSendManager.getInstance().set_save_map(Contanst.id,Contanst.to_id);  //不要了
+                AckListenerService.instance.addACKListener("set_disin_action", new AckListenerService.ACKListener() {
+                    @Override
+                    public void onACK(boolean isSuccess) {
+                        Tools.showToast("定位模式设置"+isSuccess);
+                        if (isSuccess){
+                            UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
+                            AckListenerService.instance.removeACKListener();
+                        }
+
+                    }
+                });
+
+                UdpControlSendManager.getInstance().set_save_map(Contanst.id,Contanst.to_id);  //不要了
                 //  UdpControlSendManager.getInstance().set_navi_mode_loc(Contanst.id,Contanst=.to_id);  不要了
                 mDialogHelper.showLoadingDialog("");
                 BaseApplication.getHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        BaseApplication.isdrawPaht = true;
                         mDialogHelper.dismissDialog();
                         Intent intent = new Intent(DrawableMapActivity.this,MainActivity.class);
                         intent.setAction(Contanst.KEY_SHOW01);
@@ -185,7 +206,7 @@ public class DrawableMapActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveMsg(ChargerPoseCallbackEntity entity) {
         //防止多次弹出
-        if (entity.getState() && !mDialogHelper.isShowing()){
+        if (entity.getState() && mDialogHelper.isShowing()){
             HeartbeatManager2.getInstance().stop();
             mDialogHelper.dismissDialog();
             mDialogHelper.showConfirmDialog(getString(R.string.tips7), new OnDialogConfirmListener() {
@@ -200,6 +221,18 @@ public class DrawableMapActivity extends BaseActivity {
         }else {
            // Tools.showToast("正在寻找充电桩");
         }
+    }
+
+    /*
+     * 接收机器人状态
+     * */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiveMsg(RobotStatusCallbackEntity entity) {
+       if (entity.getAction_state() == Contanst.action_state_finish){
+           Intent intent = new Intent(DrawableMapActivity.this,MainActivity.class);
+           intent.setAction(Contanst.KEY_SHOW01);
+           startActivity(intent);
+       }
     }
 
 }

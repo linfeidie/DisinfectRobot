@@ -85,16 +85,22 @@ public class UdpControlSendManager {
         mXUdp.config(new UdpClientConfig.Builder()
                 .setLocalPort(Contanst.LocalPort).create());
     }
-
+    /*
+    * 不是所有请求都支持线程池  比如地图 有高并发
+    * */
     public void sendOrder(final Object object) {
         ThreadManager.getInstance().createLongPool().execute(new Runnable() {
             @Override
             public void run() {
                 String order = GsonUtil.GsonString(object);
                 Log.e(TAG, "order:"+Thread.currentThread().getName() + order);
-                mXUdp.sendMsg(new UdpMsg(GsonUtil.GsonString(object) + "\n", targetInfo, TcpMsg.MsgType.Send), true);
+                synchronized (UdpControlSendManager.class){
+                    mXUdp.sendMsg(new UdpMsg(GsonUtil.GsonString(object) + "\n", targetInfo, TcpMsg.MsgType.Send), true);
+                }
+
             }
         });
+
 
     }
 

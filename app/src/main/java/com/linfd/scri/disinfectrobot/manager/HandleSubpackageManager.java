@@ -119,7 +119,7 @@ public class HandleSubpackageManager {
             e.printStackTrace();
             return;
         }
-        Tools.showToast("整合完了");
+      //  Tools.showToast("整合完了");
         /*
         * 要优化 有耦合了
         * */

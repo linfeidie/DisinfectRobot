@@ -21,6 +21,7 @@ import com.linfd.scri.disinfectrobot.view.PinchImageView;
 import com.linfd.scri.disinfectrobot.view.SmButton;
 import com.td.framework.module.dialog.inf.OnDialogCancelListener;
 import com.td.framework.module.dialog.inf.OnDialogConfirmListener;
+import com.whieenz.LogCook;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -261,5 +262,7 @@ public class MainActivity extends BaseActivity {
     public void onReceiveMsg(RobotStatusCallbackEntity entity) {
         wave_view_electric.setmWaterLevel((float) (entity.getBattery_percent() / 1000));//(float) (entity.getBattery_percent()/10)
     }
+
+
 
 }

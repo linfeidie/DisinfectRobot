@@ -45,7 +45,7 @@ public class ComBitmapManager {
     private Bitmap mapComposite;
     private Bitmap chargingPost;//充电桩
     private CompositeMapListener listener;
-    private List<Rect> points = new ArrayList<>();
+    private List<Rect> points = new ArrayList<>(); //定点的点
     private Rect resetPoint ;//重定位的点
     private Matrix matrix = null;
     private Paint paint;//画描点的笔
@@ -108,6 +108,12 @@ public class ComBitmapManager {
     public void clearPoints(){
         points = points.subList(0,1);
        // points.clear();
+    }
+    /*
+     *全部清除描点  一个点也不留
+     * */
+    public void clearPoints2(){
+         points.clear();
     }
 /*
 * 撤回最近一条

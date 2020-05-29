@@ -1,6 +1,7 @@
 package com.linfd.scri.disinfectrobot.manager;
 
 import android.graphics.Rect;
+import android.util.Log;
 
 
 import com.linfd.scri.disinfectrobot.Contanst;
@@ -14,11 +15,15 @@ import java.util.List;
 public class HandlePositionHelper {
 
     private static Rect mrect;
+    public static final String TAG = HandlePositionHelper.class.getSimpleName();
     public static Rect handle(List<Double> serverPos){
         /*
         * 防止崩溃
         * */
-        if (Contanst.MAPPARAMENTITY == null){
+        if (serverPos == null || serverPos.size() <= 0){
+            Log.e(TAG,"空拉");
+        }
+        if (Contanst.MAPPARAMENTITY == null && Contanst.MAPPARAMENTITY.getOrigin() != null && Contanst.MAPPARAMENTITY.getOrigin().size()>0){
             return null;
         }
         int width = BGSelectorManager.getInstance().getMapWH().get(0);

@@ -115,6 +115,15 @@ public class Contanst {
 
     public static  String KEY_HASHISTORY_POINTS ;//是否有历史保存
 
+    /*
+    机器人运行的状态
+    * */
+    public static final int action_state_idle = 0;
+    public static final int action_state_running = 1;
+    public static final int action_state_pause = 2;
+    public static final int action_state_finish = 3;
+    public static final int action_state_stop = 4;
+
 
 
 }

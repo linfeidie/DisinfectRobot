@@ -60,4 +60,5 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation project(':lib')
     implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation 'com.github.whieenz:LogCook:v1.0'  //https://github.com/whieenz/LogCook
 }

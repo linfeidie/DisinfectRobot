@@ -12,6 +12,8 @@ import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
 import com.linfd.scri.disinfectrobot.observer.DataChanger;
 import com.linfd.scri.disinfectrobot.observer.DataWatcher;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +44,7 @@ public class UpdateStateControlManager {
 
     private UpdateStateControlManager() {
         DataChanger.getInstance().addObserver(watcher);
+        //EventBus.getDefault().register(this);
     }
 
     public void setBitmapCallback(BitmapCallback bitmapCallback) {
@@ -73,6 +76,7 @@ public class UpdateStateControlManager {
 //
                         updateLocation(satusEntity);
                         localization = satusEntity.isLocalization();//赋值
+                      //  updateActionState(satusEntity.getAction());
                         Log.e("linfd", Tools.getDateToString((long) satusEntity.get_hand_map_update()));
                         double map_update_now = satusEntity.get_hand_map_update();
                         //大于5分钟
@@ -93,6 +97,34 @@ public class UpdateStateControlManager {
             }
         }
     };
+    /*
+     * 运动的状态更新
+     * */
+    private void updateActionState(String action) {
+        ActionState actionState = ActionState.valueOf(action);
+        EventBus.getDefault().post(actionState);
+    }
+
+
+    public static enum ActionState{
+         idle(0) ,   running(1) ,  pause(2) ,  finish(3) ,  stop(4);
+        int value;
+        ActionState(int state) {
+            this.value = state;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        public void setValue(int value) {
+            this.value = value;
+        }
+    }
+
+
+
+
 
 
     private void updateLocation(final RobotStatusCallbackEntity satusEntity) {
@@ -109,10 +141,10 @@ public class UpdateStateControlManager {
 * 注意：satusEntity.getRobot_pose().get(0)，satusEntity.getRobot_pose().get(1)可能顺序有误
 *
 * */
-                rect = HandlePositionHelper.handle(satusEntity.getRobot_pose());
+                rect = HandlePositionHelper.handle(satusEntity.getRobot_pose_real());
 
                 //弧度转角度
-                float angle = (float) (360 * satusEntity.getRobot_pose().get(3) / (2 * Math.PI));
+                float angle = (float) (360 * satusEntity.getRobot_pose_real().get(2) / (2 * Math.PI));
 
                 Log.e("linfd",rect.left+"=======left");
                 Log.e("linfd",rect.top+"=======ltop");

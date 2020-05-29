@@ -11,6 +11,7 @@ import com.linfd.scri.disinfectrobot.Tools;
 import com.linfd.scri.disinfectrobot.entity.ChargerPoseCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.DataEntity;
 import com.linfd.scri.disinfectrobot.entity.TypeEntity;
+import com.linfd.scri.disinfectrobot.manager.ThreadManager;
 import com.linfd.scri.disinfectrobot.observer.DataChanger;
 
 
@@ -41,8 +42,14 @@ public  class SimpleUdpListener implements UdpClientListener {
     }
 
     @Override
-    public  void onReceive(XUdp client, UdpMsg udpMsg){
+    public  void onReceive(XUdp client, final UdpMsg udpMsg){
         // 接口返回数据  传给观察者
+//        ThreadManager.getInstance().createLongPool().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        });
         TypeEntity entity = GsonUtil.GsonToBean(udpMsg.getSourceDataString(), TypeEntity.class);
         if (!TextUtils.isEmpty(entity.getType())){
             dataEntity.setType(entity.getType());
@@ -50,6 +57,7 @@ public  class SimpleUdpListener implements UdpClientListener {
             DataChanger.getInstance().postData(dataEntity);
             Log.e(TAG,"原始数据："+Thread.currentThread().getName()+udpMsg.getSourceDataString());
         }
+
     } ;
 
     @Override

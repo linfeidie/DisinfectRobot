@@ -47,7 +47,7 @@ public class DrawPathManager {
 
                     try {
                         RobotStatusCallbackEntity satusEntity = GsonUtil.GsonToBean(dataEntity.getMessage(), RobotStatusCallbackEntity.class);
-                        speed = satusEntity.getSpeed();
+                        speed = satusEntity.getSpeedReal();
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e("linfd", e.toString());
