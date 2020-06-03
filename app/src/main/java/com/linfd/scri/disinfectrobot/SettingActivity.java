@@ -25,6 +25,7 @@ import com.cy.cyflowlayoutlibrary.FlowLayoutScrollView;
 import com.jzxiang.pickerview.TimePickerDialog;
 import com.jzxiang.pickerview.data.Type;
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
+import com.linfd.scri.disinfectrobot.manager.ComBitmapManager;
 import com.linfd.scri.disinfectrobot.manager.TimerManager;
 import com.linfd.scri.disinfectrobot.manager.TimerManager3;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
@@ -50,12 +51,15 @@ import java.util.List;
 
 import ezy.ui.view.RoundButton;
 
+
+
 public class SettingActivity extends BaseActivity implements View.OnTouchListener {
 
     public static final String TAG = SettingActivity.class.getSimpleName();
     private RoundButton tv_leftward,tv_rightward,tv_forward,tv_backward;
     private RoundButton bt_set_disin_cmd_pump,bt_set_disin_cmd_drainage,bt_set_disin_cmd_close;
-    private RoundButton tv_manual_q,tv_manual_r,tv_auto_q,tv_auto_r,bt_set_base_cmd_power_off;
+    private RoundButton tv_manual_q,tv_manual_r,tv_auto_q,tv_auto_r,bt_set_base_cmd_power_off,bt_set_disin_cmd_charge;
+    private RoundButton bt_set_disin_cmd_charge_close,tv_set_navi_mode_build;
 
 
     public void initView() {
@@ -68,8 +72,8 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
             }
         });
        // mTopBar.setTitle(R.string.setting);
-        mTopBar.setTitle("start-up");
-        mTopBar.setSubTitle("lectric:50%");
+        mTopBar.setTitle(R.string.control);
+        mTopBar.setSubTitle("power:50%");
         TextView textView= new TextView(this);
        // textView.setText("正在开启");
         textView.setTextColor(getResources().getColor(R.color.white));
@@ -89,13 +93,36 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
         tv_auto_q = findViewById(R.id.tv_auto_q);
         tv_auto_r = findViewById(R.id.tv_auto_r);
         bt_set_base_cmd_power_off = findViewById(R.id.bt_set_base_cmd_power_off);
+        bt_set_disin_cmd_charge = findViewById(R.id.bt_set_disin_cmd_charge);
+        bt_set_disin_cmd_charge_close = findViewById(R.id.bt_set_disin_cmd_charge_close);
+        tv_set_navi_mode_build = findViewById(R.id.tv_set_navi_mode_build);
+        tv_set_navi_mode_build.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Tools.showToast(getString(R.string.reset_map));
+                BaseApplication.isFistBoot = true;
+                UdpControlSendManager.getInstance().set_navi_mode_build(Contanst.id,Contanst.to_id);
+            }
+        });
+        bt_set_disin_cmd_charge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UdpControlSendManager.getInstance().set_base_cmd(Contanst.id, Contanst.to_id,0,true);
+            }
+        });
+        bt_set_disin_cmd_charge_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UdpControlSendManager.getInstance().set_base_cmd(Contanst.id, Contanst.to_id,0,false);
+            }
+        });
         bt_set_base_cmd_power_off.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mDialogHelper.showConfirmDialog(getString(R.string.sure_turn_off), new OnDialogConfirmListener() {
                     @Override
                     public void onDialogConfirmListener(AlertDialog dialog) {
-                        Tools.showToast("关机");
+                       // Tools.showToast("关机");
                         UdpControlSendManager.getInstance().set_base_cmd_power_off(Contanst.id, Contanst.to_id);
                         dialog.dismiss();
                     }
@@ -106,28 +133,28 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
         tv_manual_q.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Tools.showToast("手动喷雾强");
+                //Tools.showToast("手动喷雾强");
                 UdpControlSendManager.getInstance().set_disin_cmd(Contanst.id, Contanst.to_id,3,2);
             }
         });
         tv_manual_r.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Tools.showToast("手动喷雾弱");
+                //Tools.showToast("手动喷雾弱");
                 UdpControlSendManager.getInstance().set_disin_cmd(Contanst.id, Contanst.to_id,3,1);
             }
         });
         tv_auto_q.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Tools.showToast("行走喷雾强");
+                //Tools.showToast("行走喷雾强");
                 UdpControlSendManager.getInstance().set_disin_cmd(Contanst.id, Contanst.to_id,1,2);
             }
         });
         tv_auto_r.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Tools.showToast("行走喷雾弱");
+               // Tools.showToast("行走喷雾弱");
                 UdpControlSendManager.getInstance().set_disin_cmd(Contanst.id, Contanst.to_id,1,1);
             }
         });
@@ -148,7 +175,7 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
             @Override
             public void onClick(View view) {
                 UdpControlSendManager.getInstance().set_disin_cmd_spray_off(Contanst.id, Contanst.to_id);
-                Tools.showToast("关闭喷雾");
+                //Tools.showToast("关闭喷雾");
             }
         });
         tv_leftward.setOnTouchListener(this);
@@ -160,7 +187,7 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
         bt_set_disin_cmd_pump.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Tools.showToast("抽水");
+               // Tools.showToast("抽水");
                 UdpControlSendManager.getInstance().set_disin_cmd_pump(Contanst.id, Contanst.to_id);
             }
         });
@@ -168,7 +195,7 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
         bt_set_disin_cmd_drainage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Tools.showToast("排水");
+               // Tools.showToast("排水");
                 UdpControlSendManager.getInstance().set_disin_cmd_drainage(Contanst.id, Contanst.to_id);
             }
         });
@@ -249,7 +276,7 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
      * */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveMsg(RobotStatusCallbackEntity entity) {
-        mTopBar.setSubTitle("lectric:"+ (entity.getBattery_percent()/1000)*100+"%");
+        mTopBar.setSubTitle("power:"+ (entity.getBattery_percent()/1000)*100+"%");
     }
     @Override
     protected void onStart() {

@@ -477,7 +477,7 @@ public class UdpControlSendManager {
      * "power":0,//底盘电源,0无动作,1关机,2休眠
     "ext_power":true,//设置外部电源开关,true
      * */
-    private void set_base_cmd(String id, String to_id,int power,boolean charge_enable){
+    public void set_base_cmd(String id, String to_id,int power,boolean charge_enable){
         SetBaseCmdEntity entity = new SetBaseCmdEntity();
         entity.setId(id);
         entity.setTo_id(to_id);

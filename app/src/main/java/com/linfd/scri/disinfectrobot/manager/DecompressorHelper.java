@@ -33,7 +33,7 @@ public class DecompressorHelper {
                 count = compressData.get(i);
             }else{
                 for (int j = 0; j < count ; j++) {
-                    tempData.add(j,compressData.get(i));//这里抛出过异常IndexOutOfBoundsException: Invalid index 93576, size is 326
+                    tempData.add(j,compressData.get(i));//测试 ObtainMapManager类加了synchronized 这里抛出过异常IndexOutOfBoundsException: Invalid index 93576, size is 326
                 }
                 OriginalData.addAll(tempData);
                 //获取值

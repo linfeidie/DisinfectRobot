@@ -11,6 +11,8 @@ import com.linfd.scri.disinfectrobot.entity.GetMapParamCallbackEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /*
 * 组合成非解压数据
@@ -26,6 +28,7 @@ public class HandleSubpackageManager {
     private List<GetMapCallbackEntity> tempEntitys;//缓存
     private GetMapCallbackEntity supperMapData;//完整一个数据包，是非解压的数据（注意：没有解压的）
     private ObtainMapManager.MapListenter mapListenter;//回调给上层
+    private Executor executor;
 
     private List<GetMapCallbackEntity> getGetMapCallbackEntities() {
         return getMapCallbackEntities;
@@ -54,6 +57,7 @@ public class HandleSubpackageManager {
     private HandleSubpackageManager() {
         getMapCallbackEntities = new ArrayList<>();
         tempEntitys = new ArrayList<>();
+        executor= Executors.newSingleThreadExecutor();
     }
     public void setMapParam(GetMapParamCallbackEntity getMapParamCallbackEntity){
         this.getMapParamCallbackEntity = getMapParamCallbackEntity;
@@ -123,12 +127,19 @@ public class HandleSubpackageManager {
         /*
         * 要优化 有耦合了
         * */
-        ThreadManager.getInstance().createLongPool().execute(new Runnable() {
+//        ThreadManager.getInstance().createLongPool().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        });
+        executor.execute(new Runnable() {
             @Override
             public void run() {
                 ObtainMapManager.getInstance(supperMapData).loadMap(new ObtainMapManager.MapListenter() {
                     @Override
                     public void getMap(final Bitmap map) {
+
                         Log.e(TAG, "图片出来啦");
                         if (mapListenter != null){
                             mapListenter.getMap(map);
@@ -138,12 +149,11 @@ public class HandleSubpackageManager {
                     @Override
                     public void error(String message) {
                         Log.e(TAG,"出异常啦"+message);
-                       // Tools.showToast(message);
+                        // Tools.showToast(message);
                     }
                 });
             }
         });
-
     }
 
     /*

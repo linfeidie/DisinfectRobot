@@ -62,7 +62,7 @@ public  class SimpleUdpListener implements UdpClientListener {
 
     @Override
     public void onError(XUdp client, String msg, Exception e){
-        Tools.showToast("返回错误数据");
+       // Tools.showToast("返回错误数据");
         Log.e(TAG,"返回错误数据："+e.toString());
     }
 }

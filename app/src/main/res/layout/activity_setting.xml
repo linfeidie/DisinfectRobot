@@ -28,6 +28,7 @@
             app:btnPressedRatio="0.5"
             app:btnSolidColor="@color/config_color_50_blue" />
         <ezy.ui.view.RoundButton
+            android:visibility="gone"
             android:id="@+id/tv_manual_r"
             style="@style/RoundButton"
             android:layout_width="120dp"
@@ -47,6 +48,7 @@
             app:btnPressedRatio="0.5"
             app:btnSolidColor="@color/config_color_50_blue" />
         <ezy.ui.view.RoundButton
+            android:visibility="gone"
             android:id="@+id/tv_auto_r"
             style="@style/RoundButton"
             android:layout_width="120dp"
@@ -56,6 +58,17 @@
             android:layout_height="50dp"
             app:btnSolidColor="@color/config_color_50_blue"
             />
+        <ezy.ui.view.RoundButton
+            android:id="@+id/bt_set_disin_cmd_close"
+            style="@style/RoundButton"
+            android:text="@string/close_spray"
+            app:btnCornerRadius="10dp"
+            app:btnPressedRatio="0.5"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:textSize="18sp"
+            app:btnSolidColor="@color/colorMajor"
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -64,6 +77,7 @@
         android:orientation="horizontal"
         android:layout_marginLeft="20dp">
         <ezy.ui.view.RoundButton
+            android:visibility="gone"
             android:id="@+id/bt_set_disin_cmd_pump"
             style="@style/RoundButton"
             android:text="@string/pump"
@@ -74,33 +88,62 @@
             android:textSize="18sp"
             app:btnSolidColor="@color/colorMajor"
             />
+
         <ezy.ui.view.RoundButton
+            android:visibility="gone"
             android:id="@+id/bt_set_disin_cmd_drainage"
             style="@style/RoundButton"
-            android:text="@string/drainage"
-            app:btnCornerRadius="10dp"
-            app:btnPressedRatio="0.5"
             android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:textSize="18sp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            app:btnSolidColor="@color/colorMajor"
-            />
-        <ezy.ui.view.RoundButton
-            android:id="@+id/bt_set_disin_cmd_close"
-            style="@style/RoundButton"
-            android:text="@string/close_spray"
+            android:text="@string/drainage"
+            android:textSize="18sp"
             app:btnCornerRadius="10dp"
             app:btnPressedRatio="0.5"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:textSize="18sp"
-            app:btnSolidColor="@color/colorMajor"
-            />
+            app:btnSolidColor="@color/colorMajor" />
+
     </LinearLayout>
 
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:orientation="horizontal">
 
+        <ezy.ui.view.RoundButton
+            android:id="@+id/bt_set_disin_cmd_charge"
+            style="@style/RoundButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/charging_point_open"
+            android:textSize="18sp"
+            app:btnCornerRadius="10dp"
+            app:btnPressedRatio="0.5"
+            app:btnSolidColor="@color/colorMajor" />
+
+        <ezy.ui.view.RoundButton
+            android:id="@+id/bt_set_disin_cmd_charge_close"
+            style="@style/RoundButton"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="@string/charging_point_close"
+            android:textSize="18sp"
+            app:btnCornerRadius="10dp"
+            app:btnPressedRatio="0.5"
+            app:btnSolidColor="@color/colorMajor" />
+
+        <ezy.ui.view.RoundButton
+            android:id="@+id/tv_set_navi_mode_build"
+            style="@style/RoundButton"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="@string/reset_map"
+            android:textSize="18sp"
+            app:btnCornerRadius="10dp"
+            app:btnPressedRatio="0.5"
+            app:btnSolidColor="@color/colorMajor" />
+    </LinearLayout>
 
     <FrameLayout
         android:visibility="gone"

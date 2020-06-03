@@ -2,6 +2,7 @@ package com.linfd.scri.disinfectrobot;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -66,7 +67,7 @@ public class DrawableMapActivity extends BaseActivity {
                 pinchImageView.setImageBitmap(bitmap);
             }
         });
-        findChargingPost();
+       // findChargingPost();
     }
     /*
     * 寻找充电桩
@@ -166,42 +167,47 @@ public class DrawableMapActivity extends BaseActivity {
         });
     }
     private void handlerPointed(){
-        mDialogHelper.showConfirmDialog(getString(R.string.tips6), new OnDialogConfirmListener() {
+//        mDialogHelper.showConfirmDialog(getString(R.string.tips6), new OnDialogConfirmListener() {
+//            @Override
+//            public void onDialogConfirmListener(AlertDialog dialog) {
+//
+//            }
+//        });
+        //记录有历史描点了
+        // SPUtils.put(Contanst.KEY_HASHISTORY_POINTS,true);
+        BaseApplication.isdrawPaht = true;
+        flowView_horizontal.setProgress(4, 5, getResources().getStringArray(R.array.make_map), null);
+        // 1. 发送消毒任务命令  2. 自动开启任务  3. 保存地图  4. 设置location模式
+        UdpControlSendManager.getInstance().set_disin_action_strong(Contanst.id, Contanst.to_id);
+        AckListenerService.instance.addACKListener("set_disin_action", new AckListenerService.ACKListener() {
             @Override
-            public void onDialogConfirmListener(AlertDialog dialog) {
-                //记录有历史描点了
-                SPUtils.put(Contanst.KEY_HASHISTORY_POINTS,true);
-                BaseApplication.isdrawPaht = true;
-                flowView_horizontal.setProgress(4, 5, getResources().getStringArray(R.array.make_map), null);
-                // 1. 发送消毒任务命令  2. 自动开启任务  3. 保存地图  4. 设置location模式
-                UdpControlSendManager.getInstance().set_disin_action_strong(Contanst.id, Contanst.to_id);
-                AckListenerService.instance.addACKListener("set_disin_action", new AckListenerService.ACKListener() {
-                    @Override
-                    public void onACK(boolean isSuccess) {
-                        Tools.showToast("定位模式设置"+isSuccess);
-                        if (isSuccess){
-                            UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
-                            AckListenerService.instance.removeACKListener();
-                        }
+            public void onACK(boolean isSuccess) {
+                //Tools.showToast("定位模式设置"+isSuccess);
+                if (isSuccess){
+                    Tools.showToast("启动成功");
+                    BaseApplication.isFistBoot = false;
+                    UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
+                    AckListenerService.instance.removeACKListener();
+                }else {
+                    Tools.showToast("启动失败");
+                }
 
-                    }
-                });
-
-                UdpControlSendManager.getInstance().set_save_map(Contanst.id,Contanst.to_id);  //不要了
-                //  UdpControlSendManager.getInstance().set_navi_mode_loc(Contanst.id,Contanst=.to_id);  不要了
-                mDialogHelper.showLoadingDialog("");
-                BaseApplication.getHandler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        BaseApplication.isdrawPaht = true;
-                        mDialogHelper.dismissDialog();
-                        Intent intent = new Intent(DrawableMapActivity.this,MainActivity.class);
-                        intent.setAction(Contanst.KEY_SHOW01);
-                        startActivity(intent);
-                    }
-                },1000);
             }
         });
+
+        UdpControlSendManager.getInstance().set_save_map(Contanst.id,Contanst.to_id);  //不要了
+        //  UdpControlSendManager.getInstance().set_navi_mode_loc(Contanst.id,Contanst=.to_id);  不要了
+        mDialogHelper.showLoadingDialog("");
+        BaseApplication.getHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                BaseApplication.isdrawPaht = true;
+                mDialogHelper.dismissDialog();
+                Intent intent = new Intent(DrawableMapActivity.this,MainActivity.class);
+                intent.setAction(Contanst.KEY_SHOW01);
+                startActivity(intent);
+            }
+        },1000);
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveMsg(ChargerPoseCallbackEntity entity) {
@@ -223,16 +229,6 @@ public class DrawableMapActivity extends BaseActivity {
         }
     }
 
-    /*
-     * 接收机器人状态
-     * */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onReceiveMsg(RobotStatusCallbackEntity entity) {
-       if (entity.getAction_state() == Contanst.action_state_finish){
-           Intent intent = new Intent(DrawableMapActivity.this,MainActivity.class);
-           intent.setAction(Contanst.KEY_SHOW01);
-           startActivity(intent);
-       }
-    }
+
 
 }

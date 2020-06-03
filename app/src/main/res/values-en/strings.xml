@@ -45,7 +45,7 @@
     <string name="backward">backward</string>
     <string name="right">right</string>
     <string name="left">left</string>
-    <string name="electric_quantity">electric</string>
+    <string name="electric_quantity">battery</string>
     <string name="tips1">Use last trace point?</string>
     <string name="redraw_point">Redraw point</string>
     <string name="sure">sure</string>
@@ -62,13 +62,19 @@
     <string name="tips6">Are you sure pushed the robot near the charging post?</string>
     <string name="tips7">got the charging post. We can trace it</string>
     <string name="disinfection">Fixed point</string>
-    <string name="manual_spray_strong">manual strong</string>
-    <string name="manual_spray_weak">manual weak</string>
-    <string name="walking_strong">walking strong</string>
+    <string name="manual_spray_strong">spray</string>
+    <string name="manual_spray_weak">spray weak</string>
+    <string name="walking_strong">auto spray</string>
     <string name="walking_spray_weak">walking weak</string>
-    <string name="turn_off">turn off</string>
+    <string name="turn_off">power off</string>
     <string name="close_spray">close spray</string>
     <string name="sure_turn_off">sure turn off?</string>
+    <string name="charging_point_open">charge on</string>
+    <string name="charging_point_close">charge off</string>
+    <string name="reset_map">reset map</string>
+    <string name="point">point</string>
+    <string name="finish"> finish</string>
+    <string name="quit">exit</string>
 
     <string-array name="make_map">
         <item>start</item>

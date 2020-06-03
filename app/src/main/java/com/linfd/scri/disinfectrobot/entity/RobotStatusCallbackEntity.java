@@ -32,7 +32,7 @@ public class RobotStatusCallbackEntity extends TypeEntity {
     private int exception_code;
     private double stamp;
     private double map_update;
-    private List<Integer> speed;
+    private List<Double> speed;
     private List<Double> speed_real = new ArrayList<>();//真正的  给外界调用的
     private List<Double> robot_pose;
     private List<Double> robot_pose_real = new ArrayList<>();//真正的  给外界调用的;
@@ -99,7 +99,7 @@ public class RobotStatusCallbackEntity extends TypeEntity {
         this.map_update = map_update;
     }
 
-    public List<Integer> getSpeed() {
+    public List<Double> getSpeed() {
         return speed;
     }
     public List<Double> getSpeedReal() {
@@ -109,7 +109,7 @@ public class RobotStatusCallbackEntity extends TypeEntity {
         return speed_real;
     }
 
-    public void setSpeed(List<Integer> speed) {
+    public void setSpeed(List<Double> speed) {
         this.speed = speed;
     }
 

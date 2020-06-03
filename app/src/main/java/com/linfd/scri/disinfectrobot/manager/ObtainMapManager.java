@@ -37,7 +37,7 @@ public class ObtainMapManager {
         height = Contanst.MAPPARAMENTITY.getHeight();
     }
 
-    public void loadMap(MapListenter mapListenter){
+    public  void loadMap(MapListenter mapListenter){
         //还原数据
         OriginalData = DecompressorHelper.getInstance().decompressData(mMapdata.getData(),width,height);
         if(OriginalData != null){

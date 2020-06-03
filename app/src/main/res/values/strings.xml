@@ -68,6 +68,12 @@
     <string name="turn_off">关机</string>
     <string name="close_spray">关闭喷雾</string>
     <string name="sure_turn_off">确定关机</string>
+    <string name="charging_point_open">充电桩_开</string>
+    <string name="charging_point_close">充电桩_关</string>
+    <string name="reset_map">重置地图</string>
+    <string name="point">描点</string>
+    <string name="finish">描点完成</string>
+    <string name="quit">退出</string>
 
     <string-array name="make_map">
         <item>开始</item>

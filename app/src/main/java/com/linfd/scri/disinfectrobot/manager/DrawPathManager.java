@@ -51,7 +51,7 @@ public class DrawPathManager {
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e("linfd", e.toString());
-                        Tools.showToast(e.toString());
+                       // Tools.showToast(e.toString());
                     }
                 }
             }

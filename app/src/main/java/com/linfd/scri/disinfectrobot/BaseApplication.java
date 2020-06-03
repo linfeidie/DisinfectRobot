@@ -24,7 +24,8 @@ public class BaseApplication extends Application {
   private static int mainTid;
   private static Handler handler;
   public static Rect chargerect;//充电桩位置
-  public static boolean isdrawPaht = false;//当前地图是否绘制行走路径
+  public static boolean isdrawPaht = true;//当前地图是否绘制行走路径
+  public static boolean isFistBoot = true; //是否是开机第一次启动
 
   @Override
   public void onCreate() {
@@ -32,7 +33,7 @@ public class BaseApplication extends Application {
     application=this;
     mainTid = android.os.Process.myTid();
     handler=new Handler();
-   // CrashHandler.getInstance().initCrashHandler(this);
+    CrashHandler.getInstance().initCrashHandler(this);
     ObtainStatusStamp.init();
     AckListenerService.init();
     GetFromServerData.listener();
@@ -42,7 +43,7 @@ public class BaseApplication extends Application {
     LooperStatusService.obtainStatus();
     ServerListeners.register();
 
-    LogCookManager.init();
+   // LogCookManager.init();
   }
 
 

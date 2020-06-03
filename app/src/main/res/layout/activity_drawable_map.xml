@@ -43,12 +43,12 @@
 
             <ezy.ui.view.RoundButton
                 android:id="@+id/bt_set_goal"
-                android:visibility="gone"
+                android:visibility="visible"
                 style="@style/RoundButton"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="0"
-                android:text="描点"
+                android:text="@string/point"
                 app:btnCornerRadius="stadium"
                 app:btnPressedRatio="0.7"
                 app:btnSolidColor="@color/colorMajor" />
@@ -78,25 +78,17 @@
 
             <ezy.ui.view.RoundButton
                 android:id="@+id/bt_finish"
-                android:visibility="gone"
                 style="@style/RoundButton"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="0"
-                android:text="描点完成"
+                android:layout_marginTop="10dp"
+                android:text="@string/finish"
+                android:visibility="visible"
                 app:btnCornerRadius="stadium"
                 app:btnPressedRatio="0.7"
                 app:btnSolidColor="@color/colorMajor" />
-            <ezy.ui.view.RoundButton
-                android:id="@+id/bt_quit"
-                style="@style/RoundButton"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_weight="0"
-                android:text="退出"
-                app:btnCornerRadius="stadium"
-                app:btnPressedRatio="0.7"
-                app:btnSolidColor="@color/colorMajor" />
+
         </LinearLayout>
 
         <me.caibou.rockerview.JoystickView
@@ -108,5 +100,18 @@
             app:edge_radius="65dp"
             app:stick_color="@color/colorPrimary"
             />
+        <ezy.ui.view.RoundButton
+            android:id="@+id/bt_quit"
+            style="@style/RoundButton"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_weight="0"
+            android:layout_marginTop="10dp"
+            android:text="@string/quit"
+            app:btnCornerRadius="stadium"
+            app:btnPressedRatio="0.7"
+            app:btnSolidColor="@color/colorMajor"
+            android:layout_gravity="bottom|left"
+            android:layout_margin="20dp"/>
     </FrameLayout>
 </LinearLayout>

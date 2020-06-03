@@ -8,10 +8,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.linfd.scri.disinfectrobot.entity.DesinStateCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
 import com.linfd.scri.disinfectrobot.eventbus.EventMessage;
+import com.linfd.scri.disinfectrobot.manager.AckListenerService;
+import com.linfd.scri.disinfectrobot.manager.ComBitmapManager;
 import com.linfd.scri.disinfectrobot.manager.DrawPathManager;
 import com.linfd.scri.disinfectrobot.manager.MapDataObtainManager;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
@@ -41,6 +44,7 @@ public class MainActivity extends BaseActivity {
     private CountdownView countdown_view;
     private PinchImageView pinchImageView;
     private MyStatusLayout status_layout_spary, status_layout_box_spary, status_layout_box_store;
+    private TextView run_state;
 
     public void initView() {
         setContentView(R.layout.activity_main);
@@ -55,6 +59,7 @@ public class MainActivity extends BaseActivity {
         bt_set_action_cmd_pause = findViewById(R.id.bt_set_action_cmd_pause);
         bt_set_action_cmd_resume = findViewById(R.id.bt_set_action_cmd_resume);
         bt_set_action_cmd_stop = findViewById(R.id.bt_set_action_cmd_stop);
+        run_state  = findViewById(R.id.run_state);
 
         super.initView();
 
@@ -80,56 +85,42 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    protected void hideBottomMenu() {
-        //隐藏虚拟按键，并且全屏
-        if (Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19) { // lower api
-            View v = this.getWindow().getDecorView();
-            v.setSystemUiVisibility(View.GONE);
-        } else if (Build.VERSION.SDK_INT >= 19) {
-            //for new api versions.
-            View decorView = getWindow().getDecorView();
-            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
-            decorView.setSystemUiVisibility(uiOptions);
-        }
-    }
-
-    protected void hideBottomUIMenu() {
-        //隐藏虚拟按键，并且全屏
-        if (Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19) { // lower api
-            View v = this.getWindow().getDecorView();
-            v.setSystemUiVisibility(View.GONE);
-        } else if (Build.VERSION.SDK_INT >= 19) {
-
-            Window _window = getWindow();
-            WindowManager.LayoutParams params = _window.getAttributes();
-            params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE;
-            _window.setAttributes(params);
-        }
-    }
-
+    private List a;
     @Override
     protected void initListener() {
         super.initListener();
         bt_manual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BaseApplication.isdrawPaht = false;//放这个位置要检测  我也不知道放哪里好
+                BaseApplication.isdrawPaht = true;//放这个位置要检测  我也不知道放哪里好
                 DrawPathManager.getInstance().cleanTrails();//清除之前的行走路径
                 mDialogHelper.showConfirmDialog(getString(R.string.tips1),getString(R.string.redraw_point),getString(R.string.sure), new OnDialogConfirmListener() {
                     @Override
                     public void onDialogConfirmListener(AlertDialog dialog) {
                         Intent intent = new Intent(MainActivity.this, DrawableMapActivity.class);
                         startActivity(intent);
+                        ComBitmapManager.getInstance().clearPoints2();//清除之前的描点
                     }
                 }, new OnDialogCancelListener() {
                     @Override
                     public void onDialogCancelListener(AlertDialog dialog) {
                         //有历史描点
-                        if (SPUtils.get(Contanst.KEY_HASHISTORY_POINTS,false)){//Contanst.hasHistoryPoints
+                        if ((!BaseApplication.isFistBoot)){//Contanst.hasHistoryPoints
                             UdpControlSendManager.getInstance().set_disin_action_strong(Contanst.id, Contanst.to_id);
-                            UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
+                            AckListenerService.instance.addACKListener("set_disin_action", new AckListenerService.ACKListener() {
+                                @Override
+                                public void onACK(boolean isSuccess) {
+
+                                    if (isSuccess){
+                                        Tools.showToast("启动成功");
+                                        UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
+                                        AckListenerService.instance.removeACKListener();
+                                    }else {
+                                        Tools.showToast("启动失败");
+                                    }
+
+                                }
+                            });
                             //没有描点过程了，要话路径
                             BaseApplication.isdrawPaht = true;
                             Tools.showToast(getString(R.string.start));
@@ -156,6 +147,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onClick(View view) {
+              //  a.add(1);
                 Intent intent = new Intent(MainActivity.this, SettingActivity.class);
                 startActivity(intent);
             }
@@ -261,8 +253,34 @@ public class MainActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveMsg(RobotStatusCallbackEntity entity) {
         wave_view_electric.setmWaterLevel((float) (entity.getBattery_percent() / 1000));//(float) (entity.getBattery_percent()/10)
-    }
+        //Tools.showToast(entity.getAction_state()+"");
+        if (entity.getAction_state() == Contanst.action_state_finish || entity.getAction_state() == Contanst.action_state_stop || entity.getAction_state() == Contanst.action_state_idle ){
+            bt_manual.setVisibility(View.VISIBLE);
+            bt_set_action_cmd_resume.setVisibility((View.GONE));
+            bt_set_action_cmd_pause.setVisibility(View.GONE);
+            bt_set_action_cmd_stop.setVisibility(View.GONE);
+        }else if (entity.getAction_state() == Contanst.action_state_running){
+            bt_manual.setVisibility(View.GONE);
+            bt_set_action_cmd_resume.setVisibility((View.GONE));
+            bt_set_action_cmd_pause.setVisibility(View.VISIBLE);
+            bt_set_action_cmd_stop.setVisibility(View.VISIBLE);
+        }
+        int action_state = entity.getAction_state();
+        String action_stage_des = "";
+        if (action_state == Contanst.action_state_idle){
+            action_stage_des = "state:idle";
+        }else if (action_state == Contanst.action_state_running){
+            action_stage_des = "state:running";
+        }else if (action_state == Contanst.action_state_pause){
+            action_stage_des = "state:pause";
+        }else if (action_state == Contanst.action_state_finish){
+            action_stage_des = "state:finish";
+        }else if (action_state == Contanst.action_state_stop){
+            action_stage_des = "state:stop";
+        }
+        run_state.setText(action_stage_des);
 
+    }
 
 
 }
