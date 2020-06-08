@@ -1,6 +1,7 @@
 package com.linfd.scri.disinfectrobot.entity;
 
 import java.util.List;
+import java.util.Objects;
 
 /*
  * 地图参数数据
@@ -90,4 +91,6 @@ public class GetMapParamCallbackEntity extends TypeEntity {
   public void setOrigin(List<Double> origin) {
     this.origin = origin;
   }
+
+
 }

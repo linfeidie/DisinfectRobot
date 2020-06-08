@@ -77,6 +77,7 @@ public class GetFromServerData {
                         MachTypeCallbackEntity entity = GsonUtil.GsonToBean(dataEntity.getMessage(),MachTypeCallbackEntity.class);
                         //showTest("机器人类型"+entity.toString());
                     }else if (((DataEntity) data).getType().equalsIgnoreCase(Contanst.charger_pose)){
+                        //充电桩监听
                         ChargerPoseCallbackEntity entity = GsonUtil.GsonToBean(dataEntity.getMessage(),ChargerPoseCallbackEntity.class);
                         EventBus.getDefault().post(entity);
                         BaseApplication.chargerect = HandlePositionHelper.handle(entity.getPose());

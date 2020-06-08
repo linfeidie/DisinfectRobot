@@ -49,6 +49,10 @@ public class Contanst {
 
     public static  GetMapParamCallbackEntity mapParamCallbackEntity = null;//地图的参数信息
 
+    public static final double LINEAR_SPEED = 0.15;//  直线速度
+
+    public static final double ANGULAR_SPEED = 0.3; //角速度
+
     /*
     * 命令请求
     * */

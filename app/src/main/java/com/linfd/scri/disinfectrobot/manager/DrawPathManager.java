@@ -14,8 +14,13 @@ import com.linfd.scri.disinfectrobot.R;
 import com.linfd.scri.disinfectrobot.Tools;
 import com.linfd.scri.disinfectrobot.entity.DataEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
+import com.linfd.scri.disinfectrobot.eventbus.Event2;
 import com.linfd.scri.disinfectrobot.observer.DataChanger;
 import com.linfd.scri.disinfectrobot.observer.DataWatcher;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +38,8 @@ public class DrawPathManager {
     private List<Double> speed;
     private long time_stamp = 0;
     private long time_diff;//时间间隔
+    private RobotStatusCallbackEntity satusEntity;
+    private List<List<Double>> original_robot_poses; //存储服务器发来的未处理的定位数据
 
     public static DrawPathManager getInstance() {
         return ourInstance;
@@ -46,8 +53,8 @@ public class DrawPathManager {
                 if (dataEntity.getType().equalsIgnoreCase(Contanst.robot_status)) {
 
                     try {
-                        RobotStatusCallbackEntity satusEntity = GsonUtil.GsonToBean(dataEntity.getMessage(), RobotStatusCallbackEntity.class);
-                        speed = satusEntity.getSpeedReal();
+                         satusEntity = GsonUtil.GsonToBean(dataEntity.getMessage(), RobotStatusCallbackEntity.class);
+                         speed = satusEntity.getSpeedReal();
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e("linfd", e.toString());
@@ -58,6 +65,11 @@ public class DrawPathManager {
         }
     };
     private DrawPathManager() {
+        original_robot_poses = new ArrayList<>();
+        if (!EventBus.getDefault().isRegistered(this))
+        {
+            EventBus.getDefault().register(this);
+        }
         trailpath = new Path();
         paint = new Paint();
         paint.setColor(BaseApplication.getApplication().getResources().getColor(android.R.color.holo_red_light));
@@ -71,11 +83,17 @@ public class DrawPathManager {
 /*
 * 主要方法
 * */
-    public Canvas drawPath(Canvas canvas, Rect rect){
+    public Canvas drawPath(Canvas canvas){
+
         //线速度和角速度都其中一个不为0
         time_diff = System.currentTimeMillis() - time_stamp ;
-        if ((speed != null && (speed.get(0) != 0 || speed.get(1) != 0) && time_diff > Contanst.DRAWPATHFREQUENCY) || trails.size() == 0){
-            trails.add(new Rect(rect.left , rect.top ,0,0));
+        //或者集合没有点也加进去
+        if ((speed != null && (speed.get(0) != 0 || speed.get(1) != 0) && time_diff > Contanst.DRAWPATHFREQUENCY) || original_robot_poses.size() == 0){
+
+
+            //添加进去
+            original_robot_poses.add(satusEntity.getRobot_pose_real());
+
             time_stamp = System.currentTimeMillis();
         }
         //每次清除路径再画
@@ -92,5 +110,16 @@ public class DrawPathManager {
     * */
     public void cleanTrails() {
         this.trails.clear();
+    }
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onReceiveMsg(Event2 entity) {
+        /*
+         * 服务器定位变成可以画的rect
+         * */
+        //Rect `rect = HandlePositionHelper.handle(satusEntity.getRobot_pose_real());
+        for (int i = 0; i < original_robot_poses.size(); i++) {
+            trails.add(HandlePositionHelper.handle(satusEntity.getRobot_pose_real()));
+        }
+       // trails.add(new Rect(rect.left , rect.top ,0,0));
     }
 }

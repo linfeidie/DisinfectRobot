@@ -204,7 +204,7 @@ public class ComBitmapManager {
         *
         * */
         if (BaseApplication.isdrawPaht){
-            cv = DrawPathManager.getInstance().drawPath(cv,rect);
+            cv = DrawPathManager.getInstance().drawPath(cv);
         }
 
         //save all clip

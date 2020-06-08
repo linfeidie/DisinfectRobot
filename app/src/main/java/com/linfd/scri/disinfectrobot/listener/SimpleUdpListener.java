@@ -55,7 +55,6 @@ public  class SimpleUdpListener implements UdpClientListener {
             dataEntity.setType(entity.getType());
             dataEntity.setMessage(udpMsg.getSourceDataString());
             DataChanger.getInstance().postData(dataEntity);
-            Log.e(TAG,"原始数据："+Thread.currentThread().getName()+udpMsg.getSourceDataString());
         }
 
     } ;

@@ -38,7 +38,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SettingActivity"
-            android:screenOrientation="landscape">
+            android:screenOrientation="portrait">
 
         </activity>
         <activity android:name=".MaxsSpeedSetActivity"

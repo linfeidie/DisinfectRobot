@@ -141,6 +141,9 @@ public class UpdateStateControlManager {
 * 注意：satusEntity.getRobot_pose().get(0)，satusEntity.getRobot_pose().get(1)可能顺序有误
 *
 * */
+                /*
+                * 服务器定位变成可以画的rect
+                * */
                 rect = HandlePositionHelper.handle(satusEntity.getRobot_pose_real());
 
                 //弧度转角度

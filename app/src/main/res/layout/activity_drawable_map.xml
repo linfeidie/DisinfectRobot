@@ -34,7 +34,87 @@
             android:layout_height="match_parent"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_no_map" />
+        <RelativeLayout
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <!-- 这个是在容器中央的 -->
+            <ezy.ui.view.RoundButton
+                android:id="@+id/img1"
+                android:visibility="invisible"
+                style="@style/RoundButton"
+                android:layout_centerInParent="true"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="0"
+                android:text="一键启动"
+                app:btnCornerRadius="stadium"
+                app:btnPressedRatio="0.7"
+                app:btnSolidColor="@color/colorMajor"/>
 
+
+            <!-- 在中间图片的左边 -->
+            <ezy.ui.view.RoundButton
+                android:id="@+id/tv_leftward"
+                style="@style/RoundButton"
+                android:layout_centerInParent="true"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_toLeftOf="@id/img1"
+                android:layout_centerVertical="true"
+                android:layout_weight="0"
+                android:text="@string/left"
+                app:btnCornerRadius="stadium"
+                app:btnPressedRatio="0.7"
+                app:btnSolidColor="@color/colorMajor"/>
+
+
+            <!-- 在中间图片的右边 -->
+            <ezy.ui.view.RoundButton
+                android:id="@+id/tv_rightward"
+                style="@style/RoundButton"
+                android:layout_toRightOf="@id/img1"
+                android:layout_centerVertical="true"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="0"
+                android:text="@string/right"
+                app:btnCornerRadius="stadium"
+                app:btnPressedRatio="0.7"
+                app:btnSolidColor="@color/colorMajor"/>
+
+            <!-- 在中间图片的上面-->
+            <ezy.ui.view.RoundButton
+                android:id="@+id/tv_forward"
+                style="@style/RoundButton"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_above="@id/img1"
+                android:layout_centerHorizontal="true"
+                android:layout_weight="0"
+                android:text="@string/forward"
+                app:btnCornerRadius="stadium"
+                app:btnPressedRatio="0.7"
+                app:btnSolidColor="@color/colorMajor"/>
+
+            <!-- 在中间图片的下面 -->
+            <ezy.ui.view.RoundButton
+                android:id="@+id/tv_backward"
+                style="@style/RoundButton"
+                android:layout_centerInParent="true"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_below="@id/img1"
+                android:layout_centerHorizontal="true"
+                android:layout_weight="0"
+                android:text="@string/backward"
+                app:btnCornerRadius="stadium"
+                app:btnPressedRatio="0.7"
+                app:btnSolidColor="@color/colorMajor"/>
+
+
+        </RelativeLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

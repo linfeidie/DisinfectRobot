@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
 import com.linfd.scri.disinfectrobot.eventbus.EventPoint;
 import com.linfd.scri.disinfectrobot.manager.AckListenerService;
 import com.linfd.scri.disinfectrobot.manager.HeartbeatManager2;
+import com.linfd.scri.disinfectrobot.manager.TimerManager3;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
 import com.linfd.scri.disinfectrobot.manager.UpdateStateControlManager;
 import com.linfd.scri.disinfectrobot.view.PinchImageView;
@@ -31,7 +33,7 @@ import org.w3c.dom.Text;
 import ezy.ui.view.RoundButton;
 import me.caibou.rockerview.JoystickView;
 
-public class DrawableMapActivity extends BaseActivity {
+public class DrawableMapActivity extends BaseActivity implements View.OnTouchListener {
 
 
     private TextView tv_remove_points,tv_clear_points;
@@ -40,6 +42,7 @@ public class DrawableMapActivity extends BaseActivity {
     private PinchImageView pinchImageView;
     private RoundButton bt_set_goal,bt_finish,bt_quit;
     private boolean hasPointed = false; //记录下是否描点了
+    private RoundButton tv_leftward,tv_rightward,tv_forward,tv_backward;
 
     public void initView() {
         setContentView(R.layout.activity_drawable_map);
@@ -54,6 +57,14 @@ public class DrawableMapActivity extends BaseActivity {
         pinchImageView = findViewById(R.id.iv_bitmap);
         bt_set_goal = findViewById(R.id.bt_set_goal);
         bt_quit = findViewById(R.id.bt_quit);
+        tv_leftward = findViewById(R.id.tv_leftward);
+        tv_rightward = findViewById(R.id.tv_rightward);
+        tv_forward = findViewById(R.id.tv_forward);
+        tv_backward = findViewById(R.id.tv_backward);
+        tv_leftward.setOnTouchListener(this);
+        tv_rightward.setOnTouchListener(this);
+        tv_forward.setOnTouchListener(this);
+        tv_backward.setOnTouchListener(this);
         setListener();
     }
 
@@ -227,6 +238,65 @@ public class DrawableMapActivity extends BaseActivity {
         }else {
            // Tools.showToast("正在寻找充电桩");
         }
+    }
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            switch (view.getId()) {
+                case R.id.tv_forward:
+
+                    TimerManager3.getInstance().start(new LooperRunnable() {
+                        @Override
+                        public void call() {
+                            Log.e("linfd", "前");
+                            UdpControlSendManager.getInstance().forward(Contanst.id,Contanst.to_id, Contanst.LINEAR_SPEED);
+                        }
+                    });
+                    break;
+                case R.id.tv_leftward:
+
+                    TimerManager3.getInstance().start(new LooperRunnable() {
+                        @Override
+                        public void call() {
+                            Log.e("linfd", "左");
+                            UdpControlSendManager.getInstance().leftward(Contanst.id,Contanst.to_id, Contanst.ANGULAR_SPEED);
+                        }
+                    });
+                    break;
+                case R.id.tv_rightward:
+
+                    TimerManager3.getInstance().start(new LooperRunnable() {
+                        @Override
+                        public void call() {
+                            Log.e("linfd", "右");
+                            UdpControlSendManager.getInstance().rightward(Contanst.id,Contanst.to_id, Contanst.ANGULAR_SPEED);
+                        }
+                    });
+                    break;
+                case R.id.tv_backward:
+
+                    TimerManager3.getInstance().start(new LooperRunnable() {
+                        @Override
+                        public void call() {
+                            Log.e("linfd", "后");
+                            UdpControlSendManager.getInstance().backward(Contanst.id,Contanst.to_id, Contanst.LINEAR_SPEED);
+                        }
+                    });
+                    break;
+            }
+        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+            // Tools.showToast("消");
+            Log.e("linfd", "消");
+            TimerManager3.getInstance().removeMessage();
+            UdpControlSendManager.getInstance().set_manual_ctrl_stop(Contanst.id,Contanst.to_id);
+        } else if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {
+            // Tools.showToast("消");
+            Log.e("linfd", "ACTION_CANCEL");
+            TimerManager3.getInstance().removeMessage();
+            UdpControlSendManager.getInstance().set_manual_ctrl_stop(Contanst.id,Contanst.to_id);
+        }
+
+        return true;
     }
 
 

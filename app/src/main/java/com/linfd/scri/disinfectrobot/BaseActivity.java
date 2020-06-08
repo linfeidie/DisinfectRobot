@@ -27,7 +27,7 @@ public  class BaseActivity extends AppCompatActivity implements OnDialogCancelLi
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        hideBottomMenu();
+        //hideBottomMenu();  先注释掉
         getSupportActionBar().hide();
         initView();
         if (mDialogHelper == null) {
@@ -70,7 +70,7 @@ public  class BaseActivity extends AppCompatActivity implements OnDialogCancelLi
     @Override
     protected void onResume() {
         super.onResume();
-        hideBottomMenu();
+        //hideBottomMenu();
     }
     protected void hideBottomMenu() {
         //隐藏虚拟按键，并且全屏

@@ -5,6 +5,7 @@ import android.util.Log;
 
 
 import com.linfd.scri.disinfectrobot.Contanst;
+import com.linfd.scri.disinfectrobot.Tools;
 
 import java.util.List;
 
@@ -28,11 +29,13 @@ public class HandlePositionHelper {
         }
         int width = BGSelectorManager.getInstance().getMapWH().get(0);
         int height = BGSelectorManager.getInstance().getMapWH().get(1);
-        double left = width - (-(Contanst.MAPPARAMENTITY.getOrigin().get(1) - serverPos.get(1)) / Contanst.MAPPARAMENTITY.getResolution());
-        double top = height - (-(Contanst.MAPPARAMENTITY.getOrigin().get(0) - serverPos.get(0)) / Contanst.MAPPARAMENTITY.getResolution());
+
+        double left = height - (-(Contanst.MAPPARAMENTITY.getOrigin().get(1) - serverPos.get(1)) / Contanst.MAPPARAMENTITY.getResolution());
+        double top = width - (-(Contanst.MAPPARAMENTITY.getOrigin().get(0) - serverPos.get(0)) / Contanst.MAPPARAMENTITY.getResolution());
         mrect = new Rect();
         mrect.left = (int) left;
         mrect.top = (int) top;
+       // Tools.showToast(mrect.left+"=="+mrect.top);
         return mrect;
     }
 

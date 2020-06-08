@@ -5,11 +5,18 @@ import android.util.Log;
 
 import com.linfd.scri.disinfectrobot.Contanst;
 import com.linfd.scri.disinfectrobot.GsonUtil;
+import com.linfd.scri.disinfectrobot.Tools;
+import com.linfd.scri.disinfectrobot.entity.ChargerPoseCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.DataEntity;
 import com.linfd.scri.disinfectrobot.entity.GetMapCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.GetMapParamCallbackEntity;
+import com.linfd.scri.disinfectrobot.eventbus.Event2;
 import com.linfd.scri.disinfectrobot.observer.DataChanger;
 import com.linfd.scri.disinfectrobot.observer.DataWatcher;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 
 /*
@@ -39,8 +46,16 @@ public class MapDataObtainManager {
                     getMapParamCallbackEntity = GsonUtil.GsonToBean(dataEntity.getMessage(),GetMapParamCallbackEntity.class);
                     if (getMapParamCallbackEntity != null){
                         HandleSubpackageManager.getInstance().setMapParam(getMapParamCallbackEntity);
+                        //在这里判断地图宽高是否变化了   发消息
+                        if (Contanst.MAPPARAMENTITY != null && (Contanst.MAPPARAMENTITY.getHeight() != getMapParamCallbackEntity.getHeight() || Contanst.MAPPARAMENTITY.getWidth() != getMapParamCallbackEntity.getWidth())){
+                            Tools.showToast("宽高发生变化了");
+                            Event2 entity = new Event2();
+                            EventBus.getDefault().post(entity);
+                        }
                         Contanst.MAPPARAMENTITY = getMapParamCallbackEntity;//测试
                         Contanst.map_time = ObtainStatusStamp.instacne.map_update;
+
+
                         //拿到参数，自动获取地图数据
                         getMap(0);//从 1 开始
                     }
@@ -116,7 +131,5 @@ public class MapDataObtainManager {
     public void getMap(int index){
         UdpControlSendManager.getInstance().get_map(Contanst.id,Contanst.to_id,index,index + Contanst.REQUEST_MAPPACK_COUNT -1);
     }
-
-
 
 }
