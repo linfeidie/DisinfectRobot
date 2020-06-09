@@ -88,13 +88,16 @@ public class DrawPathManager {
         //线速度和角速度都其中一个不为0
         time_diff = System.currentTimeMillis() - time_stamp ;
         //或者集合没有点也加进去
-        if ((speed != null && (speed.get(0) != 0 || speed.get(1) != 0) && time_diff > Contanst.DRAWPATHFREQUENCY) || original_robot_poses.size() == 0){
+        if ((speed != null && (speed.get(0) != 0 || speed.get(1) != 0) && time_diff > Contanst.DRAWPATHFREQUENCY) || trails.size() == 0){
 
-
+            trails.add(HandlePositionHelper.handle(satusEntity.getRobot_pose_real()));
             //添加进去
             original_robot_poses.add(satusEntity.getRobot_pose_real());
 
             time_stamp = System.currentTimeMillis();
+        }
+        if (trails.size() == 0){
+            return canvas;
         }
         //每次清除路径再画
         trailpath.reset();
@@ -116,9 +119,9 @@ public class DrawPathManager {
         /*
          * 服务器定位变成可以画的rect
          * */
-        //Rect `rect = HandlePositionHelper.handle(satusEntity.getRobot_pose_real());
+        trails.clear();
         for (int i = 0; i < original_robot_poses.size(); i++) {
-            trails.add(HandlePositionHelper.handle(satusEntity.getRobot_pose_real()));
+            trails.add(HandlePositionHelper.handle(original_robot_poses.get(i)));
         }
        // trails.add(new Rect(rect.left , rect.top ,0,0));
     }

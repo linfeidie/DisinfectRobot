@@ -117,11 +117,13 @@ public class RobotStatusCallbackEntity extends TypeEntity {
         return robot_pose;
     }
     public List<Double> getRobot_pose_real() {
+        robot_pose_real.clear();
         for (int i = 0; i < robot_pose.size(); i++) {
             robot_pose_real.add(i, (double) (robot_pose.get(i)/1000));
         }
         return robot_pose_real;
     }
+
 
     public void setRobot_pose(List<Double> robot_pose) {
         this.robot_pose = robot_pose;

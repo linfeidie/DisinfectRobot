@@ -27,8 +27,10 @@ public class HandlePositionHelper {
         if (Contanst.MAPPARAMENTITY == null && Contanst.MAPPARAMENTITY.getOrigin() != null && Contanst.MAPPARAMENTITY.getOrigin().size()>0){
             return null;
         }
-        int width = BGSelectorManager.getInstance().getMapWH().get(0);
-        int height = BGSelectorManager.getInstance().getMapWH().get(1);
+//        int width = BGSelectorManager.getInstance().getMapWH().get(0);
+//        int height = BGSelectorManager.getInstance().getMapWH().get(1);
+        int width = Contanst.MAPPARAMENTITY.getWidth();
+        int height = Contanst.MAPPARAMENTITY.getHeight();
 
         double left = height - (-(Contanst.MAPPARAMENTITY.getOrigin().get(1) - serverPos.get(1)) / Contanst.MAPPARAMENTITY.getResolution());
         double top = width - (-(Contanst.MAPPARAMENTITY.getOrigin().get(0) - serverPos.get(0)) / Contanst.MAPPARAMENTITY.getResolution());
