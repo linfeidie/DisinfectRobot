@@ -44,7 +44,7 @@ public class MainActivity extends BaseActivity {
     private RoundButton bt_set, bt_manual, bt_set_action_cmd_pause, bt_set_action_cmd_resume, bt_set_action_cmd_stop;
     private CountdownView countdown_view;
     private PinchImageView pinchImageView;
-    private MyStatusLayout status_layout_spary, status_layout_box_spary, status_layout_box_store;
+    private MyStatusLayout status_layout_spary, status_layout_box_store;
     private TextView run_state;
 
     public void initView() {
@@ -54,7 +54,6 @@ public class MainActivity extends BaseActivity {
         countdown_view = findViewById(R.id.countdown_view);
         pinchImageView = findViewById(R.id.iv_bitmap);
         status_layout_spary = findViewById(R.id.status_layout_spary);
-        status_layout_box_spary = findViewById(R.id.status_layout_box_spary);
         status_layout_box_store = findViewById(R.id.status_layout_box_store);
         bt_manual = findViewById(R.id.bt_manual);//手动巡航
         bt_set_action_cmd_pause = findViewById(R.id.bt_set_action_cmd_pause);
@@ -242,7 +241,6 @@ public class MainActivity extends BaseActivity {
     public void onReceiveMsg(DesinStateCallbackEntity entity) {
         // Log.e(TAG, "onReceiveMsg: " + entity.toString());
         status_layout_spary.changeStatus(entity.getSpray_level());
-        status_layout_box_spary.changeStatus(entity.getBox_spary());
         status_layout_box_store.changeStatus(entity.getBox_store());
         countdown_view.updateShow((int) entity.getDisin_time() * 1000);
     }
@@ -283,7 +281,7 @@ public class MainActivity extends BaseActivity {
 
         if (entity.isCharge_state()){
             wave_view_electric.setFlowLeft("充电..");
-            wave_view_electric.setmWaveColor(getResources().getColor(R.color.config_color_red));
+            wave_view_electric.setmWaveColor(getResources().getColor(R.color.color_green));
             wave_view_electric.startWave();
         }else{
             wave_view_electric.setFlowLeft("电量");

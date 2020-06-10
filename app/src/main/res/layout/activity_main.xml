@@ -144,11 +144,6 @@
                android:layout_height="wrap_content"
                app:showName="@string/spray_intensity"></com.linfd.scri.disinfectrobot.view.MyStatusLayout>
             <com.linfd.scri.disinfectrobot.view.MyStatusLayout
-                android:id="@+id/status_layout_box_spary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:showName="@string/atomizer_level"></com.linfd.scri.disinfectrobot.view.MyStatusLayout>
-            <com.linfd.scri.disinfectrobot.view.MyStatusLayout
                 android:id="@+id/status_layout_box_store"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
