@@ -10,6 +10,7 @@ import android.graphics.RectF;
 import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -39,7 +40,7 @@ public class WaterWaveView extends View {
 
     private int mCircleColor = Color.BLACK;
     private int mRingColor = Color.BLACK;
-    private int mWaveColor = getContext().getResources().getColor(R.color.colorPrimary);
+    private int mWaveColor = getContext().getResources().getColor(R.color.colorPrimary);//水波纹颜色
 
     private Handler mHandler;
     private long c = 0L;
@@ -78,6 +79,14 @@ public class WaterWaveView extends View {
         flowLeft = array.getString(R.styleable.WaterWaveView_waveName);
         array.recycle();
         init(mContext);
+    }
+
+    public void setFlowLeft(String flowLeft) {
+        this.flowLeft = flowLeft;
+    }
+
+    public void setmWaveColor(@ColorInt int mWaveColor) {
+        this.mWaveColor = mWaveColor;
     }
 
     /**
@@ -212,6 +221,7 @@ public class WaterWaveView extends View {
         // 得到控件的宽高
         int width = getWidth();
         int height = getHeight();
+        mWavePaint.setColor(mWaveColor);//ZJ  变色
         setBackgroundColor(mContext.getResources().getColor(
                 R.color.transparent));
 

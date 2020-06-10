@@ -22,6 +22,7 @@ import com.linfd.scri.disinfectrobot.manager.UpdateStateControlManager;
 import com.linfd.scri.disinfectrobot.view.MyStatusLayout;
 import com.linfd.scri.disinfectrobot.view.PinchImageView;
 import com.linfd.scri.disinfectrobot.view.SmButton;
+import com.td.framework.module.dialog.DialogHelper;
 import com.td.framework.module.dialog.inf.OnDialogCancelListener;
 import com.td.framework.module.dialog.inf.OnDialogConfirmListener;
 import com.whieenz.LogCook;
@@ -85,7 +86,6 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private List a;
     @Override
     protected void initListener() {
         super.initListener();
@@ -279,6 +279,17 @@ public class MainActivity extends BaseActivity {
             action_stage_des = "state:stop";
         }
         run_state.setText(action_stage_des);
+
+
+        if (entity.isCharge_state()){
+            wave_view_electric.setFlowLeft("充电..");
+            wave_view_electric.setmWaveColor(getResources().getColor(R.color.config_color_red));
+            wave_view_electric.startWave();
+        }else{
+            wave_view_electric.setFlowLeft("电量");
+            wave_view_electric.setmWaveColor(getResources().getColor(R.color.colorMajor));
+            wave_view_electric.stopWave();
+        }
 
     }
 

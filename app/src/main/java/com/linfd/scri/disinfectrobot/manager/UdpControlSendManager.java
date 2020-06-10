@@ -25,6 +25,7 @@ import com.linfd.scri.disinfectrobot.entity.SetActionCmdEntity;
 import com.linfd.scri.disinfectrobot.entity.SetApmtEntity;
 import com.linfd.scri.disinfectrobot.entity.SetBaseCmdEntity;
 import com.linfd.scri.disinfectrobot.entity.SetBindEntity;
+import com.linfd.scri.disinfectrobot.entity.SetChargePowerActionEntity;
 import com.linfd.scri.disinfectrobot.entity.SetCycleActionEntity;
 import com.linfd.scri.disinfectrobot.entity.SetDisinActionEntity;
 import com.linfd.scri.disinfectrobot.entity.SetDisinCmdEntity;
@@ -628,5 +629,19 @@ public class UdpControlSendManager {
      * */
     public void set_goal_new(String id, String to_id){
         this.set_goal(id,to_id,0);
+    }
+
+    /*
+    * 对接工位任务
+    * */
+    public void set_docking_action(String id, String to_id){
+        SetChargePowerActionEntity entity  = new SetChargePowerActionEntity();
+        entity.setId(id);
+        entity.setTo_id(to_id);
+        entity.setAction_id(count);
+        entity.setFollow(-1);
+        entity.setMethod("tail");
+        entity.setNot_sleep(false);
+        sendOrder(entity);
     }
 }

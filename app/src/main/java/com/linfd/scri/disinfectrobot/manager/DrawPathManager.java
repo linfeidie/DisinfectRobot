@@ -114,15 +114,20 @@ public class DrawPathManager {
     public void cleanTrails() {
         this.trails.clear();
     }
+
+    /*
+    * 宽高发生变化的监听
+    * */
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onReceiveMsg(Event2 entity) {
         /*
          * 服务器定位变成可以画的rect
          * */
+        //把旧的定位清掉
         trails.clear();
+        //宽高发生变化了  要从新计算定位
         for (int i = 0; i < original_robot_poses.size(); i++) {
             trails.add(HandlePositionHelper.handle(original_robot_poses.get(i)));
         }
-       // trails.add(new Rect(rect.left , rect.top ,0,0));
     }
 }

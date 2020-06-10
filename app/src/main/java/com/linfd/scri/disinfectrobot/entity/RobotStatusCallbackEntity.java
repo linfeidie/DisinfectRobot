@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- * 返回的机器人状态
+ * 返回的机器人状态  注意：此类不要删  更新好了
  * */
 public class RobotStatusCallbackEntity extends TypeEntity {
 
@@ -40,6 +40,8 @@ public class RobotStatusCallbackEntity extends TypeEntity {
     private int temperature;
     private int humidity;
     private int action_state;
+    private boolean charge_state = false;
+
 
 
 
@@ -116,6 +118,9 @@ public class RobotStatusCallbackEntity extends TypeEntity {
     private List<Double> getRobot_pose() {
         return robot_pose;
     }
+    /*
+    * 调用这个方法要注意，最好不要频繁调用
+    * */
     public List<Double> getRobot_pose_real() {
         robot_pose_real.clear();
         for (int i = 0; i < robot_pose.size(); i++) {
@@ -174,6 +179,14 @@ public class RobotStatusCallbackEntity extends TypeEntity {
         this.action_state = action_state;
     }
 
+    public boolean isCharge_state() {
+        return charge_state;
+    }
+
+    public void setCharge_state(boolean charge_state) {
+        this.charge_state = charge_state;
+    }
+
     @Override
     public String toString() {
         return "RobotStatusCallbackEntity{" +
@@ -185,11 +198,14 @@ public class RobotStatusCallbackEntity extends TypeEntity {
                 ", stamp=" + stamp +
                 ", map_update=" + map_update +
                 ", speed=" + speed +
+                ", speed_real=" + speed_real +
                 ", robot_pose=" + robot_pose +
+                ", robot_pose_real=" + robot_pose_real +
                 ", localization=" + localization +
                 ", temperature=" + temperature +
                 ", humidity=" + humidity +
                 ", action_state=" + action_state +
+                ", charge_state=" + charge_state +
                 '}';
     }
 }

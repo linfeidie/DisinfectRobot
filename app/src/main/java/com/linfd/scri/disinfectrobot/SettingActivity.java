@@ -25,7 +25,9 @@ import com.cy.cyflowlayoutlibrary.FlowLayoutScrollView;
 import com.jzxiang.pickerview.TimePickerDialog;
 import com.jzxiang.pickerview.data.Type;
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
+import com.linfd.scri.disinfectrobot.manager.AckListenerService;
 import com.linfd.scri.disinfectrobot.manager.ComBitmapManager;
+import com.linfd.scri.disinfectrobot.manager.DrawPathManager;
 import com.linfd.scri.disinfectrobot.manager.TimerManager;
 import com.linfd.scri.disinfectrobot.manager.TimerManager3;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
@@ -57,7 +59,7 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
 
     public static final String TAG = SettingActivity.class.getSimpleName();
     private RoundButton tv_leftward,tv_rightward,tv_forward,tv_backward;
-    private RoundButton bt_set_disin_cmd_pump,bt_set_disin_cmd_drainage,bt_set_disin_cmd_close;
+    private RoundButton bt_set_disin_cmd_pump,bt_set_charge_power_action,bt_set_disin_cmd_close;
     private RoundButton tv_manual_q,tv_manual_r,tv_auto_q,tv_auto_r,bt_set_base_cmd_power_off,bt_set_disin_cmd_charge;
     private RoundButton bt_set_disin_cmd_charge_close,tv_set_navi_mode_build;
 
@@ -86,7 +88,7 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
         tv_backward = findViewById(R.id.tv_backward);
        // selectToggleGroup = findViewById(R.id.group_choices);
         bt_set_disin_cmd_pump = findViewById(R.id.bt_set_disin_cmd_pump);
-        bt_set_disin_cmd_drainage= findViewById(R.id.bt_set_disin_cmd_drainage);
+        bt_set_charge_power_action= findViewById(R.id.bt_set_charge_power_action);
         bt_set_disin_cmd_close = findViewById(R.id.bt_set_disin_cmd_close);
         tv_manual_q = findViewById(R.id.tv_manual_q);
         tv_manual_r = findViewById(R.id.tv_manual_r);
@@ -188,15 +190,30 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
             @Override
             public void onClick(View view) {
                // Tools.showToast("抽水");
-                UdpControlSendManager.getInstance().set_disin_cmd_pump(Contanst.id, Contanst.to_id);
+               // UdpControlSendManager.getInstance().set_disin_cmd_pump(Contanst.id, Contanst.to_id);
+                DrawPathManager.getInstance().cleanTrails();
             }
         });
 
-        bt_set_disin_cmd_drainage.setOnClickListener(new View.OnClickListener() {
+        bt_set_charge_power_action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Tools.showToast("排水");
-                UdpControlSendManager.getInstance().set_disin_cmd_drainage(Contanst.id, Contanst.to_id);
+                Tools.showToast("对接充电任务");
+                UdpControlSendManager.getInstance().set_docking_action(Contanst.id, Contanst.to_id);
+                AckListenerService.instance.addACKListener("set_charge_power_action", new AckListenerService.ACKListener() {
+                    @Override
+                    public void onACK(boolean isSuccess) {
+
+                        if (isSuccess){
+                            Tools.showToast("启动成功");
+                            UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
+                            AckListenerService.instance.removeACKListener();
+                        }else {
+                            Tools.showToast("启动失败");
+                        }
+
+                    }
+                });
             }
         });
     }

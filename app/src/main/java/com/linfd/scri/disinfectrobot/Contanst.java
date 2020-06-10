@@ -85,6 +85,8 @@ public class Contanst {
     public static final String set_charge_water_action = "set_charge_water_action"; //对接换水任务(清扫机器人用)
 
     public static final String set_goal = "set_goal";//设置描点
+
+    public static final String set_charge_power_action = "set_charge_power_action"; //对接充电任务
     /*
     * 指令类型  返回类型
     * */

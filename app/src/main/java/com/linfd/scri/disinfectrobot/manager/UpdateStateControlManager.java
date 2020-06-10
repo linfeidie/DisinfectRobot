@@ -121,12 +121,6 @@ public class UpdateStateControlManager {
             this.value = value;
         }
     }
-
-
-
-
-
-
     private void updateLocation(final RobotStatusCallbackEntity satusEntity) {
         if (satusEntity == null || Contanst.MAPPARAMENTITY == null) {
             return;
