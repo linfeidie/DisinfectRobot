@@ -122,7 +122,6 @@ public class MainActivity extends BaseActivity {
                             });
                             //没有描点过程了，要话路径
                             BaseApplication.isdrawPaht = true;
-                            Tools.showToast(getString(R.string.start));
                             bt_manual.setVisibility(View.GONE);
                             bt_set_action_cmd_resume.setVisibility((View.GONE));
                             bt_set_action_cmd_pause.setVisibility(View.VISIBLE);

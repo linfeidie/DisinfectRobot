@@ -199,6 +199,19 @@ public class DrawableMapActivity extends BaseActivity implements View.OnTouchLis
                     BaseApplication.isFistBoot = false;
                     UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
                     AckListenerService.instance.removeACKListener();
+                    UdpControlSendManager.getInstance().set_save_map(Contanst.id,Contanst.to_id);  //不要了
+                    //  UdpControlSendManager.getInstance().set_navi_mode_loc(Contanst.id,Contanst=.to_id);  不要了
+                    mDialogHelper.showLoadingDialog("");
+                    BaseApplication.getHandler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            BaseApplication.isdrawPaht = true;
+                            mDialogHelper.dismissDialog();
+                            Intent intent = new Intent(DrawableMapActivity.this,MainActivity.class);
+                            intent.setAction(Contanst.KEY_SHOW01);
+                            startActivity(intent);
+                        }
+                    },0);
                 }else {
                     Tools.showToast("启动失败");
                 }
@@ -206,19 +219,7 @@ public class DrawableMapActivity extends BaseActivity implements View.OnTouchLis
             }
         });
 
-        UdpControlSendManager.getInstance().set_save_map(Contanst.id,Contanst.to_id);  //不要了
-        //  UdpControlSendManager.getInstance().set_navi_mode_loc(Contanst.id,Contanst=.to_id);  不要了
-        mDialogHelper.showLoadingDialog("");
-        BaseApplication.getHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                BaseApplication.isdrawPaht = true;
-                mDialogHelper.dismissDialog();
-                Intent intent = new Intent(DrawableMapActivity.this,MainActivity.class);
-                intent.setAction(Contanst.KEY_SHOW01);
-                startActivity(intent);
-            }
-        },1000);
+
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveMsg(ChargerPoseCallbackEntity entity) {

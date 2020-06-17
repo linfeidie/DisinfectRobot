@@ -53,6 +53,10 @@ public class Contanst {
 
     public static final double ANGULAR_SPEED = 0.3; //角速度
 
+    public static int loop_time = -1;  //喷雾任务循环
+
+    public static boolean switch_recharging = false;//是否回充
+
     /*
     * 命令请求
     * */

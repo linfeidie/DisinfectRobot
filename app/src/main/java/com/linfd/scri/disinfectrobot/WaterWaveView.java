@@ -104,7 +104,7 @@ public class WaterWaveView extends View {
 
     public void setmWaterLevel(float mWaterLevel) {
         this.mWaterLevel = mWaterLevel;
-        this.flowNum = mWaterLevel*100 + "%";
+        this.flowNum = (int)(mWaterLevel*100) + "%";
 //        if (mWaterLevel <= 0.99){
 //            mWaveColor = getContext().getResources().getColor(R.color.config_color_red);
 //        }else {

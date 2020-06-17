@@ -101,6 +101,24 @@
             app:btnCornerRadius="10dp"
             app:btnPressedRatio="0.5"
             app:btnSolidColor="@color/colorMajor" />
+        <ezy.ui.view.RoundButton
+            android:visibility="visible"
+            android:id="@+id/bt_loop_time"
+            style="@style/RoundButton"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="无限循环"
+            android:textSize="18sp"
+            app:btnCornerRadius="10dp"
+            app:btnPressedRatio="0.5"
+            app:btnSolidColor="@color/colorMajor" />
+
+        <com.suke.widget.SwitchButton
+            android:id="@+id/switch_loop_time"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            app:sb_checked_color="@color/colorMajor" />
 
     </LinearLayout>
 
@@ -143,6 +161,11 @@
             app:btnCornerRadius="10dp"
             app:btnPressedRatio="0.5"
             app:btnSolidColor="@color/colorMajor" />
+        <com.suke.widget.SwitchButton
+            android:id="@+id/switch_recharging"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            app:sb_checked_color="@color/colorMajor" />
     </LinearLayout>
 
     <FrameLayout

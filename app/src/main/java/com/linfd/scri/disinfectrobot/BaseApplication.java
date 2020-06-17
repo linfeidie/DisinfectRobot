@@ -42,6 +42,8 @@ public class BaseApplication extends Application {
    //开机就获取机器人状态和消毒状态
     LooperStatusService.obtainStatus();
     ServerListeners.register();
+    //开机要启动这个 否则无地图数据返回
+    UdpControlSendManager.getInstance().set_navi_mode_build(Contanst.id,Contanst.to_id);
 
    // LogCookManager.init();
   }

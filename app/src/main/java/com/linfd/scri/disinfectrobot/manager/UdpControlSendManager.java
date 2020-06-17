@@ -336,6 +336,8 @@ public class UdpControlSendManager {
         entity.setId(id);
         entity.setTo_id(to_id);
         entity.setSpray(spray);
+        entity.setLoop_time(Contanst.loop_time);
+        entity.setCharge(Contanst.switch_recharging);
         if (mode == 1){
             entity.setDisin_mode("manual");
         }else if(mode == 2){

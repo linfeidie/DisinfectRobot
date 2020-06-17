@@ -61,4 +61,6 @@ dependencies {
     implementation project(':lib')
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.github.whieenz:LogCook:v1.0'  //https://github.com/whieenz/LogCook
+    implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
+    implementation 'com.github.zcweng:switch-button:0.0.3@aar'
 }
