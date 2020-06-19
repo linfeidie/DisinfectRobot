@@ -43,12 +43,8 @@ public class TimerManager3 {
     * */
     public void removeMessage(){
 
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mHandler.removeCallbacks(r);
-            }
-        },100);
+        mHandler.removeCallbacks(r);
+        r = null;
 
     }
 
