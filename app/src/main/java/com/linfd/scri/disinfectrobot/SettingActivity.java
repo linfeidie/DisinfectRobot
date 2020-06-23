@@ -14,6 +14,7 @@ import com.linfd.scri.disinfectrobot.listener.OnSimpleSeekChangeListener;
 import com.linfd.scri.disinfectrobot.manager.AckListenerService;
 import com.linfd.scri.disinfectrobot.manager.DrawPathManager;
 import com.linfd.scri.disinfectrobot.manager.ControlDirectionManager;
+import com.linfd.scri.disinfectrobot.manager.HeartbeatManager;
 import com.linfd.scri.disinfectrobot.manager.TimerManager3;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
 import com.linfd.scri.disinfectrobot.nicedialog.BaseNiceDialog;
@@ -198,7 +199,20 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
             public void onClick(View view) {
                // Tools.showToast("抽水");
                // UdpControlSendManager.getInstance().set_disin_cmd_pump(Contanst.id, Contanst.to_id);
-                DrawPathManager.getInstance().cleanTrails();
+               // DrawPathManager.getInstance().cleanTrails();
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        boolean d = false;
+//                        try {
+//                            d = Tools.ping(Contanst.TargetIp);
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                        Log.e(TAG,"111"+d);
+//                    }
+//                }).start();
+                HeartbeatManager.getInstance().start();
             }
         });
 
@@ -238,18 +252,9 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
                     ControlDirectionManager.getInstance().start(ControlDirectionManager.Direct.leftward);
                     break;
                 case R.id.tv_rightward:
-
-//                    TimerManager3.getInstance().start(new LooperRunnable() {
-//                        @Override
-//                        public void call() {
-//                            Log.e("linfd", "右");
-//                            UdpControlSendManager.getInstance().rightward(Contanst.id,Contanst.to_id, 0.3);
-//                        }
-//                    });
                     ControlDirectionManager.getInstance().start(ControlDirectionManager.Direct.rightward);
                     break;
                 case R.id.tv_backward:
-
                     ControlDirectionManager.getInstance().start(ControlDirectionManager.Direct.backward);
                     break;
             }

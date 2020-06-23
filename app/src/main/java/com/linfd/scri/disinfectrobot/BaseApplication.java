@@ -8,6 +8,7 @@ import android.os.Handler;
 
 import com.linfd.scri.disinfectrobot.listener.SimpleUdpListener;
 import com.linfd.scri.disinfectrobot.manager.AckListenerService;
+import com.linfd.scri.disinfectrobot.manager.CompareEntityManager;
 import com.linfd.scri.disinfectrobot.manager.GetFromServerData;
 import com.linfd.scri.disinfectrobot.manager.LogCookManager;
 import com.linfd.scri.disinfectrobot.manager.LooperDisinStatusService;
@@ -33,7 +34,7 @@ public class BaseApplication extends Application {
     application=this;
     mainTid = android.os.Process.myTid();
     handler=new Handler();
-    CrashHandler.getInstance().initCrashHandler(this);
+    //CrashHandler.getInstance().initCrashHandler(this);
     ObtainStatusStamp.init();
     AckListenerService.init();
     GetFromServerData.listener();
@@ -46,6 +47,7 @@ public class BaseApplication extends Application {
     UdpControlSendManager.getInstance().set_navi_mode_build(Contanst.id,Contanst.to_id);
 
    // LogCookManager.init();
+    CompareEntityManager.getInstance().start();
   }
 
 

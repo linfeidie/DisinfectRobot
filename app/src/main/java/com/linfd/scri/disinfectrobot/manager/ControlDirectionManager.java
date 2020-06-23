@@ -5,6 +5,7 @@ import android.os.Handler;
 import com.linfd.scri.disinfectrobot.BaseApplication;
 import com.linfd.scri.disinfectrobot.Contanst;
 import com.linfd.scri.disinfectrobot.Tools;
+import com.linfd.scri.disinfectrobot.entity.DataEntity;
 
 
 /**
@@ -19,6 +20,7 @@ public class ControlDirectionManager {
 
     private MyRunnable mRunnable;
     private Handler mHandler;
+    public  DataEntity dataEntity;
     private static ControlDirectionManager instance;
     public static ControlDirectionManager getInstance(){
         if(instance == null) {

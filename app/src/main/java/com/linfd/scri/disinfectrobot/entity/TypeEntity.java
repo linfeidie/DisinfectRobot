@@ -1,5 +1,7 @@
 package com.linfd.scri.disinfectrobot.entity;
 
+import java.io.Serializable;
+
 /**
  * 文件描述：.
  * <p>
@@ -7,7 +9,8 @@ package com.linfd.scri.disinfectrobot.entity;
  * <p>
  * 版本号：donghaoProect
  */
-public class TypeEntity {
+public class TypeEntity implements Serializable {
+  private static final long serialVersionUID = 1L;
   private String type;
   public String getType() {
     return type;

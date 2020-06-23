@@ -12,8 +12,15 @@ import android.os.Parcelable;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.math.BigInteger;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -281,9 +288,9 @@ public class Tools {
             activity.getWindow().getDecorView().setSystemUiVisibility(uiOptions);
         }
     }
-/*
-* 对象深度拷贝
-* */
+    /*
+     * 实现了Parcelable对象的深度拷贝
+     * */
     public static <T> T copy(Parcelable input) {
         Parcel parcel = null;
 
@@ -297,4 +304,50 @@ public class Tools {
             parcel.recycle();
         }
     }
+
+    public static boolean ping(String ipAddress) throws Exception {
+        int  timeOut =  3000 ;  //超时应该在3钞以上
+        boolean status = InetAddress.getByName(ipAddress).isReachable(timeOut);
+        // 当返回值是true时，说明host是可用的，false则不可。
+        return status;
+    }
+
+
+    /*
+    * 实现了Serializable对象的深度拷贝
+    * */
+    public static Object deeplyCopy(Serializable obj) {
+        try {
+            return bytes2object(object2bytes(obj));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static byte[] object2bytes(Serializable obj) {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(obj);
+            oos.close();
+            baos.close();
+            return baos.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static Object bytes2object(byte[] bytes) {
+        try {
+            ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            return ois.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
 }

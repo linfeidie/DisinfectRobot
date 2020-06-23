@@ -11,6 +11,9 @@ import com.linfd.scri.disinfectrobot.Tools;
 import com.linfd.scri.disinfectrobot.entity.ChargerPoseCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.DataEntity;
 import com.linfd.scri.disinfectrobot.entity.TypeEntity;
+import com.linfd.scri.disinfectrobot.manager.CompareEntityManager;
+import com.linfd.scri.disinfectrobot.manager.ControlDirectionManager;
+import com.linfd.scri.disinfectrobot.manager.HeartbeatManager;
 import com.linfd.scri.disinfectrobot.manager.ThreadManager;
 import com.linfd.scri.disinfectrobot.observer.DataChanger;
 
@@ -20,7 +23,12 @@ import com.linfd.scri.disinfectrobot.observer.DataChanger;
 * */
 public  class SimpleUdpListener implements UdpClientListener {
     public static final String TAG = SimpleUdpListener.class.getSimpleName();
-    private DataEntity dataEntity;
+    public  DataEntity dataEntity;
+    public static boolean isDisconnectRos = true;
+
+    public DataEntity getDataEntity() {
+        return dataEntity;
+    }
 
     public SimpleUdpListener() {
         dataEntity = new DataEntity();
@@ -36,7 +44,6 @@ public  class SimpleUdpListener implements UdpClientListener {
 
     @Override
     public void onSended(XUdp XUdp, UdpMsg udpMsg) {
-
     }
 
     @Override
@@ -52,14 +59,16 @@ public  class SimpleUdpListener implements UdpClientListener {
         if (!TextUtils.isEmpty(entity.getType())){
             dataEntity.setType(entity.getType());
             dataEntity.setMessage(udpMsg.getSourceDataString());
+            ControlDirectionManager.getInstance().dataEntity = (DataEntity)Tools.deeplyCopy(dataEntity);
+            //这里分发
             DataChanger.getInstance().postData(dataEntity);
-        }
 
+        }
     } ;
 
     @Override
     public void onError(XUdp client, String msg, Exception e){
-        Tools.showToast("返回错误数据");
+        Tools.showToast(e.getMessage());
         Log.e(TAG,"返回错误数据："+e.toString());
     }
 }

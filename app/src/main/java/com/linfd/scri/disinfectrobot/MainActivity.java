@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.linfd.scri.disinfectrobot.entity.DesinStateCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
+import com.linfd.scri.disinfectrobot.eventbus.EventConnect;
 import com.linfd.scri.disinfectrobot.eventbus.EventMessage;
 import com.linfd.scri.disinfectrobot.manager.AckListenerService;
 import com.linfd.scri.disinfectrobot.manager.ComBitmapManager;
@@ -289,6 +290,14 @@ public class MainActivity extends BaseActivity {
         }
 
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiveMsg(EventConnect entity) {
+        if (!entity.isConnect){
+            Tools.showToast("连接已断开");
+        }else{
+           // Tools.showToast("连上");
+        }
 
+    }
 
 }
