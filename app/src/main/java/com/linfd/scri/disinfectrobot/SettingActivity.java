@@ -1,5 +1,6 @@
 package com.linfd.scri.disinfectrobot;
 
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
@@ -32,12 +33,11 @@ import ezy.ui.view.RoundButton;
 
 
 
-public class SettingActivity extends BaseActivity implements View.OnTouchListener {
+public class SettingActivity extends BaseActivity  {
 
     public static final String TAG = SettingActivity.class.getSimpleName();
-    private RoundButton tv_leftward,tv_rightward,tv_forward,tv_backward;
     private RoundButton bt_set_disin_cmd_pump,bt_set_charge_power_action,bt_set_disin_cmd_close;
-    private RoundButton tv_manual_q,tv_manual_r,tv_auto_q,tv_auto_r,bt_set_base_cmd_power_off,bt_set_disin_cmd_charge;
+    private RoundButton tv_manual_q,tv_manual_r,tv_auto_q,tv_auto_r,bt_set_disin_cmd_charge;
     private RoundButton bt_set_disin_cmd_charge_close,tv_set_navi_mode_build,bt_loop_time;
     private SwitchButton switch_loop_time,switch_recharging;
 
@@ -60,10 +60,7 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
         mTopBar.addLeftView(textView,1,layoutParams);
-        tv_leftward = findViewById(R.id.tv_leftward);
-        tv_rightward = findViewById(R.id.tv_rightward);
-        tv_forward = findViewById(R.id.tv_forward);
-        tv_backward = findViewById(R.id.tv_backward);
+
        // selectToggleGroup = findViewById(R.id.group_choices);
         bt_set_disin_cmd_pump = findViewById(R.id.bt_set_disin_cmd_pump);
         bt_set_charge_power_action= findViewById(R.id.bt_set_charge_power_action);
@@ -72,7 +69,6 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
         tv_manual_r = findViewById(R.id.tv_manual_r);
         tv_auto_q = findViewById(R.id.tv_auto_q);
         tv_auto_r = findViewById(R.id.tv_auto_r);
-        bt_set_base_cmd_power_off = findViewById(R.id.bt_set_base_cmd_power_off);
         bt_set_disin_cmd_charge = findViewById(R.id.bt_set_disin_cmd_charge);
         bt_set_disin_cmd_charge_close = findViewById(R.id.bt_set_disin_cmd_charge_close);
         tv_set_navi_mode_build = findViewById(R.id.tv_set_navi_mode_build);
@@ -125,20 +121,6 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
                 UdpControlSendManager.getInstance().set_base_cmd(Contanst.id, Contanst.to_id,0,false);
             }
         });
-        bt_set_base_cmd_power_off.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mDialogHelper.showConfirmDialog(getString(R.string.sure_turn_off), new OnDialogConfirmListener() {
-                    @Override
-                    public void onDialogConfirmListener(AlertDialog dialog) {
-                       // Tools.showToast("关机");
-                        UdpControlSendManager.getInstance().set_base_cmd_power_off(Contanst.id, Contanst.to_id);
-                        mDialogHelper.showLoadingDialog("");
-                        dialog.dismiss();
-                    }
-                });
-            }
-        });
 
         tv_manual_q.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,10 +170,7 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
                 //Tools.showToast("关闭喷雾");
             }
         });
-        tv_leftward.setOnTouchListener(this);
-        tv_rightward.setOnTouchListener(this);
-        tv_forward.setOnTouchListener(this);
-        tv_backward.setOnTouchListener(this);
+
 
 
         bt_set_disin_cmd_pump.setOnClickListener(new View.OnClickListener() {
@@ -212,7 +191,8 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
 //                        Log.e(TAG,"111"+d);
 //                    }
 //                }).start();
-                HeartbeatManager.getInstance().start();
+                Intent intent = new Intent(SettingActivity.this, WalkingDirectionActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -239,41 +219,7 @@ public class SettingActivity extends BaseActivity implements View.OnTouchListene
         });
     }
 
-    @Override
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-            switch (view.getId()) {
-                case R.id.tv_forward:
 
-                    ControlDirectionManager.getInstance().start(ControlDirectionManager.Direct.forward);
-                    break;
-                case R.id.tv_leftward:
-
-                    ControlDirectionManager.getInstance().start(ControlDirectionManager.Direct.leftward);
-                    break;
-                case R.id.tv_rightward:
-                    ControlDirectionManager.getInstance().start(ControlDirectionManager.Direct.rightward);
-                    break;
-                case R.id.tv_backward:
-                    ControlDirectionManager.getInstance().start(ControlDirectionManager.Direct.backward);
-                    break;
-            }
-        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-           // Tools.showToast("消");
-            Log.e("linfd", "消");
-          // TimerManager3.getInstance().removeMessage();
-            UdpControlSendManager.getInstance().set_manual_ctrl_stop(Contanst.id,Contanst.to_id);
-            ControlDirectionManager.getInstance().stop();
-        } else if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {
-           // Tools.showToast("消");
-            Log.e("linfd", "ACTION_CANCEL");
-            //TimerManager3.getInstance().removeMessage();
-            UdpControlSendManager.getInstance().set_manual_ctrl_stop(Contanst.id,Contanst.to_id);
-            ControlDirectionManager.getInstance().stop();
-        }
-
-        return true;
-    }
 
     @Override
     protected void onDestroy() {

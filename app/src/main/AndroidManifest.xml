@@ -53,6 +53,8 @@
             android:screenOrientation="landscape"></activity>
         <activity android:name=".DrawableMapActivity"
             android:screenOrientation="landscape"></activity>
+        <activity android:name=".WalkingDirectionActivity"
+            android:screenOrientation="landscape"></activity>
         <receiver
             android:name=".BootBroadcastReceiver"
             android:enabled="true"
