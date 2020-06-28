@@ -43,6 +43,7 @@ public class MainActivity extends BaseActivity {
     public static final String TAG = MainActivity.class.getSimpleName();
     private WaterWaveView wave_view_electric;
     private RoundButton bt_set, bt_manual, bt_set_action_cmd_pause, bt_set_action_cmd_resume, bt_set_action_cmd_stop;
+    private RoundButton bt_set_charge_power_action,tv_set_navi_mode_build;
     private CountdownView countdown_view;
     private PinchImageView pinchImageView;
     private MyStatusLayout status_layout_spary, status_layout_box_store;
@@ -60,7 +61,9 @@ public class MainActivity extends BaseActivity {
         bt_set_action_cmd_pause = findViewById(R.id.bt_set_action_cmd_pause);
         bt_set_action_cmd_resume = findViewById(R.id.bt_set_action_cmd_resume);
         bt_set_action_cmd_stop = findViewById(R.id.bt_set_action_cmd_stop);
+        bt_set_charge_power_action = findViewById(R.id.bt_set_charge_power_action);
         run_state  = findViewById(R.id.run_state);
+        tv_set_navi_mode_build = findViewById(R.id.tv_set_navi_mode_build);
 
         super.initView();
 
@@ -127,6 +130,8 @@ public class MainActivity extends BaseActivity {
                             bt_set_action_cmd_resume.setVisibility((View.GONE));
                             bt_set_action_cmd_pause.setVisibility(View.VISIBLE);
                             bt_set_action_cmd_stop.setVisibility(View.VISIBLE);
+                            bt_set_charge_power_action.setVisibility(View.VISIBLE);
+
                         }else {
                             mDialogHelper.showWarningDialog(getString(R.string.tips2), new OnDialogConfirmListener() {
                                 @Override
@@ -158,9 +163,11 @@ public class MainActivity extends BaseActivity {
                 Tools.showToast(getString(R.string.suspend));
                 UdpControlSendManager.getInstance().set_action_cmd_pause(Contanst.id, Contanst.to_id);
                 bt_set_action_cmd_resume.setVisibility((View.VISIBLE));
+                bt_set_charge_power_action.setVisibility(View.VISIBLE);
                 bt_manual.setVisibility(View.GONE);
                 bt_set_action_cmd_pause.setVisibility(View.GONE);
                 bt_set_action_cmd_stop.setVisibility(View.GONE);
+
 
             }
         });
@@ -174,6 +181,7 @@ public class MainActivity extends BaseActivity {
                 bt_set_action_cmd_resume.setVisibility((View.GONE));
                 bt_set_action_cmd_pause.setVisibility(View.VISIBLE);
                 bt_set_action_cmd_stop.setVisibility(View.VISIBLE);
+                bt_set_charge_power_action.setVisibility(View.VISIBLE);
             }
         });
 
@@ -185,8 +193,41 @@ public class MainActivity extends BaseActivity {
                 UdpControlSendManager.getInstance().set_action_cmd_stop(Contanst.id, Contanst.to_id);
                 bt_set_action_cmd_resume.setVisibility((View.GONE));
                 bt_manual.setVisibility(View.VISIBLE);
+                bt_set_charge_power_action.setVisibility(View.GONE);
                 bt_set_action_cmd_pause.setVisibility(View.GONE);
                 bt_set_action_cmd_stop.setVisibility(View.GONE);
+            }
+        });
+
+        //回充
+        bt_set_charge_power_action.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Tools.showToast("对接充电任务");
+                UdpControlSendManager.getInstance().set_docking_action(Contanst.id, Contanst.to_id);
+                AckListenerService.instance.addACKListener("set_charge_power_action", new AckListenerService.ACKListener() {
+                    @Override
+                    public void onACK(boolean isSuccess) {
+
+                        if (isSuccess){
+                            Tools.showToast("启动成功");
+                            UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
+                            AckListenerService.instance.removeACKListener();
+                        }else {
+                            Tools.showToast("启动失败");
+                        }
+
+                    }
+                });
+            }
+        });
+
+        tv_set_navi_mode_build.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Tools.showToast(getString(R.string.reset_map));
+                BaseApplication.isFistBoot = true;
+                UdpControlSendManager.getInstance().set_navi_mode_build(Contanst.id,Contanst.to_id);
             }
         });
     }
@@ -219,10 +260,11 @@ public class MainActivity extends BaseActivity {
             bt_set_action_cmd_resume.setVisibility((View.GONE));
             bt_set_action_cmd_pause.setVisibility(View.VISIBLE);
             bt_set_action_cmd_stop.setVisibility(View.VISIBLE);
-
+            bt_set_charge_power_action.setVisibility(View.VISIBLE);
         } else {
             bt_set_action_cmd_resume.setVisibility((View.GONE));
             bt_manual.setVisibility(View.VISIBLE);
+            bt_set_charge_power_action.setVisibility(View.GONE);
             bt_set_action_cmd_pause.setVisibility(View.GONE);
             bt_set_action_cmd_stop.setVisibility(View.GONE);
         }
@@ -254,6 +296,7 @@ public class MainActivity extends BaseActivity {
         //Tools.showToast(entity.getAction_state()+"");
         if (entity.getAction_state() == Contanst.action_state_finish || entity.getAction_state() == Contanst.action_state_stop || entity.getAction_state() == Contanst.action_state_idle ){
             bt_manual.setVisibility(View.VISIBLE);
+            bt_set_charge_power_action.setVisibility(View.GONE);
             bt_set_action_cmd_resume.setVisibility((View.GONE));
             bt_set_action_cmd_pause.setVisibility(View.GONE);
             bt_set_action_cmd_stop.setVisibility(View.GONE);
@@ -262,6 +305,7 @@ public class MainActivity extends BaseActivity {
             bt_set_action_cmd_resume.setVisibility((View.GONE));
             bt_set_action_cmd_pause.setVisibility(View.VISIBLE);
             bt_set_action_cmd_stop.setVisibility(View.VISIBLE);
+            bt_set_charge_power_action.setVisibility(View.VISIBLE);
         }
         int action_state = entity.getAction_state();
         String action_stage_des = "";

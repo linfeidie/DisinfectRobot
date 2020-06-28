@@ -36,10 +36,10 @@ import ezy.ui.view.RoundButton;
 public class SettingActivity extends BaseActivity  {
 
     public static final String TAG = SettingActivity.class.getSimpleName();
-    private RoundButton bt_set_disin_cmd_pump,bt_set_charge_power_action,bt_set_disin_cmd_close;
+    private RoundButton bt_set_disin_cmd_pump,bt_set_disin_cmd_close;
     private RoundButton tv_manual_q,tv_manual_r,tv_auto_q,tv_auto_r,bt_set_disin_cmd_charge;
-    private RoundButton bt_set_disin_cmd_charge_close,tv_set_navi_mode_build,bt_loop_time;
-    private SwitchButton switch_loop_time,switch_recharging;
+    private RoundButton bt_set_disin_cmd_charge_close,bt_loop_time;
+    private RoundButton bt_recharging_yes,bt_recharging_no;
 
 
     public void initView() {
@@ -63,7 +63,6 @@ public class SettingActivity extends BaseActivity  {
 
        // selectToggleGroup = findViewById(R.id.group_choices);
         bt_set_disin_cmd_pump = findViewById(R.id.bt_set_disin_cmd_pump);
-        bt_set_charge_power_action= findViewById(R.id.bt_set_charge_power_action);
         bt_set_disin_cmd_close = findViewById(R.id.bt_set_disin_cmd_close);
         tv_manual_q = findViewById(R.id.tv_manual_q);
         tv_manual_r = findViewById(R.id.tv_manual_r);
@@ -71,53 +70,40 @@ public class SettingActivity extends BaseActivity  {
         tv_auto_r = findViewById(R.id.tv_auto_r);
         bt_set_disin_cmd_charge = findViewById(R.id.bt_set_disin_cmd_charge);
         bt_set_disin_cmd_charge_close = findViewById(R.id.bt_set_disin_cmd_charge_close);
-        tv_set_navi_mode_build = findViewById(R.id.tv_set_navi_mode_build);
-        switch_loop_time = findViewById(R.id.switch_loop_time);
         bt_loop_time = findViewById(R.id.bt_loop_time);
-        switch_recharging = findViewById(R.id.switch_recharging);
-        switch_recharging.setChecked(Contanst.switch_recharging);
-        switch_recharging.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
+        bt_recharging_yes = findViewById(R.id.bt_recharging_yes);
+        bt_recharging_no = findViewById(R.id.bt_recharging_no);
+        bt_recharging_yes.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
-
-                Contanst.switch_recharging = isChecked;
+            public void onClick(View view) {
+                Tools.showToast("任务完成自动回充");
+                Contanst.switch_recharging = true;
+            }
+        });
+        bt_recharging_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Tools.showToast("任务完成自动不回充");
+                Contanst.switch_recharging = false;
             }
         });
         bt_loop_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Tools.showToast("开启无限循环");
-                Contanst.loop_time = -1;
-            }
-        });
-        switch_loop_time.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
-                if (isChecked){
-                    showLoopPanel();
-                    Contanst.loop_time = -1;
-                }else {
-                    Contanst.loop_time = 0;
-                }
-            }
-        });
-        tv_set_navi_mode_build.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Tools.showToast(getString(R.string.reset_map));
-                BaseApplication.isFistBoot = true;
-                UdpControlSendManager.getInstance().set_navi_mode_build(Contanst.id,Contanst.to_id);
+                showLoopPanel();
             }
         });
         bt_set_disin_cmd_charge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Tools.showToast("打开充电桩");
                 UdpControlSendManager.getInstance().set_base_cmd(Contanst.id, Contanst.to_id,0,true);
             }
         });
         bt_set_disin_cmd_charge_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Tools.showToast("关闭充电桩");
                 UdpControlSendManager.getInstance().set_base_cmd(Contanst.id, Contanst.to_id,0,false);
             }
         });
@@ -125,28 +111,28 @@ public class SettingActivity extends BaseActivity  {
         tv_manual_q.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Tools.showToast("手动喷雾强");
+                Tools.showToast("手动喷雾强");
                 UdpControlSendManager.getInstance().set_disin_cmd(Contanst.id, Contanst.to_id,3,2);
             }
         });
         tv_manual_r.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Tools.showToast("手动喷雾弱");
+                Tools.showToast("手动喷雾弱");
                 UdpControlSendManager.getInstance().set_disin_cmd(Contanst.id, Contanst.to_id,3,1);
             }
         });
         tv_auto_q.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Tools.showToast("行走喷雾强");
+                Tools.showToast("行走喷雾强");
                 UdpControlSendManager.getInstance().set_disin_cmd(Contanst.id, Contanst.to_id,1,2);
             }
         });
         tv_auto_r.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Tools.showToast("行走喷雾弱");
+                Tools.showToast("行走喷雾弱");
                 UdpControlSendManager.getInstance().set_disin_cmd(Contanst.id, Contanst.to_id,1,1);
             }
         });
@@ -196,27 +182,7 @@ public class SettingActivity extends BaseActivity  {
             }
         });
 
-        bt_set_charge_power_action.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Tools.showToast("对接充电任务");
-                UdpControlSendManager.getInstance().set_docking_action(Contanst.id, Contanst.to_id);
-                AckListenerService.instance.addACKListener("set_charge_power_action", new AckListenerService.ACKListener() {
-                    @Override
-                    public void onACK(boolean isSuccess) {
 
-                        if (isSuccess){
-                            Tools.showToast("启动成功");
-                            UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
-                            AckListenerService.instance.removeACKListener();
-                        }else {
-                            Tools.showToast("启动失败");
-                        }
-
-                    }
-                });
-            }
-        });
     }
 
 
@@ -242,20 +208,49 @@ public class SettingActivity extends BaseActivity  {
         super.onStart();
     }
 
-    IndicatorSeekBar sb_distance;
+    IndicatorSeekBar sb_loop_time;
+    SwitchButton switch_loop_time_panel;
     private void  showLoopPanel(){
         NiceDialog.init().setLayoutId(R.layout.dialog_panel).setConvertListener(new ViewConvertListener() {
             @Override
-            public void convertView(ViewHolder holder, final BaseNiceDialog dialog) {
-                sb_distance = holder.getView(R.id.sb_distance);
-                sb_distance.setOnSeekChangeListener(new OnSimpleSeekChangeListener() {
+            public void convertView(final ViewHolder holder, final BaseNiceDialog dialog) {
+                sb_loop_time = holder.getView(R.id.sb_loop_time);
+                switch_loop_time_panel = holder.getView(R.id.switch_loop_time_panel);
+                if ( Contanst.loop_time == -1){
+                    holder.getView(R.id.ll_container).setVisibility(View.INVISIBLE);
+                    switch_loop_time_panel.setChecked(true);
+                }else {
+                    holder.getView(R.id.ll_container).setVisibility(View.VISIBLE);
+                    sb_loop_time.setProgress(Contanst.loop_time);
+                    switch_loop_time_panel.setChecked(false);
+                }
+
+                switch_loop_time_panel.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(SwitchButton view, boolean isChecked) {
+                        //无限循环
+                        if (isChecked){
+                            holder.getView(R.id.ll_container).setVisibility(View.INVISIBLE);
+                            Tools.showToast("开启无限循环");
+                            Contanst.loop_time = -1;
+                        }else{
+                            holder.getView(R.id.ll_container).setVisibility(View.VISIBLE);
+                            Contanst.loop_time = 1;
+
+                        }
+                    }
+                });
+                sb_loop_time = holder.getView(R.id.sb_loop_time);
+                sb_loop_time.setOnSeekChangeListener(new OnSimpleSeekChangeListener() {
                     @Override
                     public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
                         super.onStopTrackingTouch(seekBar);
-                        sb_distance = seekBar;
+                        sb_loop_time = seekBar;
+                        //赋值
+                        Contanst.loop_time = sb_loop_time.getProgress();
                     }
                 });
-                sb_distance.setIndicatorTextFormat("${PROGRESS} 次");
+                sb_loop_time.setIndicatorTextFormat("${PROGRESS} 次");
 
 
                 holder.setOnClickListener(R.id.tv_sure, new View.OnClickListener() {

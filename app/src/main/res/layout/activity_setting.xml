@@ -28,7 +28,6 @@
             app:btnPressedRatio="0.5"
             app:btnSolidColor="@color/config_color_50_blue" />
         <ezy.ui.view.RoundButton
-            android:visibility="gone"
             android:id="@+id/tv_manual_r"
             style="@style/RoundButton"
             android:layout_width="120dp"
@@ -48,7 +47,6 @@
             app:btnPressedRatio="0.5"
             app:btnSolidColor="@color/config_color_50_blue" />
         <ezy.ui.view.RoundButton
-            android:visibility="gone"
             android:id="@+id/tv_auto_r"
             style="@style/RoundButton"
             android:layout_width="120dp"
@@ -70,7 +68,10 @@
             app:btnSolidColor="@color/colorMajor"
             />
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"></View>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -84,23 +85,12 @@
             app:btnCornerRadius="10dp"
             app:btnPressedRatio="0.5"
             android:layout_width="100dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:textSize="18sp"
             app:btnSolidColor="@color/colorMajor"
             />
 
-        <ezy.ui.view.RoundButton
-            android:visibility="visible"
-            android:id="@+id/bt_set_charge_power_action"
-            style="@style/RoundButton"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="对接充电"
-            android:textSize="18sp"
-            app:btnCornerRadius="10dp"
-            app:btnPressedRatio="0.5"
-            app:btnSolidColor="@color/colorMajor" />
+
         <ezy.ui.view.RoundButton
             android:visibility="visible"
             android:id="@+id/bt_loop_time"
@@ -108,21 +98,18 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="无限循环"
+            android:text="循环"
             android:textSize="18sp"
             app:btnCornerRadius="10dp"
             app:btnPressedRatio="0.5"
             app:btnSolidColor="@color/colorMajor" />
 
-        <com.suke.widget.SwitchButton
-            android:id="@+id/switch_loop_time"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            app:sb_checked_color="@color/colorMajor" />
-
     </LinearLayout>
 
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"></View>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -143,8 +130,8 @@
         <ezy.ui.view.RoundButton
             android:id="@+id/bt_set_disin_cmd_charge_close"
             style="@style/RoundButton"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
             android:text="@string/charging_point_close"
             android:textSize="18sp"
             app:btnCornerRadius="10dp"
@@ -152,22 +139,31 @@
             app:btnSolidColor="@color/colorMajor" />
 
         <ezy.ui.view.RoundButton
-            android:id="@+id/tv_set_navi_mode_build"
+            android:id="@+id/bt_recharging_yes"
             style="@style/RoundButton"
             android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:text="@string/reset_map"
+            android:layout_height="wrap_content"
+            android:text="回充"
             android:textSize="18sp"
             app:btnCornerRadius="10dp"
             app:btnPressedRatio="0.5"
             app:btnSolidColor="@color/colorMajor" />
-        <com.suke.widget.SwitchButton
-            android:id="@+id/switch_recharging"
+        <ezy.ui.view.RoundButton
+            android:id="@+id/bt_recharging_no"
+            style="@style/RoundButton"
             android:layout_width="100dp"
-            android:layout_height="50dp"
-            app:sb_checked_color="@color/colorMajor" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:text="不回充"
+            android:textSize="18sp"
+            app:btnCornerRadius="10dp"
+            app:btnPressedRatio="0.5"
+            app:btnSolidColor="@color/colorMajor" />
 
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"></View>
     <FrameLayout
         android:visibility="gone"
         android:paddingLeft="10dp"
