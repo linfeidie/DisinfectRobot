@@ -34,7 +34,7 @@ public class BaseApplication extends Application {
     application=this;
     mainTid = android.os.Process.myTid();
     handler=new Handler();
-    //CrashHandler.getInstance().initCrashHandler(this);
+   // CrashHandler.getInstance().initCrashHandler(this);
     ObtainStatusStamp.init();
     AckListenerService.init();
     GetFromServerData.listener();

@@ -91,6 +91,10 @@ public class Contanst {
     public static final String set_goal = "set_goal";//设置描点
 
     public static final String set_charge_power_action = "set_charge_power_action"; //对接充电任务
+
+    public static final String set_lift_cmd = "set_lift_cmd"; //设置顶升设备命令
+
+    public static final String set_goal_param = "set_goal_param"; //
     /*
     * 指令类型  返回类型
     * */

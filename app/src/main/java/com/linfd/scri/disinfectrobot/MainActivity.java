@@ -77,7 +77,7 @@ public class MainActivity extends BaseActivity {
 //        mTopBar.setTitle("正在开启");
 //        mTopBar.setSubTitle("电量:85%");
         mTopBar.setVisibility(View.GONE);
-        //hideBottomMenu();
+        hideBottomMenu();
         //hideBottomUIMenu(); 使用这个
 
         UpdateStateControlManager.getInstance().setBitmapCallback(new UpdateStateControlManager.BitmapCallback() {

@@ -32,10 +32,7 @@
         <activity android:name=".MainActivity"
             android:screenOrientation="landscape"
             android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity android:name=".SettingActivity"
             android:screenOrientation="landscape">
@@ -55,6 +52,17 @@
             android:screenOrientation="landscape"></activity>
         <activity android:name=".WalkingDirectionActivity"
             android:screenOrientation="landscape"></activity>
+        <activity android:name=".LiftMainActivity"
+            android:screenOrientation="landscape">
+
+        </activity>
+        <activity android:name=".BinTongActivity"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <receiver
             android:name=".BootBroadcastReceiver"
             android:enabled="true"

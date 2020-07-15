@@ -81,7 +81,7 @@
             android:visibility="visible"
             android:id="@+id/bt_set_disin_cmd_pump"
             style="@style/RoundButton"
-            android:text="测试"
+            android:text="方向"
             app:btnCornerRadius="10dp"
             app:btnPressedRatio="0.5"
             android:layout_width="100dp"

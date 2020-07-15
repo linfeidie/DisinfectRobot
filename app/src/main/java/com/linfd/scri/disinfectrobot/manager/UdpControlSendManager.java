@@ -31,8 +31,10 @@ import com.linfd.scri.disinfectrobot.entity.SetDisinActionEntity;
 import com.linfd.scri.disinfectrobot.entity.SetDisinCmdEntity;
 import com.linfd.scri.disinfectrobot.entity.SetGoalActionEntity;
 import com.linfd.scri.disinfectrobot.entity.SetGoalEntity;
+import com.linfd.scri.disinfectrobot.entity.SetGoalParamEntity;
 import com.linfd.scri.disinfectrobot.entity.SetHeartbeatEntity;
 import com.linfd.scri.disinfectrobot.entity.SetInitPoseEntity;
+import com.linfd.scri.disinfectrobot.entity.SetLiftCmdEntity;
 import com.linfd.scri.disinfectrobot.entity.SetManualCtrlEntity;
 import com.linfd.scri.disinfectrobot.entity.SetNaviModeEntity;
 import com.linfd.scri.disinfectrobot.entity.SetSaveMapEntity;
@@ -644,6 +646,54 @@ public class UdpControlSendManager {
         entity.setFollow(-1);
         entity.setMethod("tail");
         entity.setNot_sleep(false);
+        sendOrder(entity);
+    }
+
+    /*
+    * 设置顶升设备命令
+    * */
+
+    private void set_lift_cmd(String id, String to_id,int updown,int turn){
+        SetLiftCmdEntity entity = new SetLiftCmdEntity();
+        entity.setId(id);
+        entity.setTo_id(to_id);
+        entity.setUpdown(updown);
+        entity.setTurn(turn);
+        sendOrder(entity);
+    }
+    /*
+     * 设置顶升设备命令
+     * 上升
+     * */
+    public void set_lift_cmd_up(String id, String to_id){
+        this.set_lift_cmd(id,to_id,2,0);
+    }
+    /*
+     * 设置顶升设备命令
+     * 下降
+     * */
+    public void set_lift_cmd_down(String id, String to_id){
+        this.set_lift_cmd(id,to_id,1,0);
+    }
+
+    /*
+     * 设置顶升设备命令
+     * 旋转
+     * */
+    public void set_lift_cmd_turn(String id, String to_id){
+        this.set_lift_cmd(id,to_id,0,1);
+    }
+
+    /*
+    *设置描点参数
+    * */
+
+    public void set_goal_param(String id, String to_id,String goal_type){
+        SetGoalParamEntity entity = new SetGoalParamEntity();
+        entity.setId(id);
+        entity.setTo_id(to_id);
+        entity.setType(goal_type);
+        entity.setGoal_id(1);
         sendOrder(entity);
     }
 }
