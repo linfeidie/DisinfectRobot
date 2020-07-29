@@ -13,23 +13,28 @@ public class RobotStatusCallbackEntity extends TypeEntity {
 
 //  注意：此类不要删  更新好了
     /**
-     * id : xxx
-     * to_id : xxx
-     * action :
-     * battery_percent : 80.8
-     * speed : [1,0]
-     * robot_pose : [1,2,0,1]
-     * exception_code : 10000
-     * stamp : 1.58892384034235E9
-     * map_update : 1.58892384034235E9
-     * action_state  0 idle ,  1 running , 2 pause ,3  finish ,4  stop
+     "id":"xxx",//本机uuid
+     "to_id":"xxx",//目标uuid
+     "type":"robot_status",//机器人状态
+     "localization":false,//false建图模式,true定位模式,默认false
+     "action":"",//当前任务名称
+     "action_id":1,//当前任务ids
+     "action_state":0,//# 任务状态 0 idle ,1 running , 2 pause, 3 finish, 4 stoping
+     "battery_percent":800,//int,实际电量需要除以10
+     "charge_state": false,//true,表示正在充电
+     "speed":[100,100],//int,[线速度，角速度] ,需要除以1000
+     "robot_pose":[1000,2000,1000],//int,机器人坐标,x,y,z,yaw,需要除以1000
+     "exception":false,//bool,true有异常/警告,false没有
+     "stamp":1588923840.34235,//系统时间戳,double
+     "map_update":1588923840.34235,//地图更新时间戳,单位dobule,
+     "nav_state":0//导航状态 ,0正常,1重定位,2未准备好,3定位异常,int
      */
 
     private String id;
     private String to_id;
     private String action;
     private double battery_percent;
-    private int exception_code;
+    private boolean exception;
     private double stamp;
     private double map_update;
     private List<Double> speed;
@@ -77,12 +82,12 @@ public class RobotStatusCallbackEntity extends TypeEntity {
         this.battery_percent = battery_percent;
     }
 
-    public int getException_code() {
-        return exception_code;
+    public boolean isException() {
+        return exception;
     }
 
-    public void setException_code(int exception_code) {
-        this.exception_code = exception_code;
+    public void setException(boolean exception) {
+        this.exception = exception;
     }
 
     public double getStamp() {
@@ -194,7 +199,7 @@ public class RobotStatusCallbackEntity extends TypeEntity {
                 ", to_id='" + to_id + '\'' +
                 ", action='" + action + '\'' +
                 ", battery_percent=" + battery_percent +
-                ", exception_code=" + exception_code +
+                ", exception=" + exception +
                 ", stamp=" + stamp +
                 ", map_update=" + map_update +
                 ", speed=" + speed +

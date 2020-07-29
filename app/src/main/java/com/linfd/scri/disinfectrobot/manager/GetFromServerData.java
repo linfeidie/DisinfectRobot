@@ -10,6 +10,7 @@ import com.linfd.scri.disinfectrobot.entity.ApmtStateCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ChargerPoseCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.DataEntity;
 import com.linfd.scri.disinfectrobot.entity.DesinStateCallbackEntity;
+import com.linfd.scri.disinfectrobot.entity.ExceptionCodesCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.LoginCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.MachTypeCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.OnlineIdsCallbackEntity;
@@ -84,6 +85,10 @@ public class GetFromServerData {
 //
                         Log.e(TAG, "充电座位置" + entity.toString()+Thread.currentThread().getName());
                         //showTest("充电座位置"+entity.toString());
+                    }else if (((DataEntity) data).getType().equalsIgnoreCase(Contanst.exception_codes)){
+                        ExceptionCodesCallbackEntity entity = GsonUtil.GsonToBean(dataEntity.getMessage(), ExceptionCodesCallbackEntity.class);
+                        EventBus.getDefault().post(entity);
+                        Log.e(TAG, "异常返回码" + entity.getCodes().toString());
                     }
 
                 }

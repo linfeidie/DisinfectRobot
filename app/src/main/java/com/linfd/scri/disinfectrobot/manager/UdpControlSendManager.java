@@ -17,6 +17,7 @@ import com.linfd.scri.disinfectrobot.entity.GetDisinStateEntity;
 import com.linfd.scri.disinfectrobot.entity.GetMachTypeEntity;
 import com.linfd.scri.disinfectrobot.entity.GetMapEntity;
 import com.linfd.scri.disinfectrobot.entity.GetMapExistEntity;
+import com.linfd.scri.disinfectrobot.entity.GetRobotExceptionEntity;
 import com.linfd.scri.disinfectrobot.entity.GetRobotStatusEntity;
 import com.linfd.scri.disinfectrobot.entity.LoginEntity;
 import com.linfd.scri.disinfectrobot.entity.OnlineIdsEntity;
@@ -694,6 +695,17 @@ public class UdpControlSendManager {
         entity.setTo_id(to_id);
         entity.setType(goal_type);
         entity.setGoal_id(1);
+        sendOrder(entity);
+    }
+
+
+    /*
+    * 获取异常代码
+    * */
+    public void get_robot_exception(String id, String to_id){
+        GetRobotExceptionEntity entity = new GetRobotExceptionEntity();
+        entity.setId(id);
+        entity.setTo_id(to_id);
         sendOrder(entity);
     }
 }

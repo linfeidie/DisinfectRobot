@@ -95,6 +95,8 @@ public class Contanst {
     public static final String set_lift_cmd = "set_lift_cmd"; //设置顶升设备命令
 
     public static final String set_goal_param = "set_goal_param"; //
+
+    public static final String get_robot_exception = "get_robot_exception";//获取异常代码
     /*
     * 指令类型  返回类型
     * */
@@ -126,6 +128,8 @@ public class Contanst {
 
 
     public static final String KEY_SHOW01 = "show01"; //页面跳转  要主界面显示暂停和停止按钮
+
+    public static final String exception_codes = "exception_codes";
 
     public static  String KEY_HASHISTORY_POINTS ;//是否有历史保存
 
