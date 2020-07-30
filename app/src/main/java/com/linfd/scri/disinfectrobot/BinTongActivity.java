@@ -4,12 +4,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.linfd.scri.disinfectrobot.entity.DesinStateCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionCodesCallbackEntity;
+import com.linfd.scri.disinfectrobot.entity.ExceptionEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
+import com.linfd.scri.disinfectrobot.manager.ExceptionCodesHelper;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
 import com.linfd.scri.disinfectrobot.view.MyStatusLayout;
 import com.linfd.scri.disinfectrobot.view.PinchImageView;
@@ -20,12 +23,16 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import cn.iwgang.countdownview.CountdownView;
 
 public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBack {
+
+    public static final String TAG = BinTongActivity.class.getSimpleName();
     private PowerConsumptionRankingsBatteryView mPowerConsumptionRankingsBatteryView;
     private NumberProgressBar numberProgressBar;
     private CountdownView countdown_view;
@@ -51,6 +58,12 @@ public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBac
         super.initView();
         mTopBar.setVisibility(View.GONE);
         hideBottomMenu();
+
+        List<Integer> list = new ArrayList<>();
+        list.add(10101);
+        list.add(21101);
+        List<ExceptionEntity> entities = ExceptionCodesHelper.instance.obtainExceptionEntitys(list);
+        Log.e(TAG,entities.toString());
     }
 
 

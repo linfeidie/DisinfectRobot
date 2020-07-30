@@ -1,9 +1,13 @@
 package com.linfd.scri.disinfectrobot.manager;
 
+import com.linfd.scri.disinfectrobot.entity.ExceptionEntity;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 /*
-*
+* 目标  传入异常代码数组集合 返回  异常对象集合
 * */
 public class ExceptionCodesHelper {
 
@@ -13,20 +17,25 @@ public class ExceptionCodesHelper {
     * */
     private Map<Integer, String> components = new HashMap<>();
 
-    private static ExceptionCodesHelper instance = new ExceptionCodesHelper();
+    public static ExceptionCodesHelper instance = new ExceptionCodesHelper();
+
+    public ExceptionCodesHelper() {
+        LoadComponents();
+        LoadExceptionCodes();
+    }
 
     /*
-    * jia
+    * 加载部件数据
     * */
     private void LoadComponents(){
 
-        components.put(01,"SLAM");
-        components.put(02,"左驱电机");
-        components.put(03,"右驱电机");
-        components.put(04,"激光雷达");
-        components.put(05,"控制底板");
-        components.put(06,"超声传感");
-        components.put(07,"红外传感");
+        components.put(1,"SLAM");
+        components.put(2,"左驱电机");
+        components.put(3,"右驱电机");
+        components.put(4,"激光雷达");
+        components.put(5,"控制底板");
+        components.put(6,"超声传感");
+        components.put(7,"红外传感");
         components.put(8,"充电电池");
         components.put(9,"急停按钮");
         components.put(10,"碰撞传感");
@@ -48,7 +57,9 @@ public class ExceptionCodesHelper {
         components.put(26,"函数参数");
         components.put(27,"更换设备");
     }
-
+    /*
+    * 加载异常
+    * */
     private void LoadExceptionCodes() {
         exceptionCodes.put(10101, "机器人定位出现丢失或定位跳跃现象");
         exceptionCodes.put(10102, "无法找到地图或地图解析错误");
@@ -119,6 +130,21 @@ public class ExceptionCodesHelper {
     public String findComponentById(){
         return "";
     }
-
-
+    /*
+    * 对外暴露的方法
+    * */
+    public List<ExceptionEntity> obtainExceptionEntitys(List<Integer> codes){
+        List<ExceptionEntity> entities = new ArrayList<>();
+        for (int i = 0; i < codes.size(); i++) {
+            ExceptionEntity entity = new ExceptionEntity();
+            Integer code = codes.get(i);
+            entity.setNumber(code);
+            entity.setExplain(exceptionCodes.get(code));
+            entity.setComponent(components.get(Integer.valueOf(code.toString().substring(1,3))));
+            entity.setDegree(Integer.valueOf(code.toString().substring(0,1)));
+            entity.setKind(Integer.valueOf(code.toString().substring(3,5)));
+            entities.add(entity);
+        }
+        return entities;
+    }
 }
