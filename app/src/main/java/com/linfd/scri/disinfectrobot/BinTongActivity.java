@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
 
@@ -18,6 +20,8 @@ import com.linfd.scri.disinfectrobot.view.MyStatusLayout;
 import com.linfd.scri.disinfectrobot.view.PinchImageView;
 import com.linfd.scri.disinfectrobot.view.battery.BaseHandlerCallBack;
 import com.linfd.scri.disinfectrobot.view.battery.PowerConsumptionRankingsBatteryView;
+import com.linfd.scri.disinfectrobot.view.recyclerviewpoll.AutoPollAdapter;
+import com.linfd.scri.disinfectrobot.view.recyclerviewpoll.AutoPollRecyclerView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -37,9 +41,11 @@ public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBac
     private NumberProgressBar numberProgressBar;
     private CountdownView countdown_view;
     private MyStatusLayout status_layout_spary, status_layout_box_store;
+    private AutoPollRecyclerView mRecyclerView;
     private int power;
 
     private NoLeakHandler mHandler;
+    private AutoPollAdapter adapter;
 
 
     @Override
@@ -59,19 +65,37 @@ public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBac
         mTopBar.setVisibility(View.GONE);
         hideBottomMenu();
 
+
+        mRecyclerView = (AutoPollRecyclerView) findViewById(R.id.recycleView);
+
+        adapter = new AutoPollAdapter();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.start();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         List<Integer> list = new ArrayList<>();
         list.add(10101);
         list.add(21101);
         List<ExceptionEntity> entities = ExceptionCodesHelper.instance.obtainExceptionEntitys(list);
-        Log.e(TAG,entities.toString());
+        adapter.setmData(entities);
     }
-
-
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
+        if(null != mRecyclerView){
+            mRecyclerView.stop();
+        }
     }
 
     @Override

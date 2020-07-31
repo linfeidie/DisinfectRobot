@@ -11,7 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         app:titlebar_bg_color="@color/colorPrimary" />
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:gravity="center"
+    >
+    <com.linfd.scri.disinfectrobot.view.recyclerviewpoll.AutoPollRecyclerView
+        android:id="@+id/recycleView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="LinearLayoutManager"></com.linfd.scri.disinfectrobot.view.recyclerviewpoll.AutoPollRecyclerView>
+</LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -165,11 +175,6 @@
                 android:layout_height="wrap_content"
                 app:showName="@string/reservoir_level"></com.linfd.scri.disinfectrobot.view.MyStatusLayout>
         </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
-            android:text="异常提示区"></TextView>
+
     </LinearLayout>
 </LinearLayout>
