@@ -15,6 +15,17 @@ import java.util.List;
 
 public class AutoPollAdapter extends RecyclerView.Adapter<AutoPollAdapter.BaseViewHolder> {
     private  List<ExceptionEntity> mData;
+    //第一步 定义接口
+    public interface OnItemClickListener {
+        void onClick(ExceptionEntity entity);
+    }
+
+    private OnItemClickListener mListener;
+
+    //第二步， 写一个公共的方法
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mListener = listener;
+    }
 
     public AutoPollAdapter() {
 
@@ -29,6 +40,7 @@ public class AutoPollAdapter extends RecyclerView.Adapter<AutoPollAdapter.BaseVi
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_auto_poll, parent, false);
         BaseViewHolder holder = new BaseViewHolder(view);
+
         return holder;
     }
 
@@ -37,13 +49,20 @@ public class AutoPollAdapter extends RecyclerView.Adapter<AutoPollAdapter.BaseVi
         if (mData == null || mData.size() == 0){
             return;
         }
-        ExceptionEntity data = mData.get(position % mData.size());
+        final ExceptionEntity data = mData.get(position % mData.size());
         if (data.getDegree() == 1){
             holder.tv.setTextColor(Color.RED);
         }else {
             holder.tv.setTextColor(Color.YELLOW);
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onClick(data);
+            }
+        });
         holder.tv.setText(data.getExplain());
+
     }
 
     @Override
@@ -56,6 +75,7 @@ public class AutoPollAdapter extends RecyclerView.Adapter<AutoPollAdapter.BaseVi
         public BaseViewHolder(View itemView) {
             super(itemView);
             tv = itemView.findViewById(R.id.tv_content);
+
         }
     }
 }

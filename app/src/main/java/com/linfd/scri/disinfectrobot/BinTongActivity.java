@@ -3,10 +3,12 @@ package com.linfd.scri.disinfectrobot;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
@@ -16,12 +18,14 @@ import com.linfd.scri.disinfectrobot.entity.ExceptionEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
 import com.linfd.scri.disinfectrobot.manager.ExceptionCodesHelper;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
+import com.linfd.scri.disinfectrobot.nicedialog.NiceDialog;
 import com.linfd.scri.disinfectrobot.view.MyStatusLayout;
 import com.linfd.scri.disinfectrobot.view.PinchImageView;
 import com.linfd.scri.disinfectrobot.view.battery.BaseHandlerCallBack;
 import com.linfd.scri.disinfectrobot.view.battery.PowerConsumptionRankingsBatteryView;
 import com.linfd.scri.disinfectrobot.view.recyclerviewpoll.AutoPollAdapter;
 import com.linfd.scri.disinfectrobot.view.recyclerviewpoll.AutoPollRecyclerView;
+import com.td.framework.module.dialog.inf.OnDialogConfirmListener;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -34,7 +38,7 @@ import java.util.TimerTask;
 
 import cn.iwgang.countdownview.CountdownView;
 
-public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBack {
+public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBack  {
 
     public static final String TAG = BinTongActivity.class.getSimpleName();
     private PowerConsumptionRankingsBatteryView mPowerConsumptionRankingsBatteryView;
@@ -69,11 +73,17 @@ public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBac
         mRecyclerView = (AutoPollRecyclerView) findViewById(R.id.recycleView);
 
         adapter = new AutoPollAdapter();
+        adapter.setOnItemClickListener(new AutoPollAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(ExceptionEntity entity) {
+               // Tools.showToast(entity.toString());
+                NiceDialog.init().setLayoutId(R.layout.dialog_exception).setWidth(300).setHeight(250).setPosition(Gravity.CENTER).show(getSupportFragmentManager());
+            }
+        });
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.start();
     }
@@ -118,6 +128,8 @@ public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBac
                 break;
         }
     }
+
+
 
     private static class NoLeakHandler<T extends BaseHandlerCallBack> extends Handler {
         private WeakReference<T> wr;
