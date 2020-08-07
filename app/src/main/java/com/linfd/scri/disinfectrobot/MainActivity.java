@@ -43,7 +43,7 @@ public class MainActivity extends BaseActivity {
     public static final String TAG = MainActivity.class.getSimpleName();
     private WaterWaveView wave_view_electric;
     private RoundButton bt_set, bt_manual, bt_set_action_cmd_pause, bt_set_action_cmd_resume, bt_set_action_cmd_stop;
-    private RoundButton bt_set_charge_power_action,tv_set_navi_mode_build;
+    private RoundButton bt_set_charge_power_action, tv_set_navi_mode_build ;;
     private CountdownView countdown_view;
     private PinchImageView pinchImageView;
     private MyStatusLayout status_layout_spary, status_layout_box_store;
@@ -64,7 +64,6 @@ public class MainActivity extends BaseActivity {
         bt_set_charge_power_action = findViewById(R.id.bt_set_charge_power_action);
         run_state  = findViewById(R.id.run_state);
         tv_set_navi_mode_build = findViewById(R.id.tv_set_navi_mode_build);
-
         super.initView();
 
 //        mTopBar.addRightImageButton(R.mipmap.ic_setting,R.id.topbar_right_button).setOnClickListener(new View.OnClickListener() {

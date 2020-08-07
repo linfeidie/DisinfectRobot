@@ -53,7 +53,7 @@ public class AutoPollAdapter extends RecyclerView.Adapter<AutoPollAdapter.BaseVi
         if (data.getDegree() == 1){
             holder.tv.setTextColor(Color.RED);
         }else {
-            holder.tv.setTextColor(Color.YELLOW);
+            holder.tv.setTextColor(Color.rgb(255,204,51));
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

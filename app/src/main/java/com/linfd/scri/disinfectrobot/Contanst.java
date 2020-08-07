@@ -7,9 +7,9 @@ import com.linfd.scri.disinfectrobot.entity.GetMapParamCallbackEntity;
 
 public class Contanst {
 
-    public static  String map_time ;
+    public static  String map_time ; //192.168.1.101  "127.0.0.1"  2.103
 
-    public static final String TargetIp = "192.168.5.100";//目标IP地址   192.168.2.107
+    public static final String TargetIp = "192.168.2.103";//目标IP地址   192.168.2.107  117  192.168.5.100
 
     public static final int TargetPort = 8999; //目标端口8999 8080
 

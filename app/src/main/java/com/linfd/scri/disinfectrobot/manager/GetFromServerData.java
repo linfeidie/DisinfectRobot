@@ -54,10 +54,8 @@ public class GetFromServerData {
                         RobotStatusCallbackEntity entity = GsonUtil.GsonToBean(dataEntity.getMessage(),RobotStatusCallbackEntity.class);
                         if (entity != null){
                             EventBus.getDefault().post(entity);
-                            //showTest(entity.toString());
                         }else{
                             Tools.showToast("异常：状态为空");
-                            //showTest("");
                         }
 
                     }else if (((DataEntity) data).getType().equalsIgnoreCase(Contanst.ser_ack_heartbeat)){
