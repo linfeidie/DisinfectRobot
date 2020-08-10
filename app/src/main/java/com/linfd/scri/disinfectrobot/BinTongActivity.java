@@ -1,5 +1,6 @@
 package com.linfd.scri.disinfectrobot;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -53,13 +54,15 @@ public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBac
     private MyStatusLayout status_layout_spary, status_layout_box_store;
     private AutoPollRecyclerView mRecyclerView;
     private ProgressBar pb_linear_velocity,pb_angular_velocity;
+    private TextView tv_linear_velocity,tv_angular_velocity;
+    private RoundButton tv_set_navi_mode_finish;
     private int power;
     private boolean isCharge = false;// 是否在充电
 
     private NoLeakHandler mHandler;
     private AutoPollAdapter adapter;
     private RoundButton  tv_set_navi_mode_build, bt_set_action_cmd_stop,bt_manual;
-    private RoundButton bt_set_base_cmd_power_off;
+    private RoundButton bt_set_base_cmd_power_off,bt_set_disin_cmd_pump;
     private TextView tv_power;
 
 
@@ -73,7 +76,9 @@ public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBac
         status_layout_box_store = findViewById(R.id.status_layout_box_store);
         pb_linear_velocity = findViewById(R.id.pb_linear_velocity);
         bt_set_base_cmd_power_off = findViewById(R.id.bt_set_base_cmd_power_off);
-
+        tv_linear_velocity = findViewById(R.id.tv_linear_velocity);
+        tv_angular_velocity = findViewById(R.id.tv_angular_velocity);
+        tv_set_navi_mode_finish = findViewById(R.id.tv_set_navi_mode_finish);
         super.initView();
         mTopBar.setVisibility(View.GONE);
         hideBottomMenu();
@@ -84,6 +89,7 @@ public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBac
         tv_set_navi_mode_build = findViewById(R.id.tv_set_navi_mode_build);
         tv_power = findViewById(R.id.tv_power);
         pb_angular_velocity = findViewById(R.id.pb_angular_velocity);
+        bt_set_disin_cmd_pump = findViewById(R.id.bt_set_disin_cmd_pump);
         adapter = new AutoPollAdapter();
         adapter.setOnItemClickListener(new AutoPollAdapter.OnItemClickListener() {
             @Override
@@ -114,9 +120,18 @@ public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBac
             public void onClick(View view) {
                 Tools.showToast(getString(R.string.reset_map));
                 UdpControlSendManager.getInstance().set_navi_mode_build(Contanst.id,Contanst.to_id);
+                tv_set_navi_mode_finish.setVisibility(View.VISIBLE);
+                tv_set_navi_mode_build.setVisibility(View.GONE);
             }
         });
-
+        tv_set_navi_mode_finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Tools.showToast("完成");
+                tv_set_navi_mode_finish.setVisibility(View.GONE);
+                tv_set_navi_mode_build.setVisibility(View.VISIBLE);
+            }
+        });
         //任务停止
         bt_set_action_cmd_stop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,6 +167,14 @@ public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBac
                 });
             }
         });
+        bt_set_disin_cmd_pump.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(BinTongActivity.this, WalkingDirectionActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -159,8 +182,7 @@ public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBac
         super.onStart();
 
         List<Integer> list = new ArrayList<>();
-        list.add(10101);
-        list.add(21101);
+        list.add(99999);
         List<ExceptionEntity> entities = ExceptionCodesHelper.instance.obtainExceptionEntitys(list);
         adapter.setmData(entities);
     }
@@ -223,12 +245,15 @@ public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBac
         tv_power.setText("电量:"+ (int)entity.getBattery_percent()/10 + "%");
 
         pb_linear_velocity.setProgress((int)(entity.getSpeed().get(0)/10));//线速度
-
+        tv_linear_velocity.setText((entity.getSpeed().get(0)/1000+"m/s"));
         pb_angular_velocity.setProgress((int)(entity.getSpeed().get(1)/10));//角速度
+        tv_angular_velocity.setText((entity.getSpeed().get(1)/10)+"r/s");
         //如果有异常字段为真
         if (entity.isException()){
             //获取异常
             UdpControlSendManager.getInstance().get_robot_exception(Contanst.id,Contanst.to_id);
+        }else {
+
         };
 
         if (entity.isCharge_state()){

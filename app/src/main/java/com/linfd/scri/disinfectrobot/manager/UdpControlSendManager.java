@@ -184,6 +184,7 @@ public class UdpControlSendManager {
         entity.setId(id);
         entity.setLinear_speed(linear_speed);
         entity.setTo_id(to_id);
+        entity.setMan_switch(Contanst.man_switch);
         sendOrder(entity);
     }
 

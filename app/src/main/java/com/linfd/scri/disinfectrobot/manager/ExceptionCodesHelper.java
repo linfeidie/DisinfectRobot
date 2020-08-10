@@ -28,7 +28,7 @@ public class ExceptionCodesHelper {
     * 加载部件数据
     * */
     private void LoadComponents(){
-
+        components.put(99,"无");
         components.put(1,"SLAM");
         components.put(2,"左驱电机");
         components.put(3,"右驱电机");
@@ -61,6 +61,7 @@ public class ExceptionCodesHelper {
     * 加载异常
     * */
     private void LoadExceptionCodes() {
+        exceptionCodes.put(99999, "暂无异常");
         exceptionCodes.put(10101, "机器人定位出现丢失或定位跳跃现象");
         exceptionCodes.put(10102, "无法找到地图或地图解析错误");
         exceptionCodes.put(20103, "机器人处于障碍物内,或无地图区域,有可能机器人初始位置不正确,无法定位,请进行人工标定");

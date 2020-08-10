@@ -18,7 +18,7 @@ import ezy.ui.view.RoundButton;
 
 public class WalkingDirectionActivity extends BaseActivity implements View.OnTouchListener{
     private RoundButton tv_leftward,tv_rightward,tv_forward,tv_backward;
-    private RoundButton bt_set_base_cmd_power_off;
+    private RoundButton bt_set_base_cmd_power_off,tv_switch_open,tv_switch_close;
 
     public void initView() {
         setContentView(R.layout.activity_walk_direction);
@@ -37,7 +37,8 @@ public class WalkingDirectionActivity extends BaseActivity implements View.OnTou
         tv_rightward = findViewById(R.id.tv_rightward);
         tv_forward = findViewById(R.id.tv_forward);
         tv_backward = findViewById(R.id.tv_backward);
-
+        tv_switch_open = findViewById(R.id.tv_switch_open);
+        tv_switch_close = findViewById(R.id.tv_switch_close);
         bt_set_base_cmd_power_off = findViewById(R.id.bt_set_base_cmd_power_off);
 
     }
@@ -64,11 +65,31 @@ public class WalkingDirectionActivity extends BaseActivity implements View.OnTou
                 });
             }
         });
+
+        tv_switch_open.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Contanst.man_switch = 1;
+                Tools.showToast("已解锁");
+            }
+        });
+
+        tv_switch_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Contanst.man_switch = 0;
+                Tools.showToast("已加锁");
+            }
+        });
     }
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            if (Contanst.man_switch == 0){
+                Tools.showToast("请解锁");
+                return true;
+            }
             switch (view.getId()) {
                 case R.id.tv_forward:
 

@@ -57,6 +57,8 @@ public class Contanst {
 
     public static boolean switch_recharging = false;//是否回充
 
+    public  static  int man_switch = 0;//宾通切换
+
     /*
     * 命令请求
     * */

@@ -20,9 +20,19 @@ public class SetManualCtrlEntity extends TypeEntity {
   private String to_id;
   private double linear_speed;
   private double angular_speed;
+  private int man_switch;
 //  private double timeout;
 //  private double dist;
 //  private double angle;
+
+
+  public int getMan_switch() {
+    return man_switch;
+  }
+
+  public void setMan_switch(int man_switch) {
+    this.man_switch = man_switch;
+  }
 
   public SetManualCtrlEntity() {
     setType("set_manual_ctrl");

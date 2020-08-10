@@ -99,5 +99,31 @@
             app:btnSolidColor="@android:color/holo_red_light"
             android:layout_alignParentBottom="true"
             android:layout_margin="20dp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical">
+            <ezy.ui.view.RoundButton
+                android:id="@+id/tv_switch_open"
+                style="@style/RoundButton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:text="解锁"
+                app:btnCornerRadius="10dp"
+                app:btnPressedRatio="0.5"
+                app:btnSolidColor="@color/config_color_50_blue" />
+            <ezy.ui.view.RoundButton
+                android:id="@+id/tv_switch_close"
+                style="@style/RoundButton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:text="加锁"
+                app:btnCornerRadius="10dp"
+                app:btnPressedRatio="0.5"
+                app:btnSolidColor="@color/config_color_50_blue" />
+        </LinearLayout>
     </RelativeLayout>
+
 </LinearLayout>
