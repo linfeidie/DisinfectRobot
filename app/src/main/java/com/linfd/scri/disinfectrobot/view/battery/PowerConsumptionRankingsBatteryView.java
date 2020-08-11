@@ -86,7 +86,7 @@ public class PowerConsumptionRankingsBatteryView extends View {
     /**
      * 电池高度
      */
-    private int levelHeight = 100;
+    private int levelHeight = 0;
 
     /**
      * 电池外壳和电池等级直接的间距

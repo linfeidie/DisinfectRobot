@@ -7,9 +7,9 @@ import com.linfd.scri.disinfectrobot.entity.GetMapParamCallbackEntity;
 
 public class Contanst {
 
-    public static  String map_time ; //192.168.1.101  "127.0.0.1"  2.103
+    public static  String map_time ; //192.168.1.101 连接网线  "127.0.0.1"  192.168.2.103 是网络地址
 
-    public static final String TargetIp = "192.168.2.103";//目标IP地址   192.168.2.107  117  192.168.5.100
+    public static final String TargetIp = "192.168.1.101";//目标IP地址   192.168.2.107  117  192.168.5.100
 
     public static final int TargetPort = 8999; //目标端口8999 8080
 
@@ -99,6 +99,8 @@ public class Contanst {
     public static final String set_goal_param = "set_goal_param"; //
 
     public static final String get_robot_exception = "get_robot_exception";//获取异常代码
+
+    public static final String set_robot_wifi = "set_robot_wifi"; //设置机器人wifi连接
     /*
     * 指令类型  返回类型
     * */

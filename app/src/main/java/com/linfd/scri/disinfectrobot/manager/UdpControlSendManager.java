@@ -38,6 +38,7 @@ import com.linfd.scri.disinfectrobot.entity.SetInitPoseEntity;
 import com.linfd.scri.disinfectrobot.entity.SetLiftCmdEntity;
 import com.linfd.scri.disinfectrobot.entity.SetManualCtrlEntity;
 import com.linfd.scri.disinfectrobot.entity.SetNaviModeEntity;
+import com.linfd.scri.disinfectrobot.entity.SetRobotWifiEntity;
 import com.linfd.scri.disinfectrobot.entity.SetSaveMapEntity;
 import com.linfd.scri.disinfectrobot.entity.SetWorkModeEntity;
 
@@ -708,5 +709,34 @@ public class UdpControlSendManager {
         entity.setId(id);
         entity.setTo_id(to_id);
         sendOrder(entity);
+    }
+
+    /*
+    * 设置机器人wifi连接
+    * */
+
+    public void set_robot_wifi(String id, String to_id,String wifi_type,String action,String ssid,String passwd){
+        SetRobotWifiEntity entity = new SetRobotWifiEntity();
+        entity.setId(id);
+        entity.setTo_id(to_id);
+        entity.setAction(action);
+        entity.setWifi_type(wifi_type);
+        entity.setSsid(ssid);
+        entity.setPasswd(passwd);
+        sendOrder(entity);
+    }
+
+    /*
+    * 打开热点
+    * */
+    public void set_robot_wifi_open(String id, String to_id){
+        this.set_robot_wifi(id,to_id,"hotspot","create","","");
+    }
+
+    /*
+    * 关闭热点
+    * */
+    public void set_robot_wifi_close(String id, String to_id){
+        this.set_robot_wifi(id,to_id,"hotspot","down","","");
     }
 }

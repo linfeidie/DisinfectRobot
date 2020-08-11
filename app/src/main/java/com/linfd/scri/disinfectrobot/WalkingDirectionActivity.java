@@ -19,6 +19,7 @@ import ezy.ui.view.RoundButton;
 public class WalkingDirectionActivity extends BaseActivity implements View.OnTouchListener{
     private RoundButton tv_leftward,tv_rightward,tv_forward,tv_backward;
     private RoundButton bt_set_base_cmd_power_off,tv_switch_open,tv_switch_close;
+    private RoundButton set_robot_wifi_open,set_robot_wifi_close;
 
     public void initView() {
         setContentView(R.layout.activity_walk_direction);
@@ -40,6 +41,8 @@ public class WalkingDirectionActivity extends BaseActivity implements View.OnTou
         tv_switch_open = findViewById(R.id.tv_switch_open);
         tv_switch_close = findViewById(R.id.tv_switch_close);
         bt_set_base_cmd_power_off = findViewById(R.id.bt_set_base_cmd_power_off);
+        set_robot_wifi_open = findViewById(R.id.set_robot_wifi_open);
+        set_robot_wifi_close = findViewById(R.id.set_robot_wifi_close);
 
     }
 
@@ -70,6 +73,7 @@ public class WalkingDirectionActivity extends BaseActivity implements View.OnTou
             @Override
             public void onClick(View view) {
                 Contanst.man_switch = 1;
+                UdpControlSendManager.getInstance().set_manual_ctrl_stop(Contanst.id,Contanst.to_id);
                 Tools.showToast("已解锁");
             }
         });
@@ -78,7 +82,22 @@ public class WalkingDirectionActivity extends BaseActivity implements View.OnTou
             @Override
             public void onClick(View view) {
                 Contanst.man_switch = 0;
+                UdpControlSendManager.getInstance().set_manual_ctrl_stop(Contanst.id,Contanst.to_id);
                 Tools.showToast("已加锁");
+            }
+        });
+        set_robot_wifi_open.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UdpControlSendManager.getInstance().set_robot_wifi_open(Contanst.id,Contanst.to_id);
+                Tools.showToast("已打开热点");
+            }
+        });
+        set_robot_wifi_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UdpControlSendManager.getInstance().set_robot_wifi_close(Contanst.id,Contanst.to_id);
+                Tools.showToast("已关闭热点");
             }
         });
     }
@@ -86,6 +105,7 @@ public class WalkingDirectionActivity extends BaseActivity implements View.OnTou
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            //判断一下  要解锁才可以使用
             if (Contanst.man_switch == 0){
                 Tools.showToast("请解锁");
                 return true;

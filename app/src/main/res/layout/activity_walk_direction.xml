@@ -123,6 +123,24 @@
                 app:btnCornerRadius="10dp"
                 app:btnPressedRatio="0.5"
                 app:btnSolidColor="@color/config_color_50_blue" />
+            <ezy.ui.view.RoundButton
+                android:id="@+id/set_robot_wifi_open"
+                style="@style/RoundButton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:text="打开热点"
+                app:btnCornerRadius="10dp"
+                app:btnPressedRatio="0.5"
+                app:btnSolidColor="@color/config_color_50_blue" />
+            <ezy.ui.view.RoundButton
+                android:id="@+id/set_robot_wifi_close"
+                style="@style/RoundButton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:text="关闭热点"
+                app:btnCornerRadius="10dp"
+                app:btnPressedRatio="0.5"
+                app:btnSolidColor="@color/config_color_50_blue" />
         </LinearLayout>
     </RelativeLayout>
 

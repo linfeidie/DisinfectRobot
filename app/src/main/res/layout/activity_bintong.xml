@@ -110,6 +110,7 @@
                     android:progress="18"
                     android:progressDrawable="@drawable/progressbar_bg" />
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/tv_linear_velocity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -145,6 +146,7 @@
                     android:progress="18"
                     android:progressDrawable="@drawable/progressbar_bg" />
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/tv_angular_velocity"
                     android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
