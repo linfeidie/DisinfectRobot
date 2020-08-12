@@ -100,6 +100,7 @@
                     android:textColor="@color/colorMajor" />
 
                 <ProgressBar
+                    android:visibility="gone"
                     android:id="@+id/pb_linear_velocity"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="200dp"
@@ -110,7 +111,6 @@
                     android:progress="18"
                     android:progressDrawable="@drawable/progressbar_bg" />
                 <TextView
-                    android:visibility="gone"
                     android:id="@+id/tv_linear_velocity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -137,6 +137,7 @@
                     android:textColor="@color/colorMajor" />
 
                 <ProgressBar
+                    android:visibility="gone"
                     android:id="@+id/pb_angular_velocity"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="200dp"
@@ -146,7 +147,6 @@
                     android:progress="18"
                     android:progressDrawable="@drawable/progressbar_bg" />
                 <TextView
-                    android:visibility="gone"
                     android:id="@+id/tv_angular_velocity"
                     android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
@@ -279,6 +279,18 @@
                 android:layout_gravity="bottom|center_horizontal"
                 android:layout_marginTop="10dp"
                 android:text="@string/control"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:btnCornerRadius="10dp"
+                app:btnPressedRatio="0.5"
+                app:btnSolidColor="@color/colorMajor"></ezy.ui.view.RoundButton>
+            <ezy.ui.view.RoundButton
+                android:id="@+id/set_navi_mode_loc"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginTop="10dp"
+                android:text="Location"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:btnCornerRadius="10dp"

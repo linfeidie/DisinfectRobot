@@ -19,6 +19,7 @@ import com.linfd.scri.disinfectrobot.entity.DesinStateCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionCodesCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
+import com.linfd.scri.disinfectrobot.manager.AckListenerService;
 import com.linfd.scri.disinfectrobot.manager.ExceptionCodesHelper;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
 import com.linfd.scri.disinfectrobot.nicedialog.BaseNiceDialog;
@@ -62,7 +63,7 @@ public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBac
     private NoLeakHandler mHandler;
     private AutoPollAdapter adapter;
     private RoundButton  tv_set_navi_mode_build, bt_set_action_cmd_stop,bt_manual;
-    private RoundButton bt_set_base_cmd_power_off,bt_set_disin_cmd_pump;
+    private RoundButton bt_set_base_cmd_power_off,bt_set_disin_cmd_pump,set_navi_mode_loc;
     private TextView tv_power;
 
 
@@ -79,6 +80,7 @@ public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBac
         tv_linear_velocity = findViewById(R.id.tv_linear_velocity);
         tv_angular_velocity = findViewById(R.id.tv_angular_velocity);
         tv_set_navi_mode_finish = findViewById(R.id.tv_set_navi_mode_finish);
+        set_navi_mode_loc = findViewById(R.id.set_navi_mode_loc);
         super.initView();
         mTopBar.setVisibility(View.GONE);
         hideBottomMenu();
@@ -127,7 +129,23 @@ public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBac
         tv_set_navi_mode_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Tools.showToast("完成");
+
+                UdpControlSendManager.getInstance().set_save_map(Contanst.id,Contanst.to_id);
+                Tools.showToast("保存地图成功");
+//                AckListenerService.instance.addACKListener("set_save_map", new AckListenerService.ACKListener() {
+//                    @Override
+//                    public void onACK(boolean isSuccess) {
+//
+//                        if (isSuccess){
+//                            Tools.showToast("保存地图成功");
+//                            UdpControlSendManager.getInstance().set_navi_mode_loc(Contanst.id, Contanst.to_id);
+//                            AckListenerService.instance.removeACKListener();
+//                        }else {
+//                            Tools.showToast("保存地图失败");
+//                        }
+//
+//                    }
+//                });
                 tv_set_navi_mode_finish.setVisibility(View.GONE);
                 tv_set_navi_mode_build.setVisibility(View.VISIBLE);
             }
@@ -173,6 +191,13 @@ public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBac
 
                 Intent intent = new Intent(BinTongActivity.this, WalkingDirectionActivity.class);
                 startActivity(intent);
+            }
+        });
+        set_navi_mode_loc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Tools.showToast("已设成location模式");
+                UdpControlSendManager.getInstance().set_navi_mode_loc(Contanst.id, Contanst.to_id);
             }
         });
     }
@@ -247,7 +272,7 @@ public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBac
         pb_linear_velocity.setProgress((int)(entity.getSpeed().get(0)/10));//线速度
         tv_linear_velocity.setText((entity.getSpeed().get(0)/1000+"m/s"));
         pb_angular_velocity.setProgress((int)(entity.getSpeed().get(1)/10));//角速度
-        tv_angular_velocity.setText((entity.getSpeed().get(1)/10)+"r/s");
+        tv_angular_velocity.setText((entity.getSpeed().get(1)/1000)+"r/s");
         //如果有异常字段为真
         if (entity.isException()){
             //获取异常
