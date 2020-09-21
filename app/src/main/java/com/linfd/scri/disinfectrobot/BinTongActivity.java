@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.linfd.scri.disinfectrobot.entity.DesinStateCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionCodesCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionEntity;
@@ -52,7 +51,6 @@ public class BinTongActivity extends  BaseActivity implements BaseHandlerCallBac
 
     public static final String TAG = BinTongActivity.class.getSimpleName();
     private PowerConsumptionRankingsBatteryView mBatteryView;
-    private NumberProgressBar numberProgressBar;
     private CountdownView countdown_view;
     private MyStatusLayout status_layout_spary, status_layout_box_store;
     private AutoPollRecyclerView mRecyclerView;

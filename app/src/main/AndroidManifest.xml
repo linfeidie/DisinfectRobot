@@ -62,6 +62,7 @@
             android:configChanges="orientation|keyboardHidden"></activity>
         <activity android:name=".BinTongActivity"
             android:screenOrientation="landscape">
+
         </activity>
         <activity android:name=".BinTongActivity2"
             android:screenOrientation="landscape">
