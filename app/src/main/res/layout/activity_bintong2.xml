@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:orientation="vertical">
+    <com.stx.xhb.commontitlebar.CustomTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:titlebar_bg_color="@color/colorPrimary" />
+    <LinearLayout
+        android:id="@+id/ll_left"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical">
+        <cn.iwgang.countdownview.CountdownView
+            android:layout_marginLeft="20dp"
+            android:id="@+id/countdown_view"
+            android:layout_width="wrap_content"
+            android:layout_height="65dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            app:isHideTimeBackground="false"
+            app:isShowDay="false"
+            app:isShowHour="true"
+            app:isShowMillisecond="false"
+            app:isShowMinute="true"
+            app:isShowSecond="true"
+            app:isShowTimeBgDivisionLine="false"
+            app:suffixGravity="center"
+            app:suffixTextColor="#000000"
+            app:suffixTextSize="20sp"
+            app:timeBgColor="#FF5000"
+            app:timeTextColor="#FFFFFF"
+            app:timeTextSize="50sp" />
+        <LinearLayout
+            android:id="@+id/ll_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:gravity="bottom"
+                android:text="线速度："
+                android:textColor="@color/colorMajor" />
+
+            <TextView
+                android:id="@+id/tv_linear_velocity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text=""
+                android:layout_gravity="center"
+                ></TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:gravity="bottom"
+                android:text="角速度："
+                android:textColor="@color/colorMajor" />
+
+            <TextView
+                android:id="@+id/tv_angular_velocity"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_gravity="center"
+                ></TextView>
+
+        </LinearLayout>
+        <com.linfd.scri.disinfectrobot.view.MyStatusLayout
+            android:layout_marginTop="40dp"
+            android:id="@+id/status_layout_spary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:showName="@string/spray_intensity"></com.linfd.scri.disinfectrobot.view.MyStatusLayout>
+
+        <com.linfd.scri.disinfectrobot.view.MyStatusLayout
+            android:id="@+id/status_layout_box_store"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:showName="@string/reservoir_level"></com.linfd.scri.disinfectrobot.view.MyStatusLayout>
+        <FrameLayout
+            android:id="@+id/fl_power"
+            android:layout_width="140dp"
+            android:layout_marginTop="40dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <com.linfd.scri.disinfectrobot.view.battery.PowerConsumptionRankingsBatteryView
+                android:id="@+id/mPowerConsumptionRankingsBatteryView"
+                android:layout_width="70dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:id="@+id/tv_power"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="电量"
+                android:textColor="@color/white"></TextView>
+
+        </FrameLayout>
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/b"
+        android:layout_toRightOf="@id/ll_left"
+        android:layout_toLeftOf="@id/dynamicSoreView">
+        <TextView
+            android:id="@+id/tv_exception"
+            android:layout_gravity="bottom|left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/icon_exception"
+            ></TextView>
+    </FrameLayout>
+    <fj.mtsortbutton.lib.DynamicSoreView
+        android:layout_alignParentRight="true"
+        android:id="@+id/dynamicSoreView"
+        android:background="#ffffff"
+        app:SoreRadioSelect="@drawable/radio1"
+        app:SoreRadioUnselected="@drawable/radio2"
+        app:SoreNumber="6"
+        app:SoreDistance="20"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"/>
+
+
+</RelativeLayout>

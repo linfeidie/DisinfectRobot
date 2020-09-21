@@ -30,6 +30,33 @@ public class ExceptionEntity {
     * */
     private String explain;
 
+    /*
+    * 异常次数
+    * */
+    private int nums;
+
+    /*
+    * 时间戳
+    * */
+
+    private int stamps;
+
+    public int getNums() {
+        return nums;
+    }
+
+    public void setNums(int nums) {
+        this.nums = nums;
+    }
+
+    public int getStamps() {
+        return stamps;
+    }
+
+    public void setStamps(int stamps) {
+        this.stamps = stamps;
+    }
+
     public int getNumber() {
         return number;
     }

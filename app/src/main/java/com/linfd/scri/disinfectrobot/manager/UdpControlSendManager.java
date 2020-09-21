@@ -739,4 +739,19 @@ public class UdpControlSendManager {
     public void set_robot_wifi_close(String id, String to_id){
         this.set_robot_wifi(id,to_id,"hotspot","down","","");
     }
+
+    /*
+    * 连接其他热点
+    * */
+    public void set_robot_wifi_ap_open(String id, String to_id){
+        this.set_robot_wifi(id,to_id,"ap","up","","");
+    }
+
+    /*
+    * 关闭连接其他热点
+    * */
+    public void set_robot_wifi_ap_close(String id, String to_id){
+        this.set_robot_wifi(id,to_id,"ap","down","","");
+    }
+
 }

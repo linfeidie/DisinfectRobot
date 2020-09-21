@@ -65,4 +65,5 @@ dependencies {
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
     implementation 'com.github.zcweng:switch-button:0.0.3@aar'
     implementation 'com.daimajia.numberprogressbar:library:1.4@aar' //https://github.com/daimajia/NumberProgressBar
+    implementation 'com.github.FJ917:FJMtSortButton:v1.1' //https://github.com/FJ917/FJMtSortButton
 }

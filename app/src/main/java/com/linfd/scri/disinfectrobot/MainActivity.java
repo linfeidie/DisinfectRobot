@@ -2,6 +2,7 @@ package com.linfd.scri.disinfectrobot;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.MediaCodecList;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -272,7 +273,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 
     /*

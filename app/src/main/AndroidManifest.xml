@@ -56,7 +56,14 @@
             android:screenOrientation="landscape">
 
         </activity>
+        <activity android:name=".LockScreenActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
+            android:configChanges="orientation|keyboardHidden"></activity>
         <activity android:name=".BinTongActivity"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity android:name=".BinTongActivity2"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

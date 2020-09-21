@@ -1,5 +1,6 @@
 package com.linfd.scri.disinfectrobot.manager;
 
+import com.linfd.scri.disinfectrobot.entity.ExceptionCodesCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionEntity;
 
 import java.util.ArrayList;
@@ -134,16 +135,19 @@ public class ExceptionCodesHelper {
     /*
     * 对外暴露的方法
     * */
-    public List<ExceptionEntity> obtainExceptionEntitys(List<Integer> codes){
+    public List<ExceptionEntity> obtainExceptionEntitys(ExceptionCodesCallbackEntity callbackEntity){
+
         List<ExceptionEntity> entities = new ArrayList<>();
-        for (int i = 0; i < codes.size(); i++) {
+        for (int i = 0; i < callbackEntity.getCodes().size(); i++) {
             ExceptionEntity entity = new ExceptionEntity();
-            Integer code = codes.get(i);
+            Integer code = callbackEntity.getCodes().get(i);
             entity.setNumber(code);
             entity.setExplain(exceptionCodes.get(code));
             entity.setComponent(components.get(Integer.valueOf(code.toString().substring(1,3))));
             entity.setDegree(Integer.valueOf(code.toString().substring(0,1)));
             entity.setKind(Integer.valueOf(code.toString().substring(3,5)));
+            entity.setNums(callbackEntity.getNums().get(i));
+            entity.setStamps(callbackEntity.getStamps().get(i));
             entities.add(entity);
         }
         return entities;

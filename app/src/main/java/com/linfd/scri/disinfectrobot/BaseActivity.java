@@ -27,7 +27,7 @@ public  class BaseActivity extends AppCompatActivity implements OnDialogCancelLi
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        //hideBottomMenu();  先注释掉
+        hideBottomMenu();  //先注释掉
         getSupportActionBar().hide();
         initView();
         if (mDialogHelper == null) {

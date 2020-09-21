@@ -1,11 +1,13 @@
 package com.linfd.scri.disinfectrobot;
 
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.linfd.scri.disinfectrobot.eventbus.EventConnect;
+import com.linfd.scri.disinfectrobot.manager.AckListenerService;
 import com.linfd.scri.disinfectrobot.manager.ControlDirectionManager;
 import com.linfd.scri.disinfectrobot.manager.TimerManager3;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
@@ -20,6 +22,7 @@ public class WalkingDirectionActivity extends BaseActivity implements View.OnTou
     private RoundButton tv_leftward,tv_rightward,tv_forward,tv_backward;
     private RoundButton bt_set_base_cmd_power_off,tv_switch_open,tv_switch_close;
     private RoundButton set_robot_wifi_open,set_robot_wifi_close;
+    private RoundButton set_robot_wifi_ap_open,set_robot_wifi_ap_close,lock_screen;
 
     public void initView() {
         setContentView(R.layout.activity_walk_direction);
@@ -43,7 +46,9 @@ public class WalkingDirectionActivity extends BaseActivity implements View.OnTou
         bt_set_base_cmd_power_off = findViewById(R.id.bt_set_base_cmd_power_off);
         set_robot_wifi_open = findViewById(R.id.set_robot_wifi_open);
         set_robot_wifi_close = findViewById(R.id.set_robot_wifi_close);
-
+        set_robot_wifi_ap_open = findViewById(R.id.set_robot_wifi_ap_open);
+        set_robot_wifi_ap_close = findViewById(R.id.set_robot_wifi_ap_close);
+        lock_screen = findViewById(R.id.lock_screen);
     }
 
     @Override
@@ -74,7 +79,20 @@ public class WalkingDirectionActivity extends BaseActivity implements View.OnTou
             public void onClick(View view) {
                 Contanst.man_switch = 1;
                 UdpControlSendManager.getInstance().set_manual_ctrl_stop(Contanst.id,Contanst.to_id);
-                Tools.showToast("已解锁");
+
+                AckListenerService.instance.addACKListener("set_manual_ctrl", new AckListenerService.ACKListener() {
+                    @Override
+                    public void onACK(boolean isSuccess) {
+
+                        if (isSuccess){
+                            Tools.showToast("解锁成功");
+
+                        }else {
+                            Tools.showToast("解锁失败");
+                        }
+                        AckListenerService.instance.removeACKListener();
+                    }
+                });
             }
         });
 
@@ -83,7 +101,19 @@ public class WalkingDirectionActivity extends BaseActivity implements View.OnTou
             public void onClick(View view) {
                 Contanst.man_switch = 0;
                 UdpControlSendManager.getInstance().set_manual_ctrl_stop(Contanst.id,Contanst.to_id);
-                Tools.showToast("已加锁");
+                AckListenerService.instance.addACKListener("set_manual_ctrl", new AckListenerService.ACKListener() {
+                    @Override
+                    public void onACK(boolean isSuccess) {
+
+                        if (isSuccess){
+                            Tools.showToast("加锁成功");
+
+                        }else {
+                            Tools.showToast("加锁失败");
+                        }
+                        AckListenerService.instance.removeACKListener();
+                    }
+                });
             }
         });
         set_robot_wifi_open.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +128,29 @@ public class WalkingDirectionActivity extends BaseActivity implements View.OnTou
             public void onClick(View view) {
                 UdpControlSendManager.getInstance().set_robot_wifi_close(Contanst.id,Contanst.to_id);
                 Tools.showToast("已关闭热点");
+            }
+        });
+        set_robot_wifi_ap_open.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Tools.showToast("连接AP");
+                UdpControlSendManager.getInstance().set_robot_wifi_ap_open(Contanst.id,Contanst.to_id);
+            }
+        });
+        set_robot_wifi_ap_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Tools.showToast("断开AP");
+                UdpControlSendManager.getInstance().set_robot_wifi_ap_close(Contanst.id,Contanst.to_id);
+            }
+        });
+        //锁屏
+        lock_screen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Tools.showToast("锁屏");
+                Intent intent = new Intent(WalkingDirectionActivity.this,LockScreenActivity.class);
+                startActivity(intent);
             }
         });
     }
