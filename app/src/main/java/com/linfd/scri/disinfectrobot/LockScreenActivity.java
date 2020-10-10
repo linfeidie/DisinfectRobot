@@ -29,7 +29,7 @@ public class LockScreenActivity extends BaseActivity {
         tv_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LockScreenActivity.this,BinTongActivity.class);
+                Intent intent = new Intent(LockScreenActivity.this,BinTongActivity2.class);
                 startActivity(intent);
             }
         });

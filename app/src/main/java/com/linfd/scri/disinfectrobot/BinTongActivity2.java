@@ -3,7 +3,9 @@ package com.linfd.scri.disinfectrobot;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,9 +20,14 @@ import com.linfd.scri.disinfectrobot.entity.DesinStateCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionCodesCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
+import com.linfd.scri.disinfectrobot.entity.TaskStatusEntity;
+import com.linfd.scri.disinfectrobot.eventbus.EventPoint;
+import com.linfd.scri.disinfectrobot.listener.HttpCallbackEntity;
 import com.linfd.scri.disinfectrobot.manager.AckListenerService;
 import com.linfd.scri.disinfectrobot.manager.ExceptionCodesHelper;
+import com.linfd.scri.disinfectrobot.manager.HttpRequestManager;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
+import com.linfd.scri.disinfectrobot.manager.UpdateStateControlManager;
 import com.linfd.scri.disinfectrobot.nicedialog.BaseNiceDialog;
 import com.linfd.scri.disinfectrobot.nicedialog.NiceDialog;
 import com.linfd.scri.disinfectrobot.nicedialog.ViewConvertListener;
@@ -30,10 +37,17 @@ import com.linfd.scri.disinfectrobot.view.battery.BaseHandlerCallBack;
 import com.linfd.scri.disinfectrobot.view.battery.PowerConsumptionRankingsBatteryView;
 import com.linfd.scri.disinfectrobot.view.recyclerviewpoll.AutoPollAdapter;
 import com.linfd.scri.disinfectrobot.view.recyclerviewpoll.AutoPollRecyclerView;
+import com.suke.widget.SwitchButton;
 import com.td.framework.module.dialog.DialogHelper;
+import com.td.framework.module.dialog.inf.OnDialogConfirmListener;
+import com.tsy.sdk.myokhttp.response.GsonResponseHandler;
+import com.tsy.sdk.myokhttp.response.JsonResponseHandler;
+import com.tsy.sdk.myokhttp.response.RawResponseHandler;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONArray;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -61,6 +75,9 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
     private TextView tv_power;
     private CountdownView countdown_view;
     private MyStatusLayout status_layout_spary, status_layout_box_store;
+    private SwitchButton switch_button;
+    private boolean hasPointed = false; //记录下是否描点了
+    private boolean isPos = false;
     @Override
     public void initView() {
         setContentView(R.layout.activity_bintong2);
@@ -72,6 +89,7 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
         tv_power = findViewById(R.id.tv_power);
         status_layout_spary = findViewById(R.id.status_layout_spary);
         status_layout_box_store = findViewById(R.id.status_layout_box_store);
+        switch_button = findViewById(R.id.switch_button);
         data();
         super.initView();
         mTopBar.setVisibility(View.GONE);
@@ -80,6 +98,7 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
 
     }
     private void data(){
+        switch_button.setChecked(false);
         buttonList = setData();//模拟服务器获取到的按钮列表
         //设置界面监听
         dynamicSoreView.setiDynamicSore(this);
@@ -92,7 +111,27 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
         tv_exception.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                HttpRequestManager.getInstance().get_task_status(1670, new HttpCallbackEntity<TaskStatusEntity>() {
+                    @Override
+                    public void onSuccess(TaskStatusEntity taskStatusEntity) {
+                        Log.e(TAG,taskStatusEntity.toString());
+                       // Log.e(TAG,Thread.currentThread().getName());
+                    }
 
+                    @Override
+                    public void onFailure() {
+
+                    }
+                });
+
+
+
+            }
+        });
+        switch_button.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
+                switch_button.setChecked(isChecked);
             }
         });
     }
@@ -185,10 +224,10 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
                switch (type){
                    case 0:
                        if (position == 0){
-                           Tools.showToast("消毒任务");
+
                            actionStart();
                        }else if(position == 1){
-                           Tools.showToast("任务停止");
+
                            action_cmd_stop();
                        }else if(position == 2){
                            navi_mode_build();
@@ -206,10 +245,8 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
                        if (position == 0){
                            navi_mode_loc();
                        }else if(position == 1){
-                           Tools.showToast("解锁");
                            switch_open();
                        }else if(position == 2){
-                           Tools.showToast("加锁");
                            switch_close();
                        }else if(position == 3){
                            Tools.showToast("打开热点");
@@ -228,13 +265,17 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
                            robot_wifi_ap_close();
                        }else if(position == 1){
                            Tools.showToast("控制");
+                           Intent intent = new Intent(BinTongActivity2.this,WalkingDirectionActivity.class);
+                           startActivity(intent);
                        }else if(position == 2){
                            Tools.showToast("锁屏");
                            lock_screen();
                        }else if(position == 3){
                            Tools.showToast("关机");
+                           power_off();
                        }else if(position == 4){
                            Tools.showToast("描点");
+                           set_goal();
                        }else if(position == 5){
                            set_save_map();
                        }
@@ -242,6 +283,36 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
 
 
                }
+            }
+        });
+    }
+    private void set_goal(){
+        //只发一次建图模式
+        Tools.showToast(getString(R.string.tracing_point));
+        if (!hasPointed){
+            //清除描点
+            UdpControlSendManager.getInstance().set_goal_new(Contanst.id,Contanst.to_id);
+
+            // Contanst.hasHistoryPoints = true;
+            //只有是定位模式才是切换成建图模式
+            if (UpdateStateControlManager.getInstance().localization){
+                UdpControlSendManager.getInstance().set_navi_mode_build(Contanst.id,Contanst.to_id);
+            }
+            hasPointed = true;
+        }else {
+            UdpControlSendManager.getInstance().set_goal_back(Contanst.id,Contanst.to_id);
+        }
+        EventPoint event = new EventPoint();
+        EventBus.getDefault().post(event);
+    }
+    private void power_off() {
+        mDialogHelper.showConfirmDialog(getString(R.string.sure_turn_off), new OnDialogConfirmListener() {
+            @Override
+            public void onDialogConfirmListener(AlertDialog dialog) {
+                // Tools.showToast("关机");
+                UdpControlSendManager.getInstance().set_base_cmd_power_off(Contanst.id, Contanst.to_id);
+                mDialogHelper.showLoadingDialog("");
+                dialog.dismiss();
             }
         });
     }
@@ -329,8 +400,20 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
     }
 
     private void navi_mode_build() {
-        Tools.showToast(getString(R.string.reset_map));
-        UdpControlSendManager.getInstance().set_navi_mode_build(Contanst.id,Contanst.to_id);
+
+        NiceDialog.init().setLayoutId(R.layout.dialog_password).setConvertListener(new ViewConvertListener() {
+            @Override
+            public void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+                holder.setOnClickListener(R.id.tv_sure, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        UdpControlSendManager.getInstance().set_navi_mode_build(Contanst.id,Contanst.to_id);
+                        Tools.showToast(getString(R.string.reset_map));
+                    }
+                });
+            }
+        }).setWidth(250).setHeight(250).setPosition(Gravity.CENTER).show(getSupportFragmentManager());
+
     }
 
     private void set_save_map() {
@@ -339,14 +422,50 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
     }
 
     private void action_cmd_stop() {
-        UdpControlSendManager.getInstance().set_action_cmd_stop(Contanst.id, Contanst.to_id);
+        if (switch_button.isChecked()){
+            NiceDialog.init().setLayoutId(R.layout.dialog_password).setConvertListener(new ViewConvertListener() {
+                @Override
+                public void convertView(ViewHolder holder, final BaseNiceDialog dialog) {
+                    holder.setOnClickListener(R.id.tv_sure, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                            Tools.showToast("任务停止");
+                            UdpControlSendManager.getInstance().set_action_cmd_stop(Contanst.id, Contanst.to_id);
+                        }
+                    });
+                }
+            }).setWidth(250).setHeight(250).setPosition(Gravity.CENTER).show(getSupportFragmentManager());
+        }else{
+            Tools.showToast("任务停止");
+            UdpControlSendManager.getInstance().set_action_cmd_stop(Contanst.id, Contanst.to_id);
+        }
+
     }
 
     /*
     * 启动消毒
     * */
     private void actionStart() {
-        UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
+        if (switch_button.isChecked()){
+            NiceDialog.init().setLayoutId(R.layout.dialog_password).setConvertListener(new ViewConvertListener() {
+                @Override
+                public void convertView(ViewHolder holder, final BaseNiceDialog dialog) {
+                    holder.setOnClickListener(R.id.tv_sure, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                            Tools.showToast("消毒任务");
+                            UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
+                        }
+                    });
+                }
+            }).setWidth(250).setHeight(250).setPosition(Gravity.CENTER).show(getSupportFragmentManager());
+        }else{
+            Tools.showToast("消毒任务");
+            UdpControlSendManager.getInstance().set_action_cmd_start(Contanst.id, Contanst.to_id);
+        }
+
     }
 
     private List<ButtonModel> setData(){
@@ -387,13 +506,13 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
         data.add(buttonModel);
 
         buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_lock_close);
-        buttonModel.setName("解锁");
+        buttonModel.setDrawableIcon(R.drawable.icon_lock_open);
+        buttonModel.setName("释放");
         data.add(buttonModel);
 
         buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_lock_open);
-        buttonModel.setName("开锁");
+        buttonModel.setDrawableIcon(R.drawable.icon_lock_close);
+        buttonModel.setName("锁轴");
         data.add(buttonModel);
 
         buttonModel = new ButtonModel();
@@ -437,8 +556,13 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
         data.add(buttonModel);
 
         buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_points);
+        buttonModel.setDrawableIcon(R.drawable.icon_map_finish);
         buttonModel.setName("建图完成");
+        data.add(buttonModel);
+
+        buttonModel = new ButtonModel();
+        buttonModel.setDrawableIcon(R.drawable.icon_charge);
+        buttonModel.setName("充电");
         data.add(buttonModel);
         return data;
     }

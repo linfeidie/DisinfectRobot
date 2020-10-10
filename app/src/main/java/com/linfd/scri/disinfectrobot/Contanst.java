@@ -15,6 +15,31 @@ public class Contanst {
 
     public static final int LocalPort = 8989 ;//本地端口
 
+    public static final String bitoIP = "http://192.168.2.108:9999/";//宾通的IP\
+
+    public static final String bitoAPI = bitoIP + "api/v1/";
+
+    public static final String bitoTask = bitoAPI + "task/";
+
+    public static final String bitoMonitor = bitoAPI + "monitor/";
+
+    public static final String api_get_task_status = bitoTask + "get_task_status/";
+
+    public static final String api_hanxin_start = bitoMonitor + "hanxin_start";
+
+    public static final String api_hanxin_stop = bitoMonitor + "hanxin_stop";
+
+    public static final String api_robot_register = bitoMonitor + "robot_register/";
+
+    public static final String api_get_all_tasks = bitoTask + "get_all_tasks?";
+
+    public static final String api_repeat_tasks = bitoTask + "repeat_tasks";
+
+
+    public static final String REQUEST_OK = "0";
+
+    public static final String ROBOT_SERIAL = "yg00a00020071211000n00";
+
     public static  int MAP_HASHCODE = -1;//正在展示的地图的哈希码
 
     public static final String ROOT = Environment.getExternalStorageDirectory().getAbsolutePath();//根目录

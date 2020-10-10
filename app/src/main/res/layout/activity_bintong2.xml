@@ -7,6 +7,7 @@
     android:paddingTop="20dp"
     android:paddingBottom="20dp"
     android:orientation="vertical">
+
     <com.stx.xhb.commontitlebar.CustomTitleBar
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
@@ -18,11 +19,18 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="center_horizontal"
+            android:textSize="22sp"
+            android:text="消毒时间"></TextView>
         <cn.iwgang.countdownview.CountdownView
             android:layout_marginLeft="20dp"
             android:id="@+id/countdown_view"
             android:layout_width="wrap_content"
-            android:layout_height="65dp"
+            android:layout_height="55dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="30dp"
             app:isHideTimeBackground="false"
@@ -42,14 +50,15 @@
             android:id="@+id/ll_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
             android:orientation="horizontal"
+            android:layout_marginLeft="35dp"
             android:visibility="visible">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
+
+                android:textSize="22sp"
                 android:gravity="bottom"
                 android:text="线速度："
                 android:textColor="@color/colorMajor" />
@@ -58,6 +67,7 @@
                 android:id="@+id/tv_linear_velocity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="22sp"
                 android:layout_marginLeft="10dp"
                 android:text=""
                 android:layout_gravity="center"
@@ -67,15 +77,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
             android:layout_marginTop="20dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
             android:visibility="visible">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
+                android:textSize="22sp"
                 android:gravity="bottom"
                 android:text="角速度："
                 android:textColor="@color/colorMajor" />
@@ -85,6 +95,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="22sp"
                 android:text=""
                 android:layout_gravity="center"
                 ></TextView>
@@ -124,6 +135,8 @@
                 android:textColor="@color/white"></TextView>
 
         </FrameLayout>
+
+
     </LinearLayout>
     <FrameLayout
         android:layout_width="match_parent"
@@ -133,12 +146,31 @@
         android:layout_toLeftOf="@id/dynamicSoreView">
         <TextView
             android:id="@+id/tv_exception"
-            android:layout_gravity="bottom|left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
             android:background="@drawable/icon_exception"
             ></TextView>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="锁屏"></TextView>
+            <com.suke.widget.SwitchButton
+                android:id="@+id/switch_button"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+
+                app:sb_checked_color="@color/colorMajor" />
+        </LinearLayout>
     </FrameLayout>
+
     <fj.mtsortbutton.lib.DynamicSoreView
         android:layout_alignParentRight="true"
         android:id="@+id/dynamicSoreView"

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <com.stx.xhb.commontitlebar.CustomTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:titlebar_bg_color="@color/colorPrimary" />
+
+    <Button
+        android:id="@+id/bt_hanxin_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="启动韩信"></Button>
+
+    <Button
+        android:id="@+id/bt_hanxin_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="关闭韩信"></Button>
+
+    <Button
+        android:id="@+id/bt_robot_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="注册机器⼈"></Button>
+
+    <Button
+        android:id="@+id/bt_get_all_tasks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="查询所有任务信息"></Button>
+    <Button
+        android:id="@+id/bt_get_repeat_tasks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="重复任务"></Button>
+    <Button
+        android:id="@+id/bt_get_charge_tasks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="充电"></Button>
+</LinearLayout>

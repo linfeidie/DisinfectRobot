@@ -38,7 +38,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         } else {
             AlarmManager mgr = (AlarmManager) mAppContext.getSystemService(Context.ALARM_SERVICE);
 
-            Intent intent = new Intent(mAppContext, BinTongActivity.class);
+            Intent intent = new Intent(mAppContext, BinTongActivity2.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("crash", true);
             PendingIntent restartIntent = PendingIntent.getActivity(mAppContext, 0, intent, PendingIntent.FLAG_ONE_SHOT);

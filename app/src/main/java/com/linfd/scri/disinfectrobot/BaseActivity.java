@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import com.stx.xhb.commontitlebar.CustomTitleBar;
 import com.td.framework.module.dialog.DialogHelper;
 import com.td.framework.module.dialog.inf.OnDialogCancelListener;
+import com.tsy.sdk.myokhttp.MyOkHttp;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -70,7 +71,7 @@ public  class BaseActivity extends AppCompatActivity implements OnDialogCancelLi
     @Override
     protected void onResume() {
         super.onResume();
-        //hideBottomMenu();
+        hideBottomMenu();
     }
     protected void hideBottomMenu() {
         //隐藏虚拟按键，并且全屏

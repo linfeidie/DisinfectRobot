@@ -107,6 +107,7 @@
             android:orientation="vertical">
 
             <ezy.ui.view.RoundButton
+                android:visibility="gone"
                 android:id="@+id/tv_switch_open"
                 style="@style/RoundButton"
                 android:layout_width="100dp"
@@ -117,6 +118,7 @@
                 app:btnSolidColor="@color/config_color_50_blue" />
 
             <ezy.ui.view.RoundButton
+                android:visibility="gone"
                 android:id="@+id/tv_switch_close"
                 style="@style/RoundButton"
                 android:layout_width="100dp"
@@ -127,6 +129,7 @@
                 app:btnSolidColor="@color/config_color_50_blue" />
 
             <ezy.ui.view.RoundButton
+                android:visibility="gone"
                 android:id="@+id/set_robot_wifi_open"
                 style="@style/RoundButton"
                 android:layout_width="100dp"
@@ -137,6 +140,7 @@
                 app:btnSolidColor="@color/config_color_50_blue" />
 
             <ezy.ui.view.RoundButton
+                android:visibility="gone"
                 android:id="@+id/set_robot_wifi_close"
                 style="@style/RoundButton"
                 android:layout_width="100dp"
@@ -147,6 +151,7 @@
                 app:btnSolidColor="@color/config_color_50_blue" />
 
             <ezy.ui.view.RoundButton
+                android:visibility="gone"
                 android:id="@+id/set_robot_wifi_ap_open"
                 style="@style/RoundButton"
                 android:layout_width="100dp"
@@ -157,6 +162,7 @@
                 app:btnSolidColor="@color/config_color_50_blue" />
 
             <ezy.ui.view.RoundButton
+                android:visibility="gone"
                 android:id="@+id/set_robot_wifi_ap_close"
                 style="@style/RoundButton"
                 android:layout_width="100dp"
@@ -176,6 +182,7 @@
             android:orientation="vertical">
 
             <ezy.ui.view.RoundButton
+                android:visibility="gone"
                 android:id="@+id/lock_screen"
                 style="@style/RoundButton"
                 android:layout_width="100dp"
