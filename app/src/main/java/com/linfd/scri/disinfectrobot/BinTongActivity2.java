@@ -403,11 +403,12 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
 
         NiceDialog.init().setLayoutId(R.layout.dialog_password).setConvertListener(new ViewConvertListener() {
             @Override
-            public void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+            public void convertView(ViewHolder holder, final BaseNiceDialog dialog) {
                 holder.setOnClickListener(R.id.tv_sure, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         UdpControlSendManager.getInstance().set_navi_mode_build(Contanst.id,Contanst.to_id);
+                        dialog.dismiss();
                         Tools.showToast(getString(R.string.reset_map));
                     }
                 });

@@ -5,12 +5,16 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.linfd.scri.disinfectrobot.entity.BaseEntity;
+import com.linfd.scri.disinfectrobot.entity.CancelTaskEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionCodesCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAllTasksEntity;
+import com.linfd.scri.disinfectrobot.entity.GetHanxinStatusEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotRegisterEntity;
 import com.linfd.scri.disinfectrobot.listener.HttpCallbackEntity;
+import com.linfd.scri.disinfectrobot.manager.BitoActionStateManager;
 import com.linfd.scri.disinfectrobot.manager.HttpRequestManager;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -20,7 +24,9 @@ import java.util.List;
 
 public class BitoControlActivity extends BaseActivity {
     private Button bt_hanxin_start,bt_hanxin_stop,bt_robot_register,bt_get_all_tasks,bt_get_repeat_tasks;
-    private Button bt_get_charge_tasks;
+    private Button bt_get_charge_tasks,bt_switch_charging_mode_man,bt_switch_charging_mode_auto;
+    private Button bt_cancel_task_walk,bt_cancel_task_charge,bt_get_hanxin_status;
+    private TextView tv_get_hanxin_status;
 
     private int disinTaskId = -1;
     private int chargeTaskId = -1 ;
@@ -33,6 +39,12 @@ public class BitoControlActivity extends BaseActivity {
         bt_get_all_tasks = findViewById(R.id.bt_get_all_tasks);
         bt_get_repeat_tasks = findViewById(R.id.bt_get_repeat_tasks);
         bt_get_charge_tasks = findViewById(R.id.bt_get_charge_tasks);
+        bt_switch_charging_mode_man = findViewById(R.id.bt_switch_charging_mode_man);
+        bt_switch_charging_mode_auto = findViewById(R.id.bt_switch_charging_mode_auto);
+        bt_cancel_task_walk = findViewById(R.id.bt_cancel_task_walk);
+        bt_cancel_task_charge = findViewById(R.id.bt_cancel_task_charge);
+        bt_get_hanxin_status = findViewById(R.id.bt_get_hanxin_status);
+        tv_get_hanxin_status = findViewById(R.id.tv_get_hanxin_status);
         super.initView();
     }
 
@@ -108,18 +120,18 @@ public class BitoControlActivity extends BaseActivity {
                     public void onSuccess(GetAllTasksEntity getAllTasksEntity) {
                         List<GetAllTasksEntity.DataBean.TasksBean> tasksBeans = getAllTasksEntity.getData().getTasks();
                         for (int i = 0; i < tasksBeans.size(); i++) {
-                            if (tasksBeans.get(i).getGoal_action() == 10){
+                            if (tasksBeans.get(i).getGoal_action() == 0){
                                 disinTaskId = tasksBeans.get(i).getId();
                                 break;
                             };
                         }
                         for (int i = 0; i < tasksBeans.size(); i++) {
-                            if (tasksBeans.get(i).getGoal_action() == 0){
+                            if (tasksBeans.get(i).getGoal_action() == 10){
                                 chargeTaskId = tasksBeans.get(i).getId();
                                 break;
                             };
                         }
-                        Tools.showToast(disinTaskId+"++"+chargeTaskId);
+                        Tools.showToast("行走："+disinTaskId+"++"+"充电："+chargeTaskId);
                        // taskId = getAllTasksEntity.getData().getTasks().get(0).getId();
                     }
 
@@ -170,6 +182,110 @@ public class BitoControlActivity extends BaseActivity {
                         Tools.showToast("充电失败");
                     }
                 });
+            }
+        });
+        /*
+        * 手动充电模式
+        * */
+        bt_switch_charging_mode_man.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HttpRequestManager.getInstance().switch_charging_mode(1, new HttpCallbackEntity<BaseEntity>() {
+
+                    @Override
+                    public void onSuccess(BaseEntity baseEntity) {
+                        Tools.showToast("手动充电模式成功");
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Tools.showToast("手动充电模式失败");
+                    }
+                });
+            }
+        });
+
+        /*
+         * 自动充电模式
+         * */
+        bt_switch_charging_mode_auto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HttpRequestManager.getInstance().switch_charging_mode(3, new HttpCallbackEntity<BaseEntity>() {
+
+                    @Override
+                    public void onSuccess(BaseEntity baseEntity) {
+                        Tools.showToast("自动充电模式成功");
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Tools.showToast("自动充电模式失败");
+                    }
+                });
+            }
+        });
+        bt_cancel_task_walk.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                if (disinTaskId == -1){
+                    return;
+                }
+                HttpRequestManager.getInstance().cancel_task(disinTaskId,new HttpCallbackEntity<CancelTaskEntity>() {
+
+                    @Override
+                    public void onSuccess(CancelTaskEntity cancelTaskEntity) {
+                        Tools.showToast("取消成功");
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Tools.showToast("取消成功");
+                    }
+                });
+            }
+        });
+        bt_cancel_task_charge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (chargeTaskId == -1){
+                    return;
+                }
+                HttpRequestManager.getInstance().cancel_task(chargeTaskId,new HttpCallbackEntity<CancelTaskEntity>() {
+
+                    @Override
+                    public void onSuccess(CancelTaskEntity cancelTaskEntity) {
+                        Tools.showToast("取消成功");
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Tools.showToast("取消成功");
+                    }
+                });
+
+
+
+            }
+        });
+        bt_get_hanxin_status.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HttpRequestManager.getInstance().get_hanxin_status(new HttpCallbackEntity<GetHanxinStatusEntity>() {
+
+                    @Override
+                    public void onSuccess(GetHanxinStatusEntity getHanxinStatusEntity) {
+                       // Tools.showToast(BitoActionStateManager.obtainState(getHanxinStatusEntity.getStatus()));
+                        tv_get_hanxin_status.setText("韩信："+BitoActionStateManager.obtainState(getHanxinStatusEntity.getStatus()));
+                    }
+
+                    @Override
+                    public void onFailure() {
+
+                    }
+                });
+
             }
         });
     }

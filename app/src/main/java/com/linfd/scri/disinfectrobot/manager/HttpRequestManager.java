@@ -11,7 +11,9 @@ import com.google.gson.reflect.TypeToken;
 import com.linfd.scri.disinfectrobot.BaseApplication;
 import com.linfd.scri.disinfectrobot.Contanst;
 import com.linfd.scri.disinfectrobot.entity.BaseEntity;
+import com.linfd.scri.disinfectrobot.entity.CancelTaskEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAllTasksEntity;
+import com.linfd.scri.disinfectrobot.entity.GetHanxinStatusEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotRegisterEntity;
 import com.linfd.scri.disinfectrobot.entity.TaskStatusEntity;
 import com.linfd.scri.disinfectrobot.listener.HttpCallbackEntity;
@@ -34,11 +36,13 @@ public class HttpRequestManager {
 
     private static volatile HttpRequestManager ourInstance;
     private  MyOkHttp mMyOkHttp;
+    private  Gson gson;
 
     /*
     * 构造函数
     * */
     public HttpRequestManager() {
+         gson = new Gson();
     }
 
     public static HttpRequestManager getInstance(){
@@ -150,6 +154,32 @@ public class HttpRequestManager {
                     }
                 });
     }
+
+    /*
+     * 查询韩信状态
+     * */
+    public <T >void get_hanxin_status(final HttpCallbackEntity<T> httpCallbackEntity){
+        String url = Contanst.api_get_hanxin_status;
+        mMyOkHttp.get()
+                .url(url)
+                .tag(this)
+                .enqueue(new GsonResponseHandler<GetHanxinStatusEntity>() {
+
+                    @Override
+                    public void onFailure(int statusCode, String error_msg) {
+                        httpCallbackEntity.onFailure();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, GetHanxinStatusEntity response) {
+
+                        httpCallbackEntity.onSuccess((T) response);
+
+                    }
+                });
+    }
+
+
     /*
     * 注册机器人
     * */
@@ -204,16 +234,16 @@ public class HttpRequestManager {
     public <T> void repeat_tasks(int taskId ,  final HttpCallbackEntity<T> httpCallbackEntity){
 
         String url = Contanst.api_repeat_tasks;
-
-        Map<String, Object> params = new HashMap<>();
-        params.put("repeat_num", 1);
+        Map<String, Object> map = new HashMap<>();
         List<Integer> id_list = new ArrayList<>();
         id_list.add(taskId);
-        params.put("id_list", id_list);
+
+        map.put("repeat_num", 1);
+        map.put("id_list", id_list);
 
         mMyOkHttp.post()
                 .url(url)
-                .tag(this)
+                .tag(this).jsonParams(gson.toJson(map))
                 .enqueue(new GsonResponseHandler<BaseEntity>() {
 
                     @Override
@@ -229,4 +259,53 @@ public class HttpRequestManager {
                     }
                 });
     }
+
+    /*
+    * 充电模式  1:纯手动，2:半自动，3:纯自动，4:混动
+    * */
+    public <T> void switch_charging_mode(int mode,final HttpCallbackEntity<T> httpCallbackEntity){
+        String url = Contanst.api_switch_charging_mode + mode;
+        mMyOkHttp.get()
+                .url(url)
+                .tag(this)
+                .enqueue(new GsonResponseHandler<CancelTaskEntity>() {
+
+                    @Override
+                    public void onFailure(int statusCode, String error_msg) {
+                        httpCallbackEntity.onFailure();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, CancelTaskEntity response) {
+
+                        httpCallbackEntity.onSuccess((T) response);
+
+                    }
+                });
+    }
+
+    /*
+    * 取消任务
+    * */
+    public <T> void cancel_task(int taskId,final HttpCallbackEntity<T> httpCallbackEntity){
+        String url = Contanst.api_cancel_task + taskId;
+        mMyOkHttp.get()
+                .url(url)
+                .tag(this)
+                .enqueue(new GsonResponseHandler<CancelTaskEntity>() {
+
+                    @Override
+                    public void onFailure(int statusCode, String error_msg) {
+                        httpCallbackEntity.onFailure();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, CancelTaskEntity response) {
+
+                        httpCallbackEntity.onSuccess((T) response);
+
+                    }
+                });
+    }
+
 }

@@ -29,11 +29,17 @@ public class Contanst {
 
     public static final String api_hanxin_stop = bitoMonitor + "hanxin_stop";
 
+    public static final String api_get_hanxin_status = bitoMonitor + "get_hanxin_status";
+
     public static final String api_robot_register = bitoMonitor + "robot_register/";
 
     public static final String api_get_all_tasks = bitoTask + "get_all_tasks?";
 
     public static final String api_repeat_tasks = bitoTask + "repeat_tasks";
+
+    public static final String api_switch_charging_mode = bitoMonitor + "switch_charging_mode/";
+
+    public static final String api_cancel_task = bitoTask + "cancel_task/";
 
 
     public static final String REQUEST_OK = "0";
