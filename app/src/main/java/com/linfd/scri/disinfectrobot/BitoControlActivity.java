@@ -8,11 +8,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.linfd.scri.disinfectrobot.entity.BaseEntity;
+import com.linfd.scri.disinfectrobot.entity.BitoLoginEntity;
 import com.linfd.scri.disinfectrobot.entity.CancelTaskEntity;
+import com.linfd.scri.disinfectrobot.entity.ChangePwbEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionCodesCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAllTasksEntity;
+import com.linfd.scri.disinfectrobot.entity.GetErrorCodeEntity;
 import com.linfd.scri.disinfectrobot.entity.GetHanxinStatusEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotRegisterEntity;
+import com.linfd.scri.disinfectrobot.entity.RobotUnregisterEntity;
 import com.linfd.scri.disinfectrobot.listener.HttpCallbackEntity;
 import com.linfd.scri.disinfectrobot.manager.BitoActionStateManager;
 import com.linfd.scri.disinfectrobot.manager.HttpRequestManager;
@@ -25,8 +29,10 @@ import java.util.List;
 public class BitoControlActivity extends BaseActivity {
     private Button bt_hanxin_start,bt_hanxin_stop,bt_robot_register,bt_get_all_tasks,bt_get_repeat_tasks;
     private Button bt_get_charge_tasks,bt_switch_charging_mode_man,bt_switch_charging_mode_auto;
-    private Button bt_cancel_task_walk,bt_cancel_task_charge,bt_get_hanxin_status;
-    private TextView tv_get_hanxin_status;
+    private Button bt_cancel_task_walk,bt_cancel_task_charge,bt_get_hanxin_status,bt_get_error_code;
+    private Button bt_login,bt_changePwb,bt_reset_agents,bt_robot_unregister;
+
+    private TextView tv_get_hanxin_status,tv_get_error_code;
 
     private int disinTaskId = -1;
     private int chargeTaskId = -1 ;
@@ -45,6 +51,12 @@ public class BitoControlActivity extends BaseActivity {
         bt_cancel_task_charge = findViewById(R.id.bt_cancel_task_charge);
         bt_get_hanxin_status = findViewById(R.id.bt_get_hanxin_status);
         tv_get_hanxin_status = findViewById(R.id.tv_get_hanxin_status);
+        bt_get_error_code = findViewById(R.id.bt_get_error_code);
+        tv_get_error_code = findViewById(R.id.tv_get_error_code);
+        bt_login = findViewById(R.id.bt_login);
+        bt_changePwb = findViewById(R.id.bt_changePwb);
+        bt_reset_agents = findViewById(R.id.bt_reset_agents);
+        bt_robot_unregister = findViewById(R.id.bt_robot_unregister);
         super.initView();
     }
 
@@ -282,12 +294,123 @@ public class BitoControlActivity extends BaseActivity {
 
                     @Override
                     public void onFailure() {
-
+                        tv_get_hanxin_status.setText("韩信："+"无法获取");
                     }
                 });
 
             }
         });
+
+        /*
+        * 查询所有故障信息
+        * */
+        bt_get_error_code.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HttpRequestManager.getInstance().get_error_code(new HttpCallbackEntity<GetErrorCodeEntity>() {
+
+                    @Override
+                    public void onSuccess(GetErrorCodeEntity getErrorCodeEntity) {
+
+                        StringBuilder sb = new StringBuilder();
+                        List<GetErrorCodeEntity.InfoBean.YugongBean.Yg00a00020071211000n00Bean.ZhCnBeanX> zhCnBeanXList = getErrorCodeEntity.getInfo().getYugong().getYg00a00020071211000n00().getZh_cn();
+                        for (int i = 0; i < zhCnBeanXList.size(); i++) {
+                            sb.append(zhCnBeanXList.get(i).getInstruction()+",");
+                        }
+
+                        tv_get_error_code.setText(sb.toString());
+                    }
+
+                    @Override
+                    public void onFailure() {
+
+                    }
+                });
+            }
+        });
+
+        /*
+        * 登录
+        * */
+        bt_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HttpRequestManager.getInstance().login("111", "111", new HttpCallbackEntity<BitoLoginEntity>() {
+
+                    @Override
+                    public void onSuccess(BitoLoginEntity baseEntity) {
+                        Tools.showToast("登录成功");
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Tools.showToast("登录失败");
+                    }
+                });
+            }
+        });
+        /*
+        * 修改密码
+        * */
+        bt_changePwb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HttpRequestManager.getInstance().changePwb("", "", "", "", new HttpCallbackEntity<ChangePwbEntity>() {
+
+                    @Override
+                    public void onSuccess(ChangePwbEntity changePwbEntity) {
+                        Tools.showToast("修改成功");
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Tools.showToast("修改失败");
+                    }
+                });
+            }
+        });
+        /*
+        * 重置机器人
+        * */
+        bt_reset_agents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HttpRequestManager.getInstance().reset_agents(new HttpCallbackEntity<BaseEntity>() {
+
+                    @Override
+                    public void onSuccess(BaseEntity baseEntity) {
+                        Tools.showToast("重置成功");
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Tools.showToast("重置失败");
+                    }
+                });
+            }
+        });
+
+        /*
+        * 注销机器人
+        * */
+        bt_robot_unregister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    HttpRequestManager.getInstance().robot_unregister(Contanst.ROBOT_SERIAL, new HttpCallbackEntity<RobotUnregisterEntity>() {
+
+                        @Override
+                        public void onSuccess(RobotUnregisterEntity robotUnregisterEntity) {
+                            Tools.showToast("注销成功");
+                        }
+
+                        @Override
+                        public void onFailure() {
+                            Tools.showToast("注销失败");
+                        }
+                    });
+            }
+        });
+
     }
 
     /*

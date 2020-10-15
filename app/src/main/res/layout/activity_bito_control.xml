@@ -79,12 +79,53 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="vertical"></LinearLayout>
-        <TextView
-            android:id="@+id/tv_get_hanxin_status"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_get_hanxin_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="1111111"></TextView>
+            <Button
+                android:id="@+id/bt_get_error_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="查询所有故障信息"></Button>
+
+            <Button
+                android:id="@+id/bt_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="登录"></Button>
+
+            <Button
+                android:id="@+id/bt_changePwb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="修改密码"></Button>
+
+            <Button
+                android:id="@+id/bt_reset_agents"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="重置机器人"></Button>
+
+            <Button
+                android:id="@+id/bt_robot_unregister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="注销机器人"></Button>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="1111111"></TextView>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_get_error_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="1111111"></TextView>
+
+        </LinearLayout>
     </LinearLayout>
 
 

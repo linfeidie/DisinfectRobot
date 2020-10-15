@@ -11,10 +11,14 @@ import com.google.gson.reflect.TypeToken;
 import com.linfd.scri.disinfectrobot.BaseApplication;
 import com.linfd.scri.disinfectrobot.Contanst;
 import com.linfd.scri.disinfectrobot.entity.BaseEntity;
+import com.linfd.scri.disinfectrobot.entity.BitoLoginEntity;
 import com.linfd.scri.disinfectrobot.entity.CancelTaskEntity;
+import com.linfd.scri.disinfectrobot.entity.ChangePwbEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAllTasksEntity;
+import com.linfd.scri.disinfectrobot.entity.GetErrorCodeEntity;
 import com.linfd.scri.disinfectrobot.entity.GetHanxinStatusEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotRegisterEntity;
+import com.linfd.scri.disinfectrobot.entity.RobotUnregisterEntity;
 import com.linfd.scri.disinfectrobot.entity.TaskStatusEntity;
 import com.linfd.scri.disinfectrobot.listener.HttpCallbackEntity;
 import com.tsy.sdk.myokhttp.MyOkHttp;
@@ -307,5 +311,137 @@ public class HttpRequestManager {
                     }
                 });
     }
+
+    /*
+    *查询所有故障信息
+    * */
+
+    public <T> void get_error_code(final HttpCallbackEntity<T> httpCallbackEntity){
+        String url = Contanst.api_get_error_code;
+        mMyOkHttp.get()
+                .url(url)
+                .tag(this)
+                .enqueue(new GsonResponseHandler<GetErrorCodeEntity>() {
+
+                    @Override
+                    public void onFailure(int statusCode, String error_msg) {
+                        httpCallbackEntity.onFailure();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, GetErrorCodeEntity response) {
+
+                        httpCallbackEntity.onSuccess((T) response);
+
+                    }
+                });
+    }
+
+    /*
+    * 登录
+    * */
+    public <T> void login(String username,String password,final HttpCallbackEntity<T> httpCallbackEntity){
+        String url = Contanst.api_login;
+        Map<String, String> params = new HashMap<>();
+        params.put("username", username);
+        params.put("password", password);
+        mMyOkHttp.post()
+                .url(url)
+                .params(params)
+                .tag(this)
+                .enqueue(new GsonResponseHandler<BitoLoginEntity>() {
+
+                    @Override
+                    public void onFailure(int statusCode, String error_msg) {
+                        httpCallbackEntity.onFailure();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, BitoLoginEntity response) {
+
+                        httpCallbackEntity.onSuccess((T) response);
+
+                    }
+                });
+    }
+
+    /*
+    * 修改密码
+    * */
+
+    public <T> void changePwb(String username,String password,String oldPassword,String passwordConfirm,final HttpCallbackEntity<T> httpCallbackEntity){
+        String url = Contanst.api_changePwb;
+        Map<String, String> params = new HashMap<>();
+        params.put("username", username);
+        params.put("password", password);
+        params.put("oldPassword", oldPassword);
+        params.put("passwordConfirm", passwordConfirm);
+        mMyOkHttp.post()
+                .url(url)
+                .params(params)
+                .tag(this)
+                .enqueue(new GsonResponseHandler<ChangePwbEntity>() {
+
+                    @Override
+                    public void onFailure(int statusCode, String error_msg) {
+                        httpCallbackEntity.onFailure();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, ChangePwbEntity response) {
+
+                        httpCallbackEntity.onSuccess((T) response);
+
+                    }
+                });
+    }
+    /*
+    * 重置机器人
+    * */
+    public <T> void reset_agents(final HttpCallbackEntity<T> httpCallbackEntity){
+        String url = Contanst.api_reset_agents;
+        mMyOkHttp.get()
+                .url(url)
+                .tag(this)
+                .enqueue(new GsonResponseHandler<BaseEntity>() {
+
+                    @Override
+                    public void onFailure(int statusCode, String error_msg) {
+                        httpCallbackEntity.onFailure();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, BaseEntity response) {
+
+                        httpCallbackEntity.onSuccess((T) response);
+
+                    }
+                });
+    }
+
+    /*
+    * 注销机器人
+    * */
+    public <T> void robot_unregister(String serial,final HttpCallbackEntity<T> httpCallbackEntity){
+        String url = Contanst.api_robot_unregister + serial;
+        mMyOkHttp.get()
+                .url(url)
+                .tag(this)
+                .enqueue(new GsonResponseHandler<RobotUnregisterEntity>() {
+
+                    @Override
+                    public void onFailure(int statusCode, String error_msg) {
+                        httpCallbackEntity.onFailure();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, RobotUnregisterEntity response) {
+
+                        httpCallbackEntity.onSuccess((T) response);
+
+                    }
+                });
+    }
+
 
 }

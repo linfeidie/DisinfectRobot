@@ -21,6 +21,8 @@ public class Contanst {
 
     public static final String bitoTask = bitoAPI + "task/";
 
+    public static final String bitoAuth = bitoAPI + "auth/";
+
     public static final String bitoMonitor = bitoAPI + "monitor/";
 
     public static final String api_get_task_status = bitoTask + "get_task_status/";
@@ -41,6 +43,15 @@ public class Contanst {
 
     public static final String api_cancel_task = bitoTask + "cancel_task/";
 
+    public static final String api_get_error_code = bitoMonitor + "get_error_code";
+
+    public static final String api_login = bitoAuth + "login";
+
+    public static final String api_changePwb = bitoAuth + "changePwb";
+
+    public static final String api_reset_agents = bitoMonitor + "reset_agents/";
+
+    public static final String api_robot_unregister = bitoMonitor + "robot_unregister";
 
     public static final String REQUEST_OK = "0";
 
