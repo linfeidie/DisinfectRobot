@@ -143,7 +143,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/b"
         android:layout_toRightOf="@id/ll_left"
-        android:layout_toLeftOf="@id/dynamicSoreView">
+        android:layout_toLeftOf="@id/vp_grid_view">
         <TextView
             android:id="@+id/tv_exception"
             android:layout_width="wrap_content"
@@ -172,15 +172,30 @@
     </FrameLayout>
 
     <fj.mtsortbutton.lib.DynamicSoreView
+        android:visibility="gone"
         android:layout_alignParentRight="true"
         android:id="@+id/dynamicSoreView"
         android:background="#ffffff"
         app:SoreRadioSelect="@drawable/radio1"
         app:SoreRadioUnselected="@drawable/radio2"
-        app:SoreNumber="6"
+        app:SoreNumber="16"
         app:SoreDistance="20"
-        android:layout_width="300dp"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"/>
 
+    <com.wihaohao.PageGridView
+        android:id="@+id/vp_grid_view"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
 
+        android:layout_alignParentRight="true"
+        app:isShowIndicator="true"
+        app:itemView="@layout/my_item_view"
+        app:numColumns="3"
+        app:pageSize="11"
+        app:selectedIndicator="@drawable/radio1"
+        app:unSelectedIndicator="@drawable/radio2"
+        app:indicatorPaddingTop="200dp"
+        />
 </RelativeLayout>

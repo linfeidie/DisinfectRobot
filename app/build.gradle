@@ -67,4 +67,5 @@ dependencies {
     implementation 'com.daimajia.numberprogressbar:library:1.4@aar' //https://github.com/daimajia/NumberProgressBar
     implementation 'com.github.FJ917:FJMtSortButton:v1.1' //https://github.com/FJ917/FJMtSortButton
     implementation 'com.tsy:myokhttp:1.1.4'   //https://github.com/tsy12321/MyOkHttp
+    implementation 'com.wihaohao:PageGridView:1.2.1'  //https://github.com/wihaohao/PageGridView
 }

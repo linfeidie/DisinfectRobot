@@ -32,6 +32,8 @@ import com.linfd.scri.disinfectrobot.nicedialog.BaseNiceDialog;
 import com.linfd.scri.disinfectrobot.nicedialog.NiceDialog;
 import com.linfd.scri.disinfectrobot.nicedialog.ViewConvertListener;
 import com.linfd.scri.disinfectrobot.nicedialog.ViewHolder;
+import com.linfd.scri.disinfectrobot.test.MyIconModel;
+import com.linfd.scri.disinfectrobot.test.TestActivity;
 import com.linfd.scri.disinfectrobot.view.MyStatusLayout;
 import com.linfd.scri.disinfectrobot.view.battery.BaseHandlerCallBack;
 import com.linfd.scri.disinfectrobot.view.battery.PowerConsumptionRankingsBatteryView;
@@ -43,6 +45,7 @@ import com.td.framework.module.dialog.inf.OnDialogConfirmListener;
 import com.tsy.sdk.myokhttp.response.GsonResponseHandler;
 import com.tsy.sdk.myokhttp.response.JsonResponseHandler;
 import com.tsy.sdk.myokhttp.response.RawResponseHandler;
+import com.wihaohao.PageGridView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -64,8 +67,9 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
 
     public static final String TAG = BinTongActivity2.class.getSimpleName();
 
-    private DynamicSoreView dynamicSoreView;
-    private List buttonList;
+   // private DynamicSoreView dynamicSoreView;
+    private PageGridView<MyIconModel> mPageGridView;
+    //private List buttonList;
     private TextView tv_exception;
     private List<ExceptionEntity> entities;
     private PowerConsumptionRankingsBatteryView mBatteryView;
@@ -78,10 +82,12 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
     private SwitchButton switch_button;
     private boolean hasPointed = false; //记录下是否描点了
     private boolean isPos = false;
+    List<MyIconModel> mList;
     @Override
     public void initView() {
         setContentView(R.layout.activity_bintong2);
-        dynamicSoreView = findViewById(R.id.dynamicSoreView);
+        //dynamicSoreView = findViewById(R.id.dynamicSoreView);
+        mPageGridView =findViewById(R.id.vp_grid_view);
         tv_exception = findViewById(R.id.tv_exception);
         mBatteryView = findViewById(R.id.mPowerConsumptionRankingsBatteryView);
         countdown_view = findViewById(R.id.countdown_view);
@@ -97,13 +103,27 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
 
 
     }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        initData2();
+        mPageGridView.setData(mList);
+        mPageGridView.setOnItemClickListener(new PageGridView.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Toast.makeText(BinTongActivity2.this,position+"",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void data(){
         switch_button.setChecked(false);
-        buttonList = setData();//模拟服务器获取到的按钮列表
+       // buttonList = setData();//模拟服务器获取到的按钮列表
         //设置界面监听
-        dynamicSoreView.setiDynamicSore(this);
+       // dynamicSoreView.setiDynamicSore(this);
         //控件相关设置
-        dynamicSoreView.setGridView(R.layout.viewpager_page).init(buttonList);
+        //dynamicSoreView.setGridView(R.layout.viewpager_page).init(buttonList);
     }
     @Override
     protected void initListener() {
@@ -213,78 +233,77 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
     @Override
     public void setGridView(View view, final int type, List data) {
         List<ButtonModel> buttonModels= data;
-        GridView gridView = (GridView) view.findViewById(R.id.gridView);
-        dynamicSoreView.setNumColumns(gridView);
-        SortButtonAdapter adapter = new SortButtonAdapter(this,buttonModels);
-        gridView.setAdapter(adapter);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               // Toast.makeText(view.getContext(),"第"+type+"页"+position,Toast.LENGTH_LONG).show();
-               switch (type){
-                   case 0:
-                       if (position == 0){
-
-                           actionStart();
-                       }else if(position == 1){
-
-                           action_cmd_stop();
-                       }else if(position == 2){
-                           navi_mode_build();
-                       }else if(position == 3){
-                           auto_q();
-                       }else if(position == 4){
-                           auto_r();
-                       }else if(position == 5){
-                           Tools.showToast("喷雾关");
-                           disin_cmd_spray_off();
-                       }
-
-                       break;
-                   case 1:
-                       if (position == 0){
-                           navi_mode_loc();
-                       }else if(position == 1){
-                           switch_open();
-                       }else if(position == 2){
-                           switch_close();
-                       }else if(position == 3){
-                           Tools.showToast("打开热点");
-                           robot_wifi_open();
-                       }else if(position == 4){
-                           Tools.showToast("关闭热点");
-                           robot_wifi_close();
-                       }else if(position == 5){
-                           Tools.showToast("连接AP");
-                           robot_wifi_ap_open();
-                       }
-                       break;
-                   case 2:
-                       if (position == 0){
-                           Tools.showToast("断开AP");
-                           robot_wifi_ap_close();
-                       }else if(position == 1){
-                           Tools.showToast("控制");
-                           Intent intent = new Intent(BinTongActivity2.this,WalkingDirectionActivity.class);
-                           startActivity(intent);
-                       }else if(position == 2){
-                           Tools.showToast("锁屏");
-                           lock_screen();
-                       }else if(position == 3){
-                           Tools.showToast("关机");
-                           power_off();
-                       }else if(position == 4){
-                           Tools.showToast("描点");
-                           set_goal();
-                       }else if(position == 5){
-                           set_save_map();
-                       }
-                       break;
-
-
-               }
-            }
-        });
+      //  GridView gridView = (GridView) view.findViewById(R.id.gridView);
+       // dynamicSoreView.setNumColumns(gridView);
+       // SortButtonAdapter adapter = new SortButtonAdapter(this,buttonModels);
+      //  gridView.setAdapter(adapter);
+//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//               switch (type){
+//                   case 0:
+//                       if (position == 0){
+//
+//                           actionStart();
+//                       }else if(position == 1){
+//
+//                           action_cmd_stop();
+//                       }else if(position == 2){
+//                           navi_mode_build();
+//                       }else if(position == 3){
+//                           auto_q();
+//                       }else if(position == 4){
+//                           auto_r();
+//                       }else if(position == 5){
+//                           Tools.showToast("喷雾关");
+//                           disin_cmd_spray_off();
+//                       }
+//
+//                       break;
+//                   case 1:
+//                       if (position == 0){
+//                           navi_mode_loc();
+//                       }else if(position == 1){
+//                           switch_open();
+//                       }else if(position == 2){
+//                           switch_close();
+//                       }else if(position == 3){
+//                           Tools.showToast("打开热点");
+//                           robot_wifi_open();
+//                       }else if(position == 4){
+//                           Tools.showToast("关闭热点");
+//                           robot_wifi_close();
+//                       }else if(position == 5){
+//                           Tools.showToast("连接AP");
+//                           robot_wifi_ap_open();
+//                       }
+//                       break;
+//                   case 2:
+//                       if (position == 0){
+//                           Tools.showToast("断开AP");
+//                           robot_wifi_ap_close();
+//                       }else if(position == 1){
+//                           Tools.showToast("控制");
+//                           Intent intent = new Intent(BinTongActivity2.this,WalkingDirectionActivity.class);
+//                           startActivity(intent);
+//                       }else if(position == 2){
+//                           Tools.showToast("锁屏");
+//                           lock_screen();
+//                       }else if(position == 3){
+//                           Tools.showToast("关机");
+//                           power_off();
+//                       }else if(position == 4){
+//                           Tools.showToast("描点");
+//                           set_goal();
+//                       }else if(position == 5){
+//                           set_save_map();
+//                       }
+//                       break;
+//
+//
+//               }
+//            }
+//        });
     }
     private void set_goal(){
         //只发一次建图模式
@@ -623,6 +642,12 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
                     mHandler.sendEmptyMessage(0);
                 }
             }, 0, 500);
+        }
+    }
+    private void initData2() {
+        mList=new ArrayList<>();
+        for(int i=0;i<30;i++){
+            mList.add(new MyIconModel("测试"+i,R.drawable.icon_stop));
         }
     }
 
