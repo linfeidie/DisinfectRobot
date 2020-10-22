@@ -36,6 +36,7 @@
                 android:text="注册机器⼈"></Button>
 
             <Button
+                android:visibility="gone"
                 android:id="@+id/bt_get_all_tasks"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -114,6 +115,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="注销机器人"></Button>
+
+            <Button
+                android:id="@+id/bt_get_agents_registerable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="查询所有在线机器⼈是否可注册"></Button>
+            <Button
+                android:id="@+id/bt_get_robot_perform_task"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="查询正在执⾏的任务-序列号"></Button>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"

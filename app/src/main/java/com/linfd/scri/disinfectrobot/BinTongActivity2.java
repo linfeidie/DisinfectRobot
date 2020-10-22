@@ -63,13 +63,11 @@ import ezy.ui.view.RoundButton;
 import fj.mtsortbutton.lib.DynamicSoreView;
 import fj.mtsortbutton.lib.Interface.IDynamicSore;
 
-public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, BaseHandlerCallBack {
+public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCallBack {
 
     public static final String TAG = BinTongActivity2.class.getSimpleName();
 
-   // private DynamicSoreView dynamicSoreView;
     private PageGridView<MyIconModel> mPageGridView;
-    //private List buttonList;
     private TextView tv_exception;
     private List<ExceptionEntity> entities;
     private PowerConsumptionRankingsBatteryView mBatteryView;
@@ -119,11 +117,6 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
 
     private void data(){
         switch_button.setChecked(false);
-       // buttonList = setData();//模拟服务器获取到的按钮列表
-        //设置界面监听
-       // dynamicSoreView.setiDynamicSore(this);
-        //控件相关设置
-        //dynamicSoreView.setGridView(R.layout.viewpager_page).init(buttonList);
     }
     @Override
     protected void initListener() {
@@ -230,13 +223,7 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
 
     }
 
-    @Override
     public void setGridView(View view, final int type, List data) {
-        List<ButtonModel> buttonModels= data;
-      //  GridView gridView = (GridView) view.findViewById(R.id.gridView);
-       // dynamicSoreView.setNumColumns(gridView);
-       // SortButtonAdapter adapter = new SortButtonAdapter(this,buttonModels);
-      //  gridView.setAdapter(adapter);
 //        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -487,104 +474,32 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
         }
 
     }
+    private void initData2() {
+        mList=new ArrayList<>();
+        mList.add(new MyIconModel("消毒任务",R.drawable.icon_start));
+        mList.add(new MyIconModel("任务停止",R.drawable.icon_stop));
+        mList.add(new MyIconModel("建图",R.drawable.icon_map));
+        mList.add(new MyIconModel("建图完成",R.drawable.icon_map_finish));
+        mList.add(new MyIconModel("喷雾强",R.drawable.icon_fog_q));
+        mList.add(new MyIconModel("喷雾弱",R.drawable.icon_fog_r));
+        mList.add(new MyIconModel("喷雾关",R.drawable.icon_fog_close));
+        mList.add(new MyIconModel("定位模式",R.drawable.icon_loc));
+        mList.add(new MyIconModel("释放",R.drawable.icon_lock_open));
+        mList.add(new MyIconModel("锁轴",R.drawable.icon_lock_close));
+        mList.add(new MyIconModel("打开热点",R.drawable.icon_wifi_open));
+        mList.add(new MyIconModel("关闭热点",R.drawable.icon_wifi_close));
+        mList.add(new MyIconModel("连接AP",R.drawable.icon_ap_open));
+        mList.add(new MyIconModel("断开AP",R.drawable.icon_ap_close));
+        mList.add(new MyIconModel("控制",R.drawable.icon_control));
+        mList.add(new MyIconModel("锁屏",R.drawable.icon_lock_screen));
+        mList.add(new MyIconModel("关机",R.drawable.icon_turn_off));
+        mList.add(new MyIconModel("描点",R.drawable.icon_points));
 
-    private List<ButtonModel> setData(){
-        List<ButtonModel> data = new ArrayList<>();
-        ButtonModel buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_start);
-        buttonModel.setName("消毒任务");
-        data.add(buttonModel);
+        mList.add(new MyIconModel("充电",R.drawable.icon_charge));
+        mList.add(new MyIconModel("消毒任务",R.drawable.icon_start));
+        mList.add(new MyIconModel("消毒任务",R.drawable.icon_start));
+        mList.add(new MyIconModel("消毒任务",R.drawable.icon_start));
 
-        buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_stop);
-        buttonModel.setName("任务停止");
-        data.add(buttonModel);
-
-        buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_map);
-        buttonModel.setName("建图");
-        data.add(buttonModel);
-
-        buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_fog_q);
-        buttonModel.setName("喷雾强");
-        data.add(buttonModel);
-
-        buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_fog_r);
-        buttonModel.setName("喷雾弱");
-        data.add(buttonModel);
-
-        buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_fog_close);
-        buttonModel.setName("喷雾关");
-        data.add(buttonModel);
-
-        buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_loc);
-        buttonModel.setName("定位模式");
-        data.add(buttonModel);
-
-        buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_lock_open);
-        buttonModel.setName("释放");
-        data.add(buttonModel);
-
-        buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_lock_close);
-        buttonModel.setName("锁轴");
-        data.add(buttonModel);
-
-        buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_wifi_open);
-        buttonModel.setName("打开热点");
-        data.add(buttonModel);
-
-        buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_wifi_close);
-        buttonModel.setName("关闭热点");
-        data.add(buttonModel);
-
-        buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_ap_open);
-        buttonModel.setName("连接AP");
-        data.add(buttonModel);
-
-        buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_ap_close);
-        buttonModel.setName("断开AP");
-        data.add(buttonModel);
-
-        buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_control);
-        buttonModel.setName("控制");
-        data.add(buttonModel);
-
-        buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_lock_screen);
-        buttonModel.setName("锁屏");
-        data.add(buttonModel);
-
-        buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_turn_off);
-        buttonModel.setName("关机");
-        data.add(buttonModel);
-
-        buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_points);
-        buttonModel.setName("描点");
-        data.add(buttonModel);
-
-        buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_map_finish);
-        buttonModel.setName("建图完成");
-        data.add(buttonModel);
-
-        buttonModel = new ButtonModel();
-        buttonModel.setDrawableIcon(R.drawable.icon_charge);
-        buttonModel.setName("充电");
-        data.add(buttonModel);
-        return data;
     }
 
     @Override
@@ -644,11 +559,6 @@ public class BinTongActivity2 extends  BaseActivity   implements IDynamicSore, B
             }, 0, 500);
         }
     }
-    private void initData2() {
-        mList=new ArrayList<>();
-        for(int i=0;i<30;i++){
-            mList.add(new MyIconModel("测试"+i,R.drawable.icon_stop));
-        }
-    }
+
 
 }

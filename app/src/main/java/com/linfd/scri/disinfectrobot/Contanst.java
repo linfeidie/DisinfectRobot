@@ -53,6 +53,10 @@ public class Contanst {
 
     public static final String api_robot_unregister = bitoMonitor + "robot_unregister";
 
+    public static final String api_get_agents_registerable = bitoMonitor + "get_agents_registerable";
+
+    public static final String api_get_robot_perform_task = bitoTask + "get_robot_perform_task/";
+
     public static final String REQUEST_OK = "0";
 
     public static final String ROBOT_SERIAL = "yg00a00020071211000n00";

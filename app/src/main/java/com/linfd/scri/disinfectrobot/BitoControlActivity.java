@@ -12,13 +12,17 @@ import com.linfd.scri.disinfectrobot.entity.BitoLoginEntity;
 import com.linfd.scri.disinfectrobot.entity.CancelTaskEntity;
 import com.linfd.scri.disinfectrobot.entity.ChangePwbEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionCodesCallbackEntity;
+import com.linfd.scri.disinfectrobot.entity.GetAgentsRegisterableEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAllTasksEntity;
 import com.linfd.scri.disinfectrobot.entity.GetErrorCodeEntity;
 import com.linfd.scri.disinfectrobot.entity.GetHanxinStatusEntity;
+import com.linfd.scri.disinfectrobot.entity.GetRobotPerformTaskEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotRegisterEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotUnregisterEntity;
 import com.linfd.scri.disinfectrobot.listener.HttpCallbackEntity;
+import com.linfd.scri.disinfectrobot.listener.SimpleHttpCallbackEntity;
 import com.linfd.scri.disinfectrobot.manager.BitoActionStateManager;
+import com.linfd.scri.disinfectrobot.manager.BitoHanxinManager;
 import com.linfd.scri.disinfectrobot.manager.HttpRequestManager;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -31,6 +35,7 @@ public class BitoControlActivity extends BaseActivity {
     private Button bt_get_charge_tasks,bt_switch_charging_mode_man,bt_switch_charging_mode_auto;
     private Button bt_cancel_task_walk,bt_cancel_task_charge,bt_get_hanxin_status,bt_get_error_code;
     private Button bt_login,bt_changePwb,bt_reset_agents,bt_robot_unregister;
+    private Button bt_get_agents_registerable,bt_get_robot_perform_task;
 
     private TextView tv_get_hanxin_status,tv_get_error_code;
 
@@ -57,6 +62,8 @@ public class BitoControlActivity extends BaseActivity {
         bt_changePwb = findViewById(R.id.bt_changePwb);
         bt_reset_agents = findViewById(R.id.bt_reset_agents);
         bt_robot_unregister = findViewById(R.id.bt_robot_unregister);
+        bt_get_agents_registerable = findViewById(R.id.bt_get_agents_registerable);
+        bt_get_robot_perform_task = findViewById(R.id.bt_get_robot_perform_task);
         super.initView();
     }
 
@@ -126,74 +133,56 @@ public class BitoControlActivity extends BaseActivity {
         bt_get_all_tasks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HttpRequestManager.getInstance().get_all_tasks(new HttpCallbackEntity<GetAllTasksEntity>() {
-
-                    @Override
-                    public void onSuccess(GetAllTasksEntity getAllTasksEntity) {
-                        List<GetAllTasksEntity.DataBean.TasksBean> tasksBeans = getAllTasksEntity.getData().getTasks();
-                        for (int i = 0; i < tasksBeans.size(); i++) {
-                            if (tasksBeans.get(i).getGoal_action() == 0){
-                                disinTaskId = tasksBeans.get(i).getId();
-                                break;
-                            };
-                        }
-                        for (int i = 0; i < tasksBeans.size(); i++) {
-                            if (tasksBeans.get(i).getGoal_action() == 10){
-                                chargeTaskId = tasksBeans.get(i).getId();
-                                break;
-                            };
-                        }
-                        Tools.showToast("行走："+disinTaskId+"++"+"充电："+chargeTaskId);
-                       // taskId = getAllTasksEntity.getData().getTasks().get(0).getId();
-                    }
-
-                    @Override
-                    public void onFailure() {
-                        Tools.showToast("失败");
-                    }
-                });
+               // getAllTasks();
             }
         });
+        /*
+        * 重复行走任务
+        * */
 
         bt_get_repeat_tasks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (disinTaskId == -1){
-                    return;
-                }
-                HttpRequestManager.getInstance().repeat_tasks(disinTaskId, new HttpCallbackEntity<BaseEntity>() {
-
-                    @Override
-                    public void onSuccess(BaseEntity baseEntity) {
-                        Tools.showToast("重复任务成功");
-                    }
-
-                    @Override
-                    public void onFailure() {
-                        Tools.showToast("失败");
-                    }
-                });
+                repeat_tasks();
             }
         });
 
         bt_get_charge_tasks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (chargeTaskId == -1){
-                    return;
-                }
-                HttpRequestManager.getInstance().repeat_tasks(chargeTaskId, new HttpCallbackEntity<BaseEntity>() {
+                HttpRequestManager.getInstance().get_all_tasks(new HttpCallbackEntity<GetAllTasksEntity>() {
 
                     @Override
-                    public void onSuccess(BaseEntity baseEntity) {
-                        Tools.showToast("充电");
+                    public void onSuccess(GetAllTasksEntity getAllTasksEntity) {
+                        List<GetAllTasksEntity.DataBean.TasksBean> tasksBeans = getAllTasksEntity.getData().getTasks();
+
+                        for (int i = 0; i < tasksBeans.size(); i++) {
+                            if (tasksBeans.get(i).getGoal_action() == 10){
+                                chargeTaskId = tasksBeans.get(i).getId();
+                                break;
+                            };
+                        }
+                        HttpRequestManager.getInstance().repeat_tasks(chargeTaskId, new HttpCallbackEntity<BaseEntity>() {
+
+                            @Override
+                            public void onSuccess(BaseEntity baseEntity) {
+                                Tools.showToast("充电");
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                Tools.showToast("充电失败");
+                            }
+                        });
                     }
 
                     @Override
                     public void onFailure() {
-                        Tools.showToast("充电失败");
+                        Tools.showToast("失败");
                     }
                 });
+
+
             }
         });
         /*
@@ -289,7 +278,7 @@ public class BitoControlActivity extends BaseActivity {
                     @Override
                     public void onSuccess(GetHanxinStatusEntity getHanxinStatusEntity) {
                        // Tools.showToast(BitoActionStateManager.obtainState(getHanxinStatusEntity.getStatus()));
-                        tv_get_hanxin_status.setText("韩信："+BitoActionStateManager.obtainState(getHanxinStatusEntity.getStatus()));
+                        tv_get_hanxin_status.setText("韩信："+ BitoHanxinManager.obtainState(getHanxinStatusEntity.getStatus()));
                     }
 
                     @Override
@@ -335,7 +324,7 @@ public class BitoControlActivity extends BaseActivity {
         bt_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HttpRequestManager.getInstance().login("111", "111", new HttpCallbackEntity<BitoLoginEntity>() {
+                HttpRequestManager.getInstance().login("admin", "123456", new HttpCallbackEntity<BitoLoginEntity>() {
 
                     @Override
                     public void onSuccess(BitoLoginEntity baseEntity) {
@@ -410,8 +399,80 @@ public class BitoControlActivity extends BaseActivity {
                     });
             }
         });
+        bt_get_agents_registerable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HttpRequestManager.getInstance().get_agents_registerable(new HttpCallbackEntity<GetAgentsRegisterableEntity>() {
+
+                    @Override
+                    public void onSuccess(GetAgentsRegisterableEntity getAgentsRegisterableEntity) {
+                        Tools.showToast(getAgentsRegisterableEntity.getData().getAgents().get(0).getSerial());
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Tools.showToast("查询所有在线机器⼈是否可注册失败");
+                    }
+                });
+            }
+        });
+
+        /*
+         * 查询正在执⾏的任务 - 根据机器⼈序列号
+         * */
+        bt_get_robot_perform_task.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HttpRequestManager.getInstance().get_robot_perform_task(Contanst.ROBOT_SERIAL,new SimpleHttpCallbackEntity<GetRobotPerformTaskEntity>() {
+
+                    @Override
+                    public void onSuccess(GetRobotPerformTaskEntity entity) {
+                        Tools.showToast(BitoActionStateManager.obtainState(entity.getData().getTasks().get(0).getStatus()));
+                    }
+
+
+                });
+            }
+        });
 
     }
+
+
+    private void repeat_tasks() {
+        HttpRequestManager.getInstance().get_all_tasks(new HttpCallbackEntity<GetAllTasksEntity>() {
+
+            @Override
+            public void onSuccess(GetAllTasksEntity getAllTasksEntity) {
+                List<GetAllTasksEntity.DataBean.TasksBean> tasksBeans = getAllTasksEntity.getData().getTasks();
+                for (int i = 0; i < tasksBeans.size(); i++) {
+                    if (tasksBeans.get(i).getGoal_action() == 0){
+                        disinTaskId = tasksBeans.get(i).getId();
+                        break;
+                    };
+                }
+
+                HttpRequestManager.getInstance().repeat_tasks(disinTaskId, new HttpCallbackEntity<BaseEntity>() {
+
+                    @Override
+                    public void onSuccess(BaseEntity baseEntity) {
+                        Tools.showToast("重复任务成功");
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Tools.showToast("失败");
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure() {
+                Tools.showToast("失败");
+            }
+        });
+
+    }
+
 
     /*
      * 接收异常代码

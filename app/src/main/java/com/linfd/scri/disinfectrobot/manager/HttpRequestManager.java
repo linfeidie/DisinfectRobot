@@ -14,9 +14,11 @@ import com.linfd.scri.disinfectrobot.entity.BaseEntity;
 import com.linfd.scri.disinfectrobot.entity.BitoLoginEntity;
 import com.linfd.scri.disinfectrobot.entity.CancelTaskEntity;
 import com.linfd.scri.disinfectrobot.entity.ChangePwbEntity;
+import com.linfd.scri.disinfectrobot.entity.GetAgentsRegisterableEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAllTasksEntity;
 import com.linfd.scri.disinfectrobot.entity.GetErrorCodeEntity;
 import com.linfd.scri.disinfectrobot.entity.GetHanxinStatusEntity;
+import com.linfd.scri.disinfectrobot.entity.GetRobotPerformTaskEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotRegisterEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotUnregisterEntity;
 import com.linfd.scri.disinfectrobot.entity.TaskStatusEntity;
@@ -347,7 +349,7 @@ public class HttpRequestManager {
         params.put("password", password);
         mMyOkHttp.post()
                 .url(url)
-                .params(params)
+                .jsonParams(gson.toJson(params))
                 .tag(this)
                 .enqueue(new GsonResponseHandler<BitoLoginEntity>() {
 
@@ -378,7 +380,7 @@ public class HttpRequestManager {
         params.put("passwordConfirm", passwordConfirm);
         mMyOkHttp.post()
                 .url(url)
-                .params(params)
+                .jsonParams(gson.toJson(params))
                 .tag(this)
                 .enqueue(new GsonResponseHandler<ChangePwbEntity>() {
 
@@ -443,5 +445,54 @@ public class HttpRequestManager {
                 });
     }
 
+    /*
+    * 查询所有在线机器⼈是否可注册
+    * */
+
+    public <T> void get_agents_registerable(final HttpCallbackEntity<T> httpCallbackEntity){
+        String url = Contanst.api_get_agents_registerable ;
+        mMyOkHttp.get()
+                .url(url)
+                .tag(this)
+                .enqueue(new GsonResponseHandler<GetAgentsRegisterableEntity>() {
+
+                    @Override
+                    public void onFailure(int statusCode, String error_msg) {
+                        httpCallbackEntity.onFailure();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, GetAgentsRegisterableEntity response) {
+
+                        httpCallbackEntity.onSuccess((T) response);
+
+                    }
+                });
+    }
+
+    /*
+    * 查询正在执⾏的任务 - 根据机器⼈序列号
+    * */
+    public <T> void get_robot_perform_task(String serial,final HttpCallbackEntity<T> httpCallbackEntity) {
+
+        String url = Contanst.api_get_robot_perform_task + serial;
+        mMyOkHttp.get()
+                .url(url)
+                .tag(this)
+                .enqueue(new GsonResponseHandler<GetRobotPerformTaskEntity>() {
+
+                    @Override
+                    public void onFailure(int statusCode, String error_msg) {
+                        httpCallbackEntity.onFailure();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, GetRobotPerformTaskEntity response) {
+
+                        httpCallbackEntity.onSuccess((T) response);
+
+                    }
+                });
+    }
 
 }
