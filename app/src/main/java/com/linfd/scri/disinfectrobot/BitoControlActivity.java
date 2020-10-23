@@ -23,6 +23,8 @@ import com.linfd.scri.disinfectrobot.listener.HttpCallbackEntity;
 import com.linfd.scri.disinfectrobot.listener.SimpleHttpCallbackEntity;
 import com.linfd.scri.disinfectrobot.manager.BitoActionStateManager;
 import com.linfd.scri.disinfectrobot.manager.BitoHanxinManager;
+import com.linfd.scri.disinfectrobot.manager.HeartbeatManager3;
+import com.linfd.scri.disinfectrobot.manager.HeartbeatManager4;
 import com.linfd.scri.disinfectrobot.manager.HttpRequestManager;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -36,6 +38,7 @@ public class BitoControlActivity extends BaseActivity {
     private Button bt_cancel_task_walk,bt_cancel_task_charge,bt_get_hanxin_status,bt_get_error_code;
     private Button bt_login,bt_changePwb,bt_reset_agents,bt_robot_unregister;
     private Button bt_get_agents_registerable,bt_get_robot_perform_task;
+    private Button bt_one_key_start;
 
     private TextView tv_get_hanxin_status,tv_get_error_code;
 
@@ -64,30 +67,20 @@ public class BitoControlActivity extends BaseActivity {
         bt_robot_unregister = findViewById(R.id.bt_robot_unregister);
         bt_get_agents_registerable = findViewById(R.id.bt_get_agents_registerable);
         bt_get_robot_perform_task = findViewById(R.id.bt_get_robot_perform_task);
+        bt_one_key_start = findViewById(R.id.bt_one_key_start);
         super.initView();
     }
 
     @Override
     protected void initListener() {
         super.initListener();
+        /*
+        * 开启韩信
+        * */
         bt_hanxin_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HttpRequestManager.getInstance().hanxin_start(new HttpCallbackEntity<BaseEntity>() {
-                    @Override
-                    public void onSuccess(BaseEntity baseEntity) {
-                        if (baseEntity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
-                            Tools.showToast("启动成功");
-                        }else{
-                            Tools.showToast("启动失败");
-                        };
-                    }
-
-                    @Override
-                    public void onFailure() {
-
-                    }
-                });
+                //hanxin_start();
             }
         });
         bt_hanxin_stop.setOnClickListener(new View.OnClickListener() {
@@ -113,17 +106,7 @@ public class BitoControlActivity extends BaseActivity {
         bt_robot_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    HttpRequestManager.getInstance().robot_register(new HttpCallbackEntity<RobotRegisterEntity>() {
-                        @Override
-                        public void onSuccess(RobotRegisterEntity robotRegisterEntity) {
-                            Tools.showToast("成功");
-                        }
-
-                        @Override
-                        public void onFailure() {
-                            Tools.showToast("失败");
-                        }
-                    });
+               // robot_register();
             }
         });
 
@@ -270,22 +253,23 @@ public class BitoControlActivity extends BaseActivity {
 
             }
         });
-        bt_get_hanxin_status.setOnClickListener(new View.OnClickListener() {
+
+        /*
+        * 韩信状态
+        * */
+
+            bt_get_hanxin_status.setOnClickListener(new View.OnClickListener() {
+            boolean b= true;
             @Override
             public void onClick(View view) {
-                HttpRequestManager.getInstance().get_hanxin_status(new HttpCallbackEntity<GetHanxinStatusEntity>() {
+                if (b){
+                    HeartbeatManager3.getInstance().start();
+                    b = false;
+                }else{
+                    HeartbeatManager3.getInstance().stop();
+                    b = true;
+                }
 
-                    @Override
-                    public void onSuccess(GetHanxinStatusEntity getHanxinStatusEntity) {
-                       // Tools.showToast(BitoActionStateManager.obtainState(getHanxinStatusEntity.getStatus()));
-                        tv_get_hanxin_status.setText("韩信："+ BitoHanxinManager.obtainState(getHanxinStatusEntity.getStatus()));
-                    }
-
-                    @Override
-                    public void onFailure() {
-                        tv_get_hanxin_status.setText("韩信："+"无法获取");
-                    }
-                });
 
             }
         });
@@ -399,21 +383,14 @@ public class BitoControlActivity extends BaseActivity {
                     });
             }
         });
+
+        /*
+        * 查询所有在线机器⼈是否可注册
+        * */
         bt_get_agents_registerable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HttpRequestManager.getInstance().get_agents_registerable(new HttpCallbackEntity<GetAgentsRegisterableEntity>() {
-
-                    @Override
-                    public void onSuccess(GetAgentsRegisterableEntity getAgentsRegisterableEntity) {
-                        Tools.showToast(getAgentsRegisterableEntity.getData().getAgents().get(0).getSerial());
-                    }
-
-                    @Override
-                    public void onFailure() {
-                        Tools.showToast("查询所有在线机器⼈是否可注册失败");
-                    }
-                });
+               // get_agents_registerable();
             }
         });
 
@@ -421,20 +398,85 @@ public class BitoControlActivity extends BaseActivity {
          * 查询正在执⾏的任务 - 根据机器⼈序列号
          * */
         bt_get_robot_perform_task.setOnClickListener(new View.OnClickListener() {
+
+            boolean b = true;
             @Override
             public void onClick(View view) {
-                HttpRequestManager.getInstance().get_robot_perform_task(Contanst.ROBOT_SERIAL,new SimpleHttpCallbackEntity<GetRobotPerformTaskEntity>() {
-
-                    @Override
-                    public void onSuccess(GetRobotPerformTaskEntity entity) {
-                        Tools.showToast(BitoActionStateManager.obtainState(entity.getData().getTasks().get(0).getStatus()));
-                    }
-
-
-                });
+                if (b){
+                    HeartbeatManager4.getInstance().start();
+                    b = false;
+                }else{
+                    HeartbeatManager4.getInstance().stop();
+                    b = true;
+                }
             }
         });
 
+        /*
+        * 一键开启  3连    开启韩信 +  获取机器人序列号 + 注册机器人
+        * */
+        bt_one_key_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hanxin_start();
+            }
+        });
+
+    }
+
+    /*
+     * 注册机器人
+     * */
+    private void robot_register() {
+        HttpRequestManager.getInstance().robot_register(new SimpleHttpCallbackEntity<RobotRegisterEntity>() {
+            @Override
+            public void onSuccess(RobotRegisterEntity entity) {
+                if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+                    Tools.showToast("注册成功");
+                }
+
+            }
+
+        });
+    }
+
+    /*
+    * /*
+     * 查询所有在线机器⼈是否可注册
+     * */
+    private void get_agents_registerable() {
+        HttpRequestManager.getInstance().get_agents_registerable(new SimpleHttpCallbackEntity<GetAgentsRegisterableEntity>() {
+
+            @Override
+            public void onSuccess(GetAgentsRegisterableEntity entity) {
+                if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+                    Contanst.ROBOT_SERIAL = entity.getData().getAgents().get(0).getSerial();
+                    Tools.showToast(entity.getData().getAgents().get(0).getSerial());
+                    robot_register();
+                }
+
+            }
+
+        });
+    }
+
+    /*
+    * 启动韩信
+    * */
+    private void hanxin_start() {
+        HttpRequestManager.getInstance().hanxin_start(new SimpleHttpCallbackEntity<BaseEntity>() {
+            @Override
+            public void onSuccess(BaseEntity baseEntity) {
+                if (baseEntity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+                    Tools.showToast("韩信启动成功");
+                    get_agents_registerable();
+                }else{
+                    Tools.showToast("韩信启动失败");
+                };
+            }
+
+
+        });
     }
 
 

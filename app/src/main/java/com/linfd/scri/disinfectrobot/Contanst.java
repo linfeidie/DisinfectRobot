@@ -59,7 +59,7 @@ public class Contanst {
 
     public static final String REQUEST_OK = "0";
 
-    public static final String ROBOT_SERIAL = "yg00a00020071211000n00";
+    public static  String ROBOT_SERIAL = "yg00a00020071211000n00";
 
     public static  int MAP_HASHCODE = -1;//正在展示的地图的哈希码
 

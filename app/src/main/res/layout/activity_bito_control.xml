@@ -126,6 +126,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="查询正在执⾏的任务-序列号"></Button>
+            <Button
+                android:id="@+id/bt_one_key_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="一键开启"></Button>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
