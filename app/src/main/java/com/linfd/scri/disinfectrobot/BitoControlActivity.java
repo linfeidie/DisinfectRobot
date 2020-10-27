@@ -3,6 +3,7 @@ package com.linfd.scri.disinfectrobot;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -11,6 +12,7 @@ import com.linfd.scri.disinfectrobot.entity.BaseEntity;
 import com.linfd.scri.disinfectrobot.entity.BitoLoginEntity;
 import com.linfd.scri.disinfectrobot.entity.CancelTaskEntity;
 import com.linfd.scri.disinfectrobot.entity.ChangePwbEntity;
+import com.linfd.scri.disinfectrobot.entity.ChargingStationsEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionCodesCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAgentsRegisterableEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAllTasksEntity;
@@ -33,12 +35,14 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
 
 public class BitoControlActivity extends BaseActivity {
+
+    public static final String TAG = BitoControlActivity.class.getSimpleName();
     private Button bt_hanxin_start,bt_hanxin_stop,bt_robot_register,bt_get_all_tasks,bt_get_repeat_tasks;
     private Button bt_get_charge_tasks,bt_switch_charging_mode_man,bt_switch_charging_mode_auto;
     private Button bt_cancel_task_walk,bt_cancel_task_charge,bt_get_hanxin_status,bt_get_error_code;
     private Button bt_login,bt_changePwb,bt_reset_agents,bt_robot_unregister;
     private Button bt_get_agents_registerable,bt_get_robot_perform_task;
-    private Button bt_one_key_start;
+    private Button bt_one_key_start,bt_charging_stations;
 
     private TextView tv_get_hanxin_status,tv_get_error_code;
 
@@ -68,6 +72,7 @@ public class BitoControlActivity extends BaseActivity {
         bt_get_agents_registerable = findViewById(R.id.bt_get_agents_registerable);
         bt_get_robot_perform_task = findViewById(R.id.bt_get_robot_perform_task);
         bt_one_key_start = findViewById(R.id.bt_one_key_start);
+        bt_charging_stations = findViewById(R.id.bt_charging_stations);
         super.initView();
     }
 
@@ -285,13 +290,13 @@ public class BitoControlActivity extends BaseActivity {
                     @Override
                     public void onSuccess(GetErrorCodeEntity getErrorCodeEntity) {
 
-                        StringBuilder sb = new StringBuilder();
-                        List<GetErrorCodeEntity.InfoBean.YugongBean.Yg00a00020071211000n00Bean.ZhCnBeanX> zhCnBeanXList = getErrorCodeEntity.getInfo().getYugong().getYg00a00020071211000n00().getZh_cn();
-                        for (int i = 0; i < zhCnBeanXList.size(); i++) {
-                            sb.append(zhCnBeanXList.get(i).getInstruction()+",");
-                        }
-
-                        tv_get_error_code.setText(sb.toString());
+//                        StringBuilder sb = new StringBuilder();
+//                        List<GetErrorCodeEntity.InfoBean.YugongBean.Yg00a00020071211000n00Bean.ZhCnBeanX> zhCnBeanXList = getErrorCodeEntity.getInfo().getYugong().getYg00a00020071211000n00().getZh_cn();
+//                        for (int i = 0; i < zhCnBeanXList.size(); i++) {
+//                            sb.append(zhCnBeanXList.get(i).getInstruction()+",");
+//                        }
+//
+//                        tv_get_error_code.setText(sb.toString());
                     }
 
                     @Override
@@ -422,6 +427,30 @@ public class BitoControlActivity extends BaseActivity {
             }
         });
 
+        /*
+        查询所有⾃动充电桩信息*
+        */
+        bt_charging_stations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HttpRequestManager.getInstance().charging_stations(new HttpCallbackEntity<ChargingStationsEntity>() {
+
+                    @Override
+                    public void onSuccess(ChargingStationsEntity entity) {
+
+                        //赋值
+                        Contanst.CHARGING_STATION_SERIAL = entity.getData().get(0).getCharging_station_serial();
+
+                        Tools.showToast("成功"+ entity.getData().get(0).getCharging_station_serial());
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Tools.showToast("失败");
+                    }
+                });
+            }
+        });
     }
 
     /*
@@ -517,11 +546,19 @@ public class BitoControlActivity extends BaseActivity {
 
 
     /*
-     * 接收异常代码
+     * 接收韩信状态
      * */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onReceiveMsg(ExceptionCodesCallbackEntity entity) {
+    public void onReceiveMsg(GetHanxinStatusEntity entity) {
+        Log.e(TAG,"韩信："+ BitoHanxinManager.obtainState(entity.getStatus()));
 
+    }
+    /*
+           正在执行的任务状态
+     * */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiveMsg(GetRobotPerformTaskEntity entity) {
+        Log.e(TAG,BitoActionStateManager.obtainState(entity.getData().getTasks().get(0).getStatus()));
 
     }
 }

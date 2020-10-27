@@ -57,9 +57,13 @@ public class Contanst {
 
     public static final String api_get_robot_perform_task = bitoTask + "get_robot_perform_task/";
 
+    public static final String api_charging_stations = bitoMonitor + "charging_stations";
+
     public static final String REQUEST_OK = "0";
 
     public static  String ROBOT_SERIAL = "yg00a00020071211000n00";
+
+    public static String CHARGING_STATION_SERIAL = null; //充电桩序列号
 
     public static  int MAP_HASHCODE = -1;//正在展示的地图的哈希码
 

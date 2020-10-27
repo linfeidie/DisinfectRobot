@@ -8,6 +8,8 @@ import com.linfd.scri.disinfectrobot.Tools;
 import com.linfd.scri.disinfectrobot.entity.GetHanxinStatusEntity;
 import com.linfd.scri.disinfectrobot.listener.SimpleHttpCallbackEntity;
 
+import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * 文件描述：.
@@ -56,6 +58,7 @@ public class HeartbeatManager3 {
 
                 @Override
                 public void onSuccess(GetHanxinStatusEntity getHanxinStatusEntity) {
+                    EventBus.getDefault().post(getHanxinStatusEntity);
                     //Tools.showToast("韩信："+ BitoHanxinManager.obtainState(getHanxinStatusEntity.getStatus()));
                 }
 

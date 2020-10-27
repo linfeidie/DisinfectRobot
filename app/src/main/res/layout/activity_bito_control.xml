@@ -131,6 +131,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="一键开启"></Button>
+
+            <Button
+                android:id="@+id/bt_charging_stations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="查询所有⾃动充电桩信息"></Button>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"

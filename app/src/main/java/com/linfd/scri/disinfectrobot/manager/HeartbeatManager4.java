@@ -9,6 +9,8 @@ import com.linfd.scri.disinfectrobot.entity.GetHanxinStatusEntity;
 import com.linfd.scri.disinfectrobot.entity.GetRobotPerformTaskEntity;
 import com.linfd.scri.disinfectrobot.listener.SimpleHttpCallbackEntity;
 
+import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * 文件描述：.
@@ -58,7 +60,8 @@ public class HeartbeatManager4 {
                 @Override
                 public void onSuccess(GetRobotPerformTaskEntity entity) {
                     //entity.getErrno()
-                    Tools.showToast(BitoActionStateManager.obtainState(entity.getData().getTasks().get(0).getStatus()));
+                    EventBus.getDefault().post(entity);
+                    //Tools.showToast(BitoActionStateManager.obtainState(entity.getData().getTasks().get(0).getStatus()));
                 }
 
 
