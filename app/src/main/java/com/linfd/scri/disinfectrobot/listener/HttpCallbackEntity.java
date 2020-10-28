@@ -4,5 +4,5 @@ import okhttp3.Response;
 
 public interface HttpCallbackEntity <T>{
       void onSuccess( T t);
-      void onFailure();
+      void onFailure(String errmsg);
 }

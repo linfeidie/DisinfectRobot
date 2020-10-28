@@ -132,7 +132,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                     }
 
                     @Override
-                    public void onFailure() {
+                    public void onFailure(String errmsg) {
 
                     }
                 });

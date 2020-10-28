@@ -61,6 +61,8 @@ public class Contanst {
 
     public static final String REQUEST_OK = "0";
 
+    public static final int REQUEST_OK_200 = 200;
+
     public static  String ROBOT_SERIAL = "yg00a00020071211000n00";
 
     public static String CHARGING_STATION_SERIAL = null; //充电桩序列号

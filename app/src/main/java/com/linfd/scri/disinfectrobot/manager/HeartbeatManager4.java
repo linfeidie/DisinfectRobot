@@ -1,6 +1,7 @@
 package com.linfd.scri.disinfectrobot.manager;
 
 import android.os.Handler;
+import android.util.Log;
 
 import com.linfd.scri.disinfectrobot.BaseApplication;
 import com.linfd.scri.disinfectrobot.Contanst;
@@ -22,6 +23,7 @@ import org.greenrobot.eventbus.EventBus;
  */
 public class HeartbeatManager4 {
 
+    public static final String TAG = HeartbeatManager4.class.getSimpleName();
     private MyRunnable mRunnable;
     private Handler mHandler;
     private static HeartbeatManager4 instance;
@@ -55,12 +57,13 @@ public class HeartbeatManager4 {
     private class MyRunnable implements Runnable {
         @Override
         public void run() {
-            HttpRequestManager.getInstance().get_robot_perform_task(Contanst.ROBOT_SERIAL,new SimpleHttpCallbackEntity<GetRobotPerformTaskEntity>() {
+            HttpRequestManager.getInstance().get_robot_perform_task(new SimpleHttpCallbackEntity<GetRobotPerformTaskEntity>() {
 
                 @Override
                 public void onSuccess(GetRobotPerformTaskEntity entity) {
                     //entity.getErrno()
                     EventBus.getDefault().post(entity);
+                    //entity.getData().getTasks().size()
                     //Tools.showToast(BitoActionStateManager.obtainState(entity.getData().getTasks().get(0).getStatus()));
                 }
 

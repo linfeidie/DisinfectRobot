@@ -1,5 +1,6 @@
 package com.linfd.scri.disinfectrobot.manager;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
@@ -14,6 +15,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.linfd.scri.disinfectrobot.BaseApplication;
 import com.linfd.scri.disinfectrobot.Contanst;
+import com.linfd.scri.disinfectrobot.Tools;
 import com.linfd.scri.disinfectrobot.entity.BaseEntity;
 import com.linfd.scri.disinfectrobot.entity.BitoLoginEntity;
 import com.linfd.scri.disinfectrobot.entity.CancelTaskEntity;
@@ -106,11 +108,12 @@ public class HttpRequestManager {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
-                        httpCallbackEntity.onFailure();
+                        httpCallbackEntity.onFailure(error_msg);
                     }
 
                     @Override
                     public void onSuccess(int statusCode, TaskStatusEntity response) {
+
 
                         httpCallbackEntity.onSuccess((T) response);
 
@@ -132,7 +135,7 @@ public class HttpRequestManager {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
-                        httpCallbackEntity.onFailure();
+                        httpCallbackEntity.onFailure(error_msg);
                     }
 
                     @Override
@@ -156,7 +159,7 @@ public class HttpRequestManager {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
-                        httpCallbackEntity.onFailure();
+                        httpCallbackEntity.onFailure(error_msg);
                     }
 
                     @Override
@@ -180,7 +183,7 @@ public class HttpRequestManager {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
-                        httpCallbackEntity.onFailure();
+                        httpCallbackEntity.onFailure(error_msg);
                     }
 
                     @Override
@@ -197,6 +200,10 @@ public class HttpRequestManager {
      * 注册机器人
      * */
     public <T> void robot_register(final HttpCallbackEntity<T> httpCallbackEntity) {
+        if (TextUtils.isEmpty(Contanst.ROBOT_SERIAL)) {
+            Tools.showToast("机器未注册，请启动韩信");
+            return;
+        }
         String url = Contanst.api_robot_register + Contanst.ROBOT_SERIAL;
         mMyOkHttp.get()
                 .url(url)
@@ -205,7 +212,7 @@ public class HttpRequestManager {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
-                        httpCallbackEntity.onFailure();
+                        httpCallbackEntity.onFailure(error_msg);
                     }
 
                     @Override
@@ -229,7 +236,7 @@ public class HttpRequestManager {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
-                        httpCallbackEntity.onFailure();
+                        httpCallbackEntity.onFailure(error_msg);
                     }
 
                     @Override
@@ -261,7 +268,7 @@ public class HttpRequestManager {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
-                        httpCallbackEntity.onFailure();
+                        httpCallbackEntity.onFailure(error_msg);
                     }
 
                     @Override
@@ -285,7 +292,7 @@ public class HttpRequestManager {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
-                        httpCallbackEntity.onFailure();
+                        httpCallbackEntity.onFailure(error_msg);
                     }
 
                     @Override
@@ -309,7 +316,7 @@ public class HttpRequestManager {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
-                        httpCallbackEntity.onFailure();
+                        httpCallbackEntity.onFailure(error_msg);
                     }
 
                     @Override
@@ -333,6 +340,11 @@ public class HttpRequestManager {
                 .enqueue(new RawResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, String response) {
+
+                        if (TextUtils.isEmpty(Contanst.ROBOT_SERIAL) || TextUtils.isEmpty(Contanst.CHARGING_STATION_SERIAL)) {
+                            Tools.showToast("机器未注册，请启动韩信");
+                            return;
+                        }
                         JSONObject jsonObject = JSONObject.parseObject(response).getJSONObject("info");
                         String[] agentType = {"charging_station", "hanxin", "yugong"};
                         String[] agentList = {"cj02", "yg00a00020071211000n00"};
@@ -355,10 +367,10 @@ public class HttpRequestManager {
                             JSONArray chargingStations = jsonObject.getObject(agentType[0],JSONObject.class).getObject(Contanst.CHARGING_STATION_SERIAL,JSONObject.class).getJSONArray("zh_cn");
                              List<GetErrorCodeEntity.InfoBean.ChargingStationBean.Cj02Bean.EnBean> getErrorCodeEntities  = JSON.parseArray(chargingStations.toString(),GetErrorCodeEntity.InfoBean.ChargingStationBean.Cj02Bean.EnBean.class);
                             //韩信信息
-                            JSONArray hanxin = jsonObject.getObject(agentType[1],JSONObject.class).getObject("yg00a00020071211000n00",JSONObject.class).getJSONArray("zh_cn");
+                            JSONArray hanxin = jsonObject.getObject(agentType[1],JSONObject.class).getObject(Contanst.ROBOT_SERIAL,JSONObject.class).getJSONArray("zh_cn");
                             //getErrorCodeEntities = JSON.parseArray(hanxin.toString(), GetErrorCodeEntity.InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX.class);
                             //愚公信息
-                            JSONArray yugong = jsonObject.getObject(agentType[2],JSONObject.class).getObject("yg00a00020071211000n00",JSONObject.class).getJSONArray("zh_cn");
+                            JSONArray yugong = jsonObject.getObject(agentType[2],JSONObject.class).getObject(Contanst.ROBOT_SERIAL,JSONObject.class).getJSONArray("zh_cn");
                             // List<GetErrorCodeEntity.InfoBean.YugongBean.Yg00a00020071211000n00BeanX.ZhCnBeanXX> getErrorCodeEntities  = JSON.parseArray(yugong.toString(),GetErrorCodeEntity.InfoBean.YugongBean.Yg00a00020071211000n00BeanX.ZhCnBeanXX.class);
                             Log.e(TAG, getErrorCodeEntities.toString());
                         } catch (Exception e) {
@@ -391,7 +403,7 @@ public class HttpRequestManager {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
-                        httpCallbackEntity.onFailure();
+                        httpCallbackEntity.onFailure(error_msg);
                     }
 
                     @Override
@@ -422,7 +434,7 @@ public class HttpRequestManager {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
-                        httpCallbackEntity.onFailure();
+                        httpCallbackEntity.onFailure(error_msg);
                     }
 
                     @Override
@@ -446,7 +458,7 @@ public class HttpRequestManager {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
-                        httpCallbackEntity.onFailure();
+                        httpCallbackEntity.onFailure(error_msg);
                     }
 
                     @Override
@@ -461,8 +473,13 @@ public class HttpRequestManager {
     /*
      * 注销机器人
      * */
-    public <T> void robot_unregister(String serial, final HttpCallbackEntity<T> httpCallbackEntity) {
-        String url = Contanst.api_robot_unregister + serial;
+    public <T> void robot_unregister( final HttpCallbackEntity<T> httpCallbackEntity) {
+
+        if (TextUtils.isEmpty(Contanst.ROBOT_SERIAL)) {
+            Tools.showToast("机器未注册，请启动韩信");
+            return;
+        }
+        String url = Contanst.api_robot_unregister + Contanst.ROBOT_SERIAL;
         mMyOkHttp.get()
                 .url(url)
                 .tag(this)
@@ -470,7 +487,7 @@ public class HttpRequestManager {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
-                        httpCallbackEntity.onFailure();
+                        httpCallbackEntity.onFailure(error_msg);
                     }
 
                     @Override
@@ -495,7 +512,7 @@ public class HttpRequestManager {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
-                        httpCallbackEntity.onFailure();
+                        httpCallbackEntity.onFailure(error_msg);
                     }
 
                     @Override
@@ -510,9 +527,14 @@ public class HttpRequestManager {
     /*
      * 查询正在执⾏的任务 - 根据机器⼈序列号
      * */
-    public <T> void get_robot_perform_task(String serial, final HttpCallbackEntity<T> httpCallbackEntity) {
+    public <T> void get_robot_perform_task(final HttpCallbackEntity<T> httpCallbackEntity) {
 
-        String url = Contanst.api_get_robot_perform_task + serial;
+        if (TextUtils.isEmpty(Contanst.ROBOT_SERIAL)) {
+            Tools.showToast("机器未注册，请启动韩信");
+            return;
+        }
+
+        String url = Contanst.api_get_robot_perform_task + Contanst.ROBOT_SERIAL;
         mMyOkHttp.get()
                 .url(url)
                 .tag(this)
@@ -520,7 +542,7 @@ public class HttpRequestManager {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
-                        httpCallbackEntity.onFailure();
+                        httpCallbackEntity.onFailure(error_msg);
                     }
 
                     @Override
@@ -544,7 +566,7 @@ public class HttpRequestManager {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
-                        httpCallbackEntity.onFailure();
+                        httpCallbackEntity.onFailure(error_msg);
                     }
 
                     @Override
