@@ -57,9 +57,13 @@ public class HeartbeatManager3 {
             HttpRequestManager.getInstance().get_hanxin_status(new SimpleHttpCallbackEntity<GetHanxinStatusEntity>() {
 
                 @Override
-                public void onSuccess(GetHanxinStatusEntity getHanxinStatusEntity) {
-                    EventBus.getDefault().post(getHanxinStatusEntity);
-                    //Tools.showToast("韩信："+ BitoHanxinManager.obtainState(getHanxinStatusEntity.getStatus()));
+                public void onSuccess(GetHanxinStatusEntity entity) {
+                    if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+                        EventBus.getDefault().post(entity);
+                    }else{
+                        onFailure(entity.getErrmsg());
+                    }
+
                 }
 
 

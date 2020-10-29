@@ -61,8 +61,13 @@ public class HeartbeatManager4 {
 
                 @Override
                 public void onSuccess(GetRobotPerformTaskEntity entity) {
+                    if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+                        EventBus.getDefault().post(entity);
+                    }else{
+                        onFailure(entity.getErrmsg());
+                    }
                     //entity.getErrno()
-                    EventBus.getDefault().post(entity);
+
                     //entity.getData().getTasks().size()
                     //Tools.showToast(BitoActionStateManager.obtainState(entity.getData().getTasks().get(0).getStatus()));
                 }
