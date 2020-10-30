@@ -25,6 +25,8 @@ public class Contanst {
 
     public static final String bitoMonitor = bitoAPI + "monitor/";
 
+    public static final String bitoRobot = bitoAPI + "robot/";
+
     public static final String api_get_task_status = bitoTask + "get_task_status/";
 
     public static final String api_hanxin_start = bitoMonitor + "hanxin_start";
@@ -58,6 +60,12 @@ public class Contanst {
     public static final String api_get_robot_perform_task = bitoTask + "get_robot_perform_task/";
 
     public static final String api_charging_stations = bitoMonitor + "charging_stations";
+
+    public static final String api_cancel_tasks = bitoTask + "cancel_tasks";  //取消所有任务
+
+    public static final String api_pause_robot = bitoRobot + "pause_robot?serial=";//暂停机器人
+
+    public static final String api_resume_robot = bitoRobot + "resume_robot?serial=";//恢复机器人
 
     public static final String REQUEST_OK = "0";
 

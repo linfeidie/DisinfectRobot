@@ -19,6 +19,7 @@ import com.linfd.scri.disinfectrobot.Tools;
 import com.linfd.scri.disinfectrobot.entity.BaseEntity;
 import com.linfd.scri.disinfectrobot.entity.BitoLoginEntity;
 import com.linfd.scri.disinfectrobot.entity.CancelTaskEntity;
+import com.linfd.scri.disinfectrobot.entity.CancelTasksEntity;
 import com.linfd.scri.disinfectrobot.entity.ChangePwbEntity;
 import com.linfd.scri.disinfectrobot.entity.ChargingStationsEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAgentsRegisterableEntity;
@@ -26,6 +27,8 @@ import com.linfd.scri.disinfectrobot.entity.GetAllTasksEntity;
 import com.linfd.scri.disinfectrobot.entity.GetErrorCodeEntity;
 import com.linfd.scri.disinfectrobot.entity.GetHanxinStatusEntity;
 import com.linfd.scri.disinfectrobot.entity.GetRobotPerformTaskEntity;
+import com.linfd.scri.disinfectrobot.entity.PauseRobotEntity;
+import com.linfd.scri.disinfectrobot.entity.ResumeRobotEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotRegisterEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotUnregisterEntity;
 import com.linfd.scri.disinfectrobot.entity.TaskStatusEntity;
@@ -304,7 +307,7 @@ public class HttpRequestManager {
     }
 
     /*
-     * 取消任务
+     * 取消任务（废弃了）
      * */
     public <T> void cancel_task(int taskId, final HttpCallbackEntity<T> httpCallbackEntity) {
         String url = Contanst.api_cancel_task + taskId;
@@ -345,7 +348,7 @@ public class HttpRequestManager {
                             return;
                         }
                         JSONObject infoObject = JSONObject.parseObject(response).getJSONObject("info");
-                        String[] agentType = {"charging_station", "hanxin", "yugong"};
+                        String[] agentType = {"charging_station1", "hanxin", "yugong"};
                         //String[] agentList = {"cj02", "yg00a00020071211000n00"};
 //                        for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
 //                            JSONObject obj = (JSONObject) entry.getValue();// obj -->hanxin
@@ -361,19 +364,20 @@ public class HttpRequestManager {
 //                        }
 
                         //List<GetErrorCodeEntity.InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX> getErrorCodeEntities  = null;
+                        List<GetErrorCodeEntity.InfoBean.ChargingStationBean.Cj02Bean.EnBean> getErrorChargeEntities;
                         try {
                             // 充电桩信息
                             JSONArray chargingStations = infoObject.getObject(agentType[0],JSONObject.class).getObject(Contanst.CHARGING_STATION_SERIAL,JSONObject.class).getJSONArray("zh_cn");
                             boolean a = infoObject.containsKey(agentType[0]);
                             boolean b = infoObject.getObject("charging_station",JSONObject.class).containsKey("cj02");
-                             List<GetErrorCodeEntity.InfoBean.ChargingStationBean.Cj02Bean.EnBean> getErrorCodeEntities  = JSON.parseArray(chargingStations.toString(),GetErrorCodeEntity.InfoBean.ChargingStationBean.Cj02Bean.EnBean.class);
+                            getErrorChargeEntities  = JSON.parseArray(chargingStations.toString(),GetErrorCodeEntity.InfoBean.ChargingStationBean.Cj02Bean.EnBean.class);
                             //韩信信息
                             JSONArray hanxin = infoObject.getObject(agentType[1],JSONObject.class).getObject(Contanst.ROBOT_SERIAL,JSONObject.class).getJSONArray("zh_cn");
                             //getErrorCodeEntities = JSON.parseArray(hanxin.toString(), GetErrorCodeEntity.InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX.class);
                             //愚公信息
                             JSONArray yugong = infoObject.getObject(agentType[2],JSONObject.class).getObject(Contanst.ROBOT_SERIAL,JSONObject.class).getJSONArray("zh_cn");
                             // List<GetErrorCodeEntity.InfoBean.YugongBean.Yg00a00020071211000n00BeanX.ZhCnBeanXX> getErrorCodeEntities  = JSON.parseArray(yugong.toString(),GetErrorCodeEntity.InfoBean.YugongBean.Yg00a00020071211000n00BeanX.ZhCnBeanXX.class);
-                            Log.e(TAG, getErrorCodeEntities.toString());
+                           // Log.e(TAG, getErrorCodeEntities.toString());
                         } catch (Exception e) {
                             e.printStackTrace();
 
@@ -559,7 +563,6 @@ public class HttpRequestManager {
     * 查询所有⾃动充电桩信息
     * */
     public <T> void charging_stations( final HttpCallbackEntity<T> httpCallbackEntity) {
-
         String url = Contanst.api_charging_stations ;
         mMyOkHttp.get()
                 .url(url)
@@ -574,12 +577,97 @@ public class HttpRequestManager {
                     @Override
                     public void onSuccess(int statusCode, ChargingStationsEntity response) {
 
+                        httpCallbackEntity.onSuccess((T) response);
+                    }
+                });
+    }
+
+    /*
+    * 取消所有任务
+    * */
+    public <T> void cancel_tasks(int taskId, final HttpCallbackEntity<T> httpCallbackEntity) {
+
+        String url = Contanst.api_cancel_tasks;
+        Map<String, Object> map = new HashMap<>();
+        List<Integer> id_list = new ArrayList<>();
+        id_list.add(taskId);
+
+        map.put("language", "zh_cn");
+        map.put("id_lst", id_list);
+
+        mMyOkHttp.post()
+                .url(url)
+                .tag(this).jsonParams(gson.toJson(map))
+                .enqueue(new GsonResponseHandler<CancelTasksEntity>() {
+
+                    @Override
+                    public void onFailure(int statusCode, String error_msg) {
+
+                        httpCallbackEntity.onFailure(error_msg);
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, CancelTasksEntity response) {
 
                         httpCallbackEntity.onSuccess((T) response);
 
                     }
                 });
     }
+    /*
+    * 暂停机器人
+    * */
+    public <T> void pause_robot( final HttpCallbackEntity<T> httpCallbackEntity) {
 
+        if (TextUtils.isEmpty(Contanst.ROBOT_SERIAL)) {
+            Tools.showToast("机器未注册，请启动韩信");
+            return;
+        }
 
+        String url = Contanst.api_pause_robot + Contanst.ROBOT_SERIAL;;
+        mMyOkHttp.get()
+                .url(url)
+                .tag(this)
+                .enqueue(new GsonResponseHandler<PauseRobotEntity>() {
+
+                    @Override
+                    public void onFailure(int statusCode, String error_msg) {
+                        httpCallbackEntity.onFailure(error_msg);
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, PauseRobotEntity response) {
+
+                        httpCallbackEntity.onSuccess((T) response);
+                    }
+                });
+    }
+    /*
+     * 恢复机器人
+     * */
+    public <T> void resume_robot( final HttpCallbackEntity<T> httpCallbackEntity) {
+
+        if (TextUtils.isEmpty(Contanst.ROBOT_SERIAL)) {
+            Tools.showToast("机器未注册，请启动韩信");
+            return;
+        }
+
+        String url = Contanst.api_resume_robot + Contanst.ROBOT_SERIAL;
+        mMyOkHttp.get()
+                .url(url)
+                .tag(this)
+                .enqueue(new GsonResponseHandler<ResumeRobotEntity>() {
+
+                    @Override
+                    public void onFailure(int statusCode, String error_msg) {
+                        httpCallbackEntity.onFailure(error_msg);
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, ResumeRobotEntity response) {
+
+                        httpCallbackEntity.onSuccess((T) response);
+                    }
+                });
+    }
 }

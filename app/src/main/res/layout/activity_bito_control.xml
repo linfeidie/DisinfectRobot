@@ -137,6 +137,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="查询所有⾃动充电桩信息"></Button>
+            <Button
+                android:id="@+id/bt_cancel_tasks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="取消所有任务"></Button>
+            <Button
+                android:id="@+id/bt_pause_robot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="暂停机器人"></Button>
+            <Button
+                android:id="@+id/bt_resume_robot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="恢复机器人"></Button>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"

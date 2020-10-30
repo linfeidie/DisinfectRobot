@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.linfd.scri.disinfectrobot.entity.BaseEntity;
 import com.linfd.scri.disinfectrobot.entity.BitoLoginEntity;
 import com.linfd.scri.disinfectrobot.entity.CancelTaskEntity;
+import com.linfd.scri.disinfectrobot.entity.CancelTasksEntity;
 import com.linfd.scri.disinfectrobot.entity.ChangePwbEntity;
 import com.linfd.scri.disinfectrobot.entity.ChargingStationsEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionCodesCallbackEntity;
@@ -19,6 +20,8 @@ import com.linfd.scri.disinfectrobot.entity.GetAllTasksEntity;
 import com.linfd.scri.disinfectrobot.entity.GetErrorCodeEntity;
 import com.linfd.scri.disinfectrobot.entity.GetHanxinStatusEntity;
 import com.linfd.scri.disinfectrobot.entity.GetRobotPerformTaskEntity;
+import com.linfd.scri.disinfectrobot.entity.PauseRobotEntity;
+import com.linfd.scri.disinfectrobot.entity.ResumeRobotEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotRegisterEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotUnregisterEntity;
 import com.linfd.scri.disinfectrobot.listener.HttpCallbackEntity;
@@ -43,7 +46,7 @@ public class BitoControlActivity extends BaseActivity {
     private Button bt_cancel_task_walk,bt_cancel_task_charge,bt_get_hanxin_status,bt_get_error_code;
     private Button bt_login,bt_changePwb,bt_reset_agents,bt_robot_unregister;
     private Button bt_get_agents_registerable,bt_get_robot_perform_task;
-    private Button bt_one_key_start,bt_charging_stations;
+    private Button bt_one_key_start,bt_charging_stations,bt_cancel_tasks,bt_pause_robot,bt_resume_robot;
 
     private TextView tv_get_hanxin_status,tv_get_error_code;
 
@@ -74,6 +77,9 @@ public class BitoControlActivity extends BaseActivity {
         bt_get_robot_perform_task = findViewById(R.id.bt_get_robot_perform_task);
         bt_one_key_start = findViewById(R.id.bt_one_key_start);
         bt_charging_stations = findViewById(R.id.bt_charging_stations);
+        bt_cancel_tasks = findViewById(R.id.bt_cancel_tasks);
+        bt_pause_robot = findViewById(R.id.bt_pause_robot);
+        bt_resume_robot = findViewById(R.id.bt_resume_robot);
         super.initView();
     }
 
@@ -227,10 +233,10 @@ public class BitoControlActivity extends BaseActivity {
                 if (disinTaskId == -1){
                     return;
                 }
-                HttpRequestManager.getInstance().cancel_task(disinTaskId,new SimpleHttpCallbackEntity<CancelTaskEntity>() {
+                HttpRequestManager.getInstance().cancel_tasks(disinTaskId,new SimpleHttpCallbackEntity<CancelTasksEntity>() {
 
                     @Override
-                    public void onSuccess(CancelTaskEntity entity) {
+                    public void onSuccess(CancelTasksEntity entity) {
                         if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
                             Tools.showToast("取消成功");
                         }else{
@@ -246,10 +252,11 @@ public class BitoControlActivity extends BaseActivity {
                 if (chargeTaskId == -1){
                     return;
                 }
-                HttpRequestManager.getInstance().cancel_task(chargeTaskId,new SimpleHttpCallbackEntity<CancelTaskEntity>() {
+
+                HttpRequestManager.getInstance().cancel_tasks(chargeTaskId,new SimpleHttpCallbackEntity<CancelTasksEntity>() {
 
                     @Override
-                    public void onSuccess(CancelTaskEntity entity) {
+                    public void onSuccess(CancelTasksEntity entity) {
                         if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
                             Tools.showToast("取消成功");
                         }else{
@@ -434,6 +441,64 @@ public class BitoControlActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 charing_stations();
+            }
+        });
+
+        /*
+        * 取消所有任务
+        * */
+        bt_cancel_tasks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HttpRequestManager.getInstance().cancel_tasks(1, new SimpleHttpCallbackEntity<CancelTasksEntity>() {
+                    @Override
+                    public void onSuccess(CancelTasksEntity entity) {
+                        if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+                            Tools.showToast("取消任务成功");
+                        }else{
+                            onFailure(entity.getErrmsg());
+                        }
+                    }
+                });
+            }
+        });
+
+        /*
+        *暂停机器人
+        * */
+        bt_pause_robot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HttpRequestManager.getInstance().pause_robot(new SimpleHttpCallbackEntity<PauseRobotEntity>(){
+
+                    @Override
+                    public void onSuccess(PauseRobotEntity entity) {
+                        if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+                            Tools.showToast("暂停机器人");
+                        }else{
+                            onFailure(entity.getErrmsg());
+                        }
+                    }
+                });
+            }
+        });
+
+        /*
+        * 恢复机器人
+        * */
+        bt_resume_robot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HttpRequestManager.getInstance().resume_robot(new SimpleHttpCallbackEntity<ResumeRobotEntity>() {
+                    @Override
+                    public void onSuccess(ResumeRobotEntity entity) {
+                        if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+                            Tools.showToast("恢复机器人");
+                        }else{
+                            onFailure(entity.getErrmsg());
+                        }
+                    }
+                });
             }
         });
     }
