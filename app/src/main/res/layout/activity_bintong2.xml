@@ -193,7 +193,7 @@
         app:isShowIndicator="true"
         app:itemView="@layout/my_item_view"
         app:numColumns="3"
-        app:pageSize="11"
+        app:pageSize="12"
         app:selectedIndicator="@drawable/radio1"
         app:unSelectedIndicator="@drawable/radio2"
         app:indicatorPaddingTop="200dp"
