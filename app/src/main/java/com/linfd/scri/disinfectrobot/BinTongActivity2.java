@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
+import com.linfd.scri.disinfectrobot.entity.BaseEntity;
 import com.linfd.scri.disinfectrobot.entity.DesinStateCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionCodesCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionEntity;
@@ -23,7 +24,9 @@ import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.TaskStatusEntity;
 import com.linfd.scri.disinfectrobot.eventbus.EventPoint;
 import com.linfd.scri.disinfectrobot.listener.HttpCallbackEntity;
+import com.linfd.scri.disinfectrobot.listener.SimpleHttpCallbackEntity;
 import com.linfd.scri.disinfectrobot.manager.AckListenerService;
+import com.linfd.scri.disinfectrobot.manager.BitoAPIManager;
 import com.linfd.scri.disinfectrobot.manager.ExceptionCodesHelper;
 import com.linfd.scri.disinfectrobot.manager.HttpRequestManager;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
@@ -111,9 +114,81 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
             @Override
             public void onItemClick(int position) {
                 Toast.makeText(BinTongActivity2.this,position+"",Toast.LENGTH_SHORT).show();
+                switch (position){
+                    case 0://启动系统
+                        BitoAPIManager.getInstance().hanxin_start();
+                        break;
+                    case 1://关闭系统
+                        BitoAPIManager.getInstance().hanxin_stop();
+                        break;
+                    case 2://启动消毒
+                        BitoAPIManager.getInstance().repeat_tasks();
+                        break;
+                    case 3://暂停消毒
+                        BitoAPIManager.getInstance().pause_robot();
+                        break;
+                    case 4://恢复消毒
+                        BitoAPIManager.getInstance().resume_robot();
+                        break;
+                    case 5://取消消毒
+                        BitoAPIManager.getInstance().cancel_task_walk();
+                        break;
+                    case 6://充电
+                        BitoAPIManager.getInstance().repeat_tasks_charge();
+                        break;
+                    case 7://取消充电
+                        BitoAPIManager.getInstance().cancel_task_charge();
+                        break;
+                    case 8://开启喷雾
+                        auto_q();
+                        break;
+                    case 9://关闭喷雾
+                        disin_cmd_spray_off();
+                        break;
+                   case 12://控制
+                       Tools.showToast("控制");
+                           Intent intent = new Intent(BinTongActivity2.this,WalkingDirectionActivity.class);
+                           startActivity(intent);
+                        break;
+                    case 13://释放
+                        switch_open();
+                        break;
+                    case 14://锁轴
+                        switch_close();
+                        break;
+                    case 15://打开热点
+                        robot_wifi_open();
+                        break;
+                    case 16://关闭热点
+                        robot_wifi_close();
+                        break;
+                    case 17://连接AP
+                        robot_wifi_ap_open();
+                        break;
+                    case 18://关闭AP
+                        robot_wifi_ap_close();
+                        break;
+                    case 24://建图
+                        navi_mode_build();
+                        break;
+                    case 25://建图完成
+                        set_save_map();
+                        break;
+                    case 26://锁屏
+                        lock_screen();
+                        break;
+                    case 27://关机
+                        power_off();
+                        break;
+                    case 28://重置机器人
+                        BitoAPIManager.getInstance().reset_agents();
+                        break;
+
+                }
             }
         });
     }
+
 
     private void data(){
         switch_button.setChecked(false);
@@ -340,6 +415,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     }
 
     private void robot_wifi_close() {
+        Tools.showToast("已关闭热点");
         UdpControlSendManager.getInstance().set_robot_wifi_close(Contanst.id,Contanst.to_id);
     }
 
@@ -392,6 +468,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     }
 
     private void disin_cmd_spray_off() {
+        Tools.showToast("喷雾关");
         UdpControlSendManager.getInstance().set_disin_cmd_spray_off(Contanst.id, Contanst.to_id);
     }
 
@@ -476,16 +553,16 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     }
     private void initData2() {
         mList=new ArrayList<>();
-        mList.add(new MyIconModel("一键启动",R.drawable.hanxin_start));
-        mList.add(new MyIconModel("一键关闭",R.drawable.hanxin_stop));
+        mList.add(new MyIconModel("启动系统",R.drawable.hanxin_start));
+        mList.add(new MyIconModel("关闭系统",R.drawable.hanxin_stop));
         mList.add(new MyIconModel("启动消毒",R.drawable.icon_start));
         mList.add(new MyIconModel("暂停消毒",R.drawable.icon_stop));
+        mList.add(new MyIconModel("恢复消毒",R.drawable.icon_resume_robot));
         mList.add(new MyIconModel("取消消毒",R.drawable.icon_cancel_walk));
         mList.add(new MyIconModel("充电",R.drawable.icon_charge));
+        mList.add(new MyIconModel("取消充电",R.drawable.icon_cancel_charge));
         mList.add(new MyIconModel("开启喷雾",R.drawable.icon_fog_q));
         mList.add(new MyIconModel("关闭喷雾",R.drawable.icon_fog_close));
-        mList.add(new MyIconModel("",R.drawable.icon_transparent));
-        mList.add(new MyIconModel("",R.drawable.icon_transparent));
         mList.add(new MyIconModel("",R.drawable.icon_transparent));
         mList.add(new MyIconModel("",R.drawable.icon_transparent));
 
@@ -497,18 +574,19 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         mList.add(new MyIconModel("关闭热点",R.drawable.icon_wifi_close));
         mList.add(new MyIconModel("连接AP",R.drawable.icon_ap_open));
         mList.add(new MyIconModel("断开AP",R.drawable.icon_ap_close));
-        mList.add(new MyIconModel("充电_手动",R.drawable.icon_charging_mode_man));
-        mList.add(new MyIconModel("充电_自动",R.drawable.icon_charging_mode_auto));
-        mList.add(new MyIconModel("重置机器人",R.drawable.icon_reset_agents));
+        //mList.add(new MyIconModel("充电_手动",R.drawable.icon_charging_mode_man));
+        mList.add(new MyIconModel("",R.drawable.icon_transparent));
+        mList.add(new MyIconModel("",R.drawable.icon_transparent));
+        mList.add(new MyIconModel("",R.drawable.icon_transparent));
         mList.add(new MyIconModel("",R.drawable.icon_transparent));
         mList.add(new MyIconModel("",R.drawable.icon_transparent));
 
         mList.add(new MyIconModel("建图",R.drawable.icon_map));
         mList.add(new MyIconModel("建图完成",R.drawable.icon_map_finish));
-        mList.add(new MyIconModel("描点",R.drawable.icon_points));
-        mList.add(new MyIconModel("导航",R.drawable.icon_navigation));
+        //mList.add(new MyIconModel("导航",R.drawable.icon_navigation));
         mList.add(new MyIconModel("锁屏",R.drawable.icon_lock_screen));
         mList.add(new MyIconModel("关机",R.drawable.icon_turn_off));
+        mList.add(new MyIconModel("重置机器人",R.drawable.icon_reset_agents));
 
     }
 
