@@ -20,6 +20,10 @@ import com.linfd.scri.disinfectrobot.entity.BaseEntity;
 import com.linfd.scri.disinfectrobot.entity.DesinStateCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionCodesCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionEntity;
+import com.linfd.scri.disinfectrobot.entity.GetErrorCodeEntity;
+import com.linfd.scri.disinfectrobot.entity.GetErrorCodeResultEntity;
+import com.linfd.scri.disinfectrobot.entity.GetHanxinStatusEntity;
+import com.linfd.scri.disinfectrobot.entity.GetRobotPerformTaskEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.TaskStatusEntity;
 import com.linfd.scri.disinfectrobot.eventbus.EventPoint;
@@ -27,7 +31,12 @@ import com.linfd.scri.disinfectrobot.listener.HttpCallbackEntity;
 import com.linfd.scri.disinfectrobot.listener.SimpleHttpCallbackEntity;
 import com.linfd.scri.disinfectrobot.manager.AckListenerService;
 import com.linfd.scri.disinfectrobot.manager.BitoAPIManager;
+import com.linfd.scri.disinfectrobot.manager.BitoActionStateManager;
+import com.linfd.scri.disinfectrobot.manager.BitoHanxinManager;
 import com.linfd.scri.disinfectrobot.manager.ExceptionCodesHelper;
+import com.linfd.scri.disinfectrobot.manager.HeartbeatManager3;
+import com.linfd.scri.disinfectrobot.manager.HeartbeatManager4;
+import com.linfd.scri.disinfectrobot.manager.HeartbeatManager5;
 import com.linfd.scri.disinfectrobot.manager.HttpRequestManager;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
 import com.linfd.scri.disinfectrobot.manager.UpdateStateControlManager;
@@ -71,7 +80,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     public static final String TAG = BinTongActivity2.class.getSimpleName();
 
     private PageGridView<MyIconModel> mPageGridView;
-    private TextView tv_exception;
+    private TextView tv_exception,tv_get_hanxin_status,tv_get_robot_perform_task;
     private List<ExceptionEntity> entities;
     private PowerConsumptionRankingsBatteryView mBatteryView;
     private BinTongActivity2.NoLeakHandler mHandler;
@@ -97,6 +106,8 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         status_layout_spary = findViewById(R.id.status_layout_spary);
         status_layout_box_store = findViewById(R.id.status_layout_box_store);
         switch_button = findViewById(R.id.switch_button);
+        tv_get_hanxin_status = findViewById(R.id.tv_get_hanxin_status);
+        tv_get_robot_perform_task = findViewById(R.id.tv_get_robot_perform_task);
         data();
         super.initView();
         mTopBar.setVisibility(View.GONE);
@@ -108,6 +119,9 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     @Override
     protected void initData() {
         super.initData();
+        HeartbeatManager3.getInstance().start();//获取韩信状态
+        HeartbeatManager4.getInstance().start();//当前任务状态
+        HeartbeatManager5.getInstance().start();//异常状态获取
         initData2();
         mPageGridView.setData(mList);
         mPageGridView.setOnItemClickListener(new PageGridView.OnItemClickListener() {
@@ -134,10 +148,10 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                         BitoAPIManager.getInstance().cancel_task_walk();
                         break;
                     case 6://充电
-                        BitoAPIManager.getInstance().repeat_tasks_charge();
+                        BitoAPIManager.getInstance().repeat_tasks_charge_man();
                         break;
                     case 7://取消充电
-                        BitoAPIManager.getInstance().cancel_task_charge();
+                        BitoAPIManager.getInstance().cancel_task_charge_man();
                         break;
                     case 8://开启喷雾
                         auto_q();
@@ -248,7 +262,9 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        HeartbeatManager3.getInstance().stop();//关闭韩信
+        HeartbeatManager4.getInstance().stop();//关闭任务状态
+        HeartbeatManager5.getInstance().stop();//关闭异常
     }
 
 
@@ -646,6 +662,72 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                 }
             }, 0, 500);
         }
+    }
+    /*
+     * 接收韩信状态
+     * */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiveMsg(GetHanxinStatusEntity entity) {
+        Log.e(TAG,"韩信："+ BitoHanxinManager.obtainState(entity.getStatus()));
+        tv_get_hanxin_status.setText("韩信："+ BitoHanxinManager.obtainState(entity.getStatus()));
+    }
+    /*
+          正在执行的任务状态
+    * */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiveMsg(GetRobotPerformTaskEntity entity) {
+
+        //返回正确且有值
+        if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK) && entity.getData().getTasks().size() != 0){
+            Log.e(TAG, BitoActionStateManager.obtainState(entity.getData().getTasks().get(0).getStatus()));
+            tv_get_robot_perform_task.setText(BitoActionStateManager.obtainState(entity.getData().getTasks().get(0).getStatus()));
+        }else{
+            Tools.showToast("当前没有任务状态");
+        }
+    }
+
+    /*
+     * 接收异常信息的
+     * */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiveMsg(GetErrorCodeResultEntity entity) {
+        //充电桩的
+        List<GetErrorCodeEntity.InfoBean.ChargingStationBean.Cj02Bean.EnBean> zhCnBeanXES = new ArrayList<>();//过滤掉重复的
+        for (int i = 0; i < entity.charges.size(); i++) {
+            if (!zhCnBeanXES.contains(entity.charges.get(i))){//如果不包含就加入
+                zhCnBeanXES.add( entity.charges.get(i));
+            }
+        }
+        //韩信  可以恢复的异常
+        List<GetErrorCodeEntity.InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX> zhCnBeanHXSY = new ArrayList<>();
+        //不可恢复的
+        List<GetErrorCodeEntity.InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX> zhCnBeanHXSN = new ArrayList<>();
+        for (int i = 0; i < entity.hanxins.size(); i++) {
+
+            //如果是可以恢复的  否则是不可以恢复的
+            if(entity.hanxins.get(i).getSelf_recoverable().equals("Y")){
+                zhCnBeanHXSY.add(entity.hanxins.get(i));
+            }else if(entity.hanxins.get(i).getSelf_recoverable().equals("N")){
+                zhCnBeanHXSN.add(entity.hanxins.get(i));
+            }
+        }
+
+        //愚公 可以恢复
+        List<GetErrorCodeEntity.InfoBean.YugongBean.Yg00a00020071211000n00BeanX.ZhCnBeanXX> zhCnBeanYGY = new ArrayList<>();
+        //愚公 不可以恢复
+        List<GetErrorCodeEntity.InfoBean.YugongBean.Yg00a00020071211000n00BeanX.ZhCnBeanXX> zhCnBeanYGN = new ArrayList<>();
+        for (int i = 0; i < entity.yugongs.size(); i++) {
+
+            //如果是可以恢复的  否则是不可以恢复的
+            if(entity.yugongs.get(i).getSelf_recoverable().equals("Y")){
+                zhCnBeanYGY.add(entity.yugongs.get(i));
+            }else if(entity.yugongs.get(i).getSelf_recoverable().equals("N")){
+                zhCnBeanYGN.add(entity.yugongs.get(i));
+            }
+        }
+
+
+
     }
 
 

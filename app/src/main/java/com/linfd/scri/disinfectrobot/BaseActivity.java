@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.linfd.scri.disinfectrobot.manager.HeartbeatManager3;
 import com.stx.xhb.commontitlebar.CustomTitleBar;
 import com.td.framework.module.dialog.DialogHelper;
 import com.td.framework.module.dialog.inf.OnDialogCancelListener;
@@ -62,6 +63,7 @@ public  class BaseActivity extends AppCompatActivity implements OnDialogCancelLi
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+
     }
 
     @Override

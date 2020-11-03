@@ -18,6 +18,7 @@ import com.linfd.scri.disinfectrobot.entity.ExceptionCodesCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAgentsRegisterableEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAllTasksEntity;
 import com.linfd.scri.disinfectrobot.entity.GetErrorCodeEntity;
+import com.linfd.scri.disinfectrobot.entity.GetErrorCodeResultEntity;
 import com.linfd.scri.disinfectrobot.entity.GetHanxinStatusEntity;
 import com.linfd.scri.disinfectrobot.entity.GetRobotPerformTaskEntity;
 import com.linfd.scri.disinfectrobot.entity.PauseRobotEntity;
@@ -294,23 +295,16 @@ public class BitoControlActivity extends BaseActivity {
         bt_get_error_code.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HttpRequestManager.getInstance().get_error_code(new SimpleHttpCallbackEntity<GetErrorCodeEntity>() {
+                HttpRequestManager.getInstance().get_error_code(new SimpleHttpCallbackEntity<GetErrorCodeResultEntity>() {
 
                     @Override
-                    public void onSuccess(GetErrorCodeEntity entity) {
+                    public void onSuccess(GetErrorCodeResultEntity entity) {
 
-                        if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
-
-                        }else{
-                            onFailure(entity.getErrmsg());
-                        }
-//                        StringBuilder sb = new StringBuilder();
-//                        List<GetErrorCodeEntity.InfoBean.YugongBean.Yg00a00020071211000n00Bean.ZhCnBeanX> zhCnBeanXList = getErrorCodeEntity.getInfo().getYugong().getYg00a00020071211000n00().getZh_cn();
-//                        for (int i = 0; i < zhCnBeanXList.size(); i++) {
-//                            sb.append(zhCnBeanXList.get(i).getInstruction()+",");
-//                        }
+//                        if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
 //
-//                        tv_get_error_code.setText(sb.toString());
+//                        }else{
+//                            onFailure(entity.getErrmsg());
+//                        }
                     }
 
                 });
@@ -638,7 +632,5 @@ public class BitoControlActivity extends BaseActivity {
         }else{
             Tools.showToast("当前没有任务状态");
         }
-
-
     }
 }

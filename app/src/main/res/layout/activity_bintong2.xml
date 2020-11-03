@@ -138,38 +138,53 @@
 
 
     </LinearLayout>
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/b"
         android:layout_toRightOf="@id/ll_left"
         android:layout_toLeftOf="@id/vp_grid_view">
         <TextView
+            android:id="@+id/tv_get_hanxin_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="韩信状态"></TextView>
+        <TextView
+            android:id="@+id/tv_robot_register"
+            android:layout_below="@+id/tv_get_hanxin_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注册"></TextView>
+        <TextView
+            android:id="@+id/tv_get_robot_perform_task"
+            android:layout_below="@+id/tv_robot_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="当前任务状态"></TextView>
+        <TextView
             android:id="@+id/tv_exception"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|left"
+            android:layout_alignParentBottom="true"
             android:background="@drawable/icon_exception"
             ></TextView>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_toLeftOf="@+id/switch_button"
+                android:layout_alignTop="@+id/switch_button"
                 android:text="锁屏"></TextView>
-            <com.suke.widget.SwitchButton
-                android:id="@+id/switch_button"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
 
-                app:sb_checked_color="@color/colorMajor" />
-        </LinearLayout>
-    </FrameLayout>
+        <com.suke.widget.SwitchButton
+            android:id="@+id/switch_button"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            app:sb_checked_color="@color/colorMajor" />
+    </RelativeLayout>
 
     <fj.mtsortbutton.lib.DynamicSoreView
         android:visibility="gone"

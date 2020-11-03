@@ -14,6 +14,7 @@ import com.linfd.scri.disinfectrobot.listener.SimpleUdpListener;
 import com.linfd.scri.disinfectrobot.manager.AckListenerService;
 import com.linfd.scri.disinfectrobot.manager.CompareEntityManager;
 import com.linfd.scri.disinfectrobot.manager.GetFromServerData;
+import com.linfd.scri.disinfectrobot.manager.HeartbeatManager3;
 import com.linfd.scri.disinfectrobot.manager.HttpRequestManager;
 import com.linfd.scri.disinfectrobot.manager.LogCookManager;
 import com.linfd.scri.disinfectrobot.manager.LooperDisinStatusService;
@@ -62,6 +63,8 @@ public class BaseApplication extends Application {
     CompareEntityManager.getInstance().start();
 
     HttpRequestManager.getInstance().init();
+
+
 
 
   }

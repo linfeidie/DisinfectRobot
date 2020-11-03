@@ -25,6 +25,7 @@ import com.linfd.scri.disinfectrobot.entity.ChargingStationsEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAgentsRegisterableEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAllTasksEntity;
 import com.linfd.scri.disinfectrobot.entity.GetErrorCodeEntity;
+import com.linfd.scri.disinfectrobot.entity.GetErrorCodeResultEntity;
 import com.linfd.scri.disinfectrobot.entity.GetHanxinStatusEntity;
 import com.linfd.scri.disinfectrobot.entity.GetRobotPerformTaskEntity;
 import com.linfd.scri.disinfectrobot.entity.PauseRobotEntity;
@@ -363,23 +364,25 @@ public class HttpRequestManager {
 //                            }
 //                        }
 
-                        //List<GetErrorCodeEntity.InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX> getErrorCodeEntities  = null;
-                        List<GetErrorCodeEntity.InfoBean.ChargingStationBean.Cj02Bean.EnBean> getErrorChargeEntities;
+                        GetErrorCodeResultEntity getErrorCodeResultEntity = new GetErrorCodeResultEntity();
                         try {
                             // 充电桩信息
                             JSONArray chargingStations = infoObject.getObject(agentType[0],JSONObject.class).getObject(Contanst.CHARGING_STATION_SERIAL,JSONObject.class).getJSONArray("zh_cn");
                             boolean a = infoObject.containsKey(agentType[0]);
                             boolean b = infoObject.getObject("charging_station",JSONObject.class).containsKey("cj02");
-                            getErrorChargeEntities  = JSON.parseArray(chargingStations.toString(),GetErrorCodeEntity.InfoBean.ChargingStationBean.Cj02Bean.EnBean.class);
+                            getErrorCodeResultEntity.charges = JSON.parseArray(chargingStations.toString(),GetErrorCodeEntity.InfoBean.ChargingStationBean.Cj02Bean.EnBean.class);
                             //韩信信息
                             JSONArray hanxin = infoObject.getObject(agentType[1],JSONObject.class).getObject(Contanst.ROBOT_SERIAL,JSONObject.class).getJSONArray("zh_cn");
-                            //getErrorCodeEntities = JSON.parseArray(hanxin.toString(), GetErrorCodeEntity.InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX.class);
+                            getErrorCodeResultEntity.hanxins= JSON.parseArray(hanxin.toString(), GetErrorCodeEntity.InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX.class);
                             //愚公信息
                             JSONArray yugong = infoObject.getObject(agentType[2],JSONObject.class).getObject(Contanst.ROBOT_SERIAL,JSONObject.class).getJSONArray("zh_cn");
-                            // List<GetErrorCodeEntity.InfoBean.YugongBean.Yg00a00020071211000n00BeanX.ZhCnBeanXX> getErrorCodeEntities  = JSON.parseArray(yugong.toString(),GetErrorCodeEntity.InfoBean.YugongBean.Yg00a00020071211000n00BeanX.ZhCnBeanXX.class);
+                            getErrorCodeResultEntity.yugongs  = JSON.parseArray(yugong.toString(),GetErrorCodeEntity.InfoBean.YugongBean.Yg00a00020071211000n00BeanX.ZhCnBeanXX.class);
+
                            // Log.e(TAG, getErrorCodeEntities.toString());
+                            httpCallbackEntity.onSuccess((T) getErrorCodeResultEntity);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            Tools.showToast("异常解析出现问题");
 
                         }
 
@@ -388,7 +391,7 @@ public class HttpRequestManager {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
-
+                        httpCallbackEntity.onFailure(error_msg);
                     }
                 });
     }

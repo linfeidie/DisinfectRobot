@@ -7,6 +7,7 @@ import com.linfd.scri.disinfectrobot.entity.CancelTasksEntity;
 import com.linfd.scri.disinfectrobot.entity.ChargingStationsEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAgentsRegisterableEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAllTasksEntity;
+import com.linfd.scri.disinfectrobot.entity.GetErrorCodeResultEntity;
 import com.linfd.scri.disinfectrobot.entity.PauseRobotEntity;
 import com.linfd.scri.disinfectrobot.entity.ResumeRobotEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotRegisterEntity;
@@ -225,7 +226,23 @@ public class BitoAPIManager {
     /*
      *重复充电任务，先查询所有任务信息
      * */
-    public void repeat_tasks_charge(){
+    public void repeat_tasks_charge_man(){
+        HttpRequestManager.getInstance().switch_charging_mode(1, new SimpleHttpCallbackEntity<BaseEntity>() {
+            @Override
+            public void onSuccess(BaseEntity baseEntity) {
+                if (baseEntity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+                    repeat_tasks_charge();
+                }else{
+                    onFailure(baseEntity.getErrmsg());
+                }
+            }
+        });
+
+    }
+    /*
+    * 未改为手动充电模式下
+    * */
+    private void repeat_tasks_charge() {
         HttpRequestManager.getInstance().get_all_tasks(new SimpleHttpCallbackEntity<GetAllTasksEntity>() {
 
             @Override
@@ -263,7 +280,25 @@ public class BitoAPIManager {
     /*
     * 取消充电任务
     * */
-    public void cancel_task_charge(){
+    public void cancel_task_charge_man(){
+
+        HttpRequestManager.getInstance().switch_charging_mode(1, new SimpleHttpCallbackEntity<BaseEntity>() {
+            @Override
+            public void onSuccess(BaseEntity baseEntity) {
+                if (baseEntity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+                    cancel_task_charge();
+                }else{
+                    onFailure(baseEntity.getErrmsg());
+                }
+            }
+        });
+
+    }
+
+    /*
+    * 未手动模式之前
+    * */
+    private void cancel_task_charge() {
         if (chargeTaskId == -1){
             return;
         }
@@ -295,6 +330,20 @@ public class BitoAPIManager {
                 }else{
                     onFailure(baseEntity.getErrmsg());
                 }
+            }
+
+        });
+    }
+
+    /*
+     * 查询所有故障信息
+     * */
+    public void get_error_code(){
+        HttpRequestManager.getInstance().get_error_code(new SimpleHttpCallbackEntity<GetErrorCodeResultEntity>() {
+
+            @Override
+            public void onSuccess(GetErrorCodeResultEntity entity) {
+
             }
 
         });

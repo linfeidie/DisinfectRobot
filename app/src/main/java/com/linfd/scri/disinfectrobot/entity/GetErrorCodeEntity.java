@@ -6,6 +6,7 @@ package com.linfd.scri.disinfectrobot.entity;
 
 
 import java.util.List;
+import java.util.Objects;
 
 public class GetErrorCodeEntity extends BaseEntity{
 
@@ -306,6 +307,19 @@ public class GetErrorCodeEntity extends BaseEntity{
 
                     public void setSystem_version(Object system_version) {
                         this.system_version = system_version;
+                    }
+
+                    @Override
+                    public boolean equals(Object o) {
+                        if (this == o) return true;
+                        if (!(o instanceof EnBean)) return false;
+                        EnBean enBean = (EnBean) o;
+                        return getDTC().equals(enBean.getDTC());
+                    }
+
+                    @Override
+                    public int hashCode() {
+                        return Objects.hash(getDTC());
                     }
                 }
 
