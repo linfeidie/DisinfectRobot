@@ -7,15 +7,15 @@ import com.linfd.scri.disinfectrobot.entity.GetMapParamCallbackEntity;
 
 public class Contanst {
 
-    public static  String map_time ; //192.168.1.101 连接网线  "127.0.0.1"  192.168.2.103 是网络地址  10.42.0.1
+    public static  String map_time ; //192.168.1.101（1009） 连接网线  "127.0.0.1"  192.168.2.103 是网络地址  10.42.0.1
 
-    public static final String TargetIp = "10.42.0.1";//10.42.0.1  目标IP地址   192.168.2.107  117  192.168.5.100
+    public static final String TargetIp = "192.168.1.101";//10.42.0.1  目标IP地址   192.168.2.107  117  192.168.5.100
 
     public static final int TargetPort = 8999; //目标端口8999 8080
 
     public static final int LocalPort = 8989 ;//本地端口
 
-    public static final String bitoIP = "http://192.168.2.108:9999/";//宾通的IP\
+    public static final String bitoIP = "http://192.168.2.108:9999/";//宾通的IP  http://192.168.2.108:9999/(无线)
 
     public static final String bitoAPI = bitoIP + "api/v1/";
 
@@ -51,9 +51,9 @@ public class Contanst {
 
     public static final String api_changePwb = bitoAuth + "changePwb";
 
-    public static final String api_reset_agents = bitoMonitor + "reset_agents/";
+    public static final String api_reset_agents = bitoMonitor + "reset_agents?serial=";
 
-    public static final String api_robot_unregister = bitoMonitor + "robot_unregister";
+    public static final String api_robot_unregister = bitoMonitor + "robot_unregister/";
 
     public static final String api_get_agents_registerable = bitoMonitor + "get_agents_registerable";
 
@@ -71,7 +71,7 @@ public class Contanst {
 
     public static final int REQUEST_OK_200 = 200;
 
-    public static  String ROBOT_SERIAL = "yg00a00020071211000n00";
+    public static  String ROBOT_SERIAL = "";
 
     public static String CHARGING_STATION_SERIAL = null; //充电桩序列号
 

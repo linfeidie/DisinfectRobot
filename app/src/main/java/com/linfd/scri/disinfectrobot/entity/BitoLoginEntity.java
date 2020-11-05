@@ -2,7 +2,7 @@ package com.linfd.scri.disinfectrobot.entity;
 /*
 * 登录返回
 * */
-public class BitoLoginEntity {
+public class BitoLoginEntity extends BaseEntity2{
 
     /**
      * code : 200
@@ -10,17 +10,8 @@ public class BitoLoginEntity {
      * message : Success
      */
 
-    private int code;
     private DataBean data;
-    private String message;
 
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
 
     public DataBean getData() {
         return data;
@@ -30,13 +21,6 @@ public class BitoLoginEntity {
         this.data = data;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 
     public static class DataBean {
         /**

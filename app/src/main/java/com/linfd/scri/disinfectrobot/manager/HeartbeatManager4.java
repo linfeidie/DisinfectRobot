@@ -66,13 +66,7 @@ public class HeartbeatManager4 {
                     }else{
                         onFailure(entity.getErrmsg());
                     }
-                    //entity.getErrno()
-
-                    //entity.getData().getTasks().size()
-                    //Tools.showToast(BitoActionStateManager.obtainState(entity.getData().getTasks().get(0).getStatus()));
                 }
-
-
             });
             mHandler.postDelayed(this, Contanst.CHARGEPOLLING);
         }

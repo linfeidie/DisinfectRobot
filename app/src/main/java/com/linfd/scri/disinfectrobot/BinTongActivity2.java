@@ -116,12 +116,11 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
 
     }
 
+
     @Override
     protected void initData() {
         super.initData();
-        HeartbeatManager3.getInstance().start();//获取韩信状态
-        HeartbeatManager4.getInstance().start();//当前任务状态
-        HeartbeatManager5.getInstance().start();//异常状态获取
+
         initData2();
         mPageGridView.setData(mList);
         mPageGridView.setOnItemClickListener(new PageGridView.OnItemClickListener() {
@@ -145,7 +144,8 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                         BitoAPIManager.getInstance().resume_robot();
                         break;
                     case 5://取消消毒
-                        BitoAPIManager.getInstance().cancel_task_walk();
+                       // BitoAPIManager.getInstance().cancel_task_walk();
+                        BitoAPIManager.getInstance().cancel_task_byID();//
                         break;
                     case 6://充电
                         BitoAPIManager.getInstance().repeat_tasks_charge_man();
@@ -213,20 +213,8 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         tv_exception.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HttpRequestManager.getInstance().get_task_status(1670, new HttpCallbackEntity<TaskStatusEntity>() {
-                    @Override
-                    public void onSuccess(TaskStatusEntity taskStatusEntity) {
-                        Log.e(TAG,taskStatusEntity.toString());
-                       // Log.e(TAG,Thread.currentThread().getName());
-                    }
-
-                    @Override
-                    public void onFailure(String errmsg) {
-
-                    }
-                });
-
-
+                Intent intent = new Intent(BinTongActivity2.this,ErrorShowActivity.class);
+                startActivity(intent);
 
             }
         });
@@ -241,6 +229,11 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     @Override
     protected void onStart() {
         super.onStart();
+
+        HeartbeatManager3.getInstance().start();//获取韩信状态
+        HeartbeatManager4.getInstance().start();//当前任务状态
+       // HeartbeatManager5.getInstance().start();//异常状态获取
+
         List<Integer> list = new ArrayList<>();
         list.add(99999);
         list.add(12405);
@@ -260,11 +253,17 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         HeartbeatManager3.getInstance().stop();//关闭韩信
         HeartbeatManager4.getInstance().stop();//关闭任务状态
-        HeartbeatManager5.getInstance().stop();//关闭异常
+        //HeartbeatManager5.getInstance().stop();//关闭异常
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 
 
@@ -691,40 +690,41 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
      * */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveMsg(GetErrorCodeResultEntity entity) {
-        //充电桩的
-        List<GetErrorCodeEntity.InfoBean.ChargingStationBean.Cj02Bean.EnBean> zhCnBeanXES = new ArrayList<>();//过滤掉重复的
-        for (int i = 0; i < entity.charges.size(); i++) {
-            if (!zhCnBeanXES.contains(entity.charges.get(i))){//如果不包含就加入
-                zhCnBeanXES.add( entity.charges.get(i));
-            }
-        }
-        //韩信  可以恢复的异常
-        List<GetErrorCodeEntity.InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX> zhCnBeanHXSY = new ArrayList<>();
-        //不可恢复的
-        List<GetErrorCodeEntity.InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX> zhCnBeanHXSN = new ArrayList<>();
-        for (int i = 0; i < entity.hanxins.size(); i++) {
-
-            //如果是可以恢复的  否则是不可以恢复的
-            if(entity.hanxins.get(i).getSelf_recoverable().equals("Y")){
-                zhCnBeanHXSY.add(entity.hanxins.get(i));
-            }else if(entity.hanxins.get(i).getSelf_recoverable().equals("N")){
-                zhCnBeanHXSN.add(entity.hanxins.get(i));
-            }
-        }
-
-        //愚公 可以恢复
-        List<GetErrorCodeEntity.InfoBean.YugongBean.Yg00a00020071211000n00BeanX.ZhCnBeanXX> zhCnBeanYGY = new ArrayList<>();
-        //愚公 不可以恢复
-        List<GetErrorCodeEntity.InfoBean.YugongBean.Yg00a00020071211000n00BeanX.ZhCnBeanXX> zhCnBeanYGN = new ArrayList<>();
-        for (int i = 0; i < entity.yugongs.size(); i++) {
-
-            //如果是可以恢复的  否则是不可以恢复的
-            if(entity.yugongs.get(i).getSelf_recoverable().equals("Y")){
-                zhCnBeanYGY.add(entity.yugongs.get(i));
-            }else if(entity.yugongs.get(i).getSelf_recoverable().equals("N")){
-                zhCnBeanYGN.add(entity.yugongs.get(i));
-            }
-        }
+        Log.e(TAG,entity.charges.get(0).getError_mode());
+//        //充电桩的
+//        List<GetErrorCodeEntity.InfoBean.ChargingStationBean.Cj02Bean.EnBean> zhCnBeanXES = new ArrayList<>();//过滤掉重复的
+//        for (int i = 0; i < entity.charges.size(); i++) {
+//            if (!zhCnBeanXES.contains(entity.charges.get(i))){//如果不包含就加入
+//                zhCnBeanXES.add( entity.charges.get(i));
+//            }
+//        }
+//        //韩信  可以恢复的异常
+//        List<GetErrorCodeEntity.InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX> zhCnBeanHXSY = new ArrayList<>();
+//        //不可恢复的
+//        List<GetErrorCodeEntity.InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX> zhCnBeanHXSN = new ArrayList<>();
+//        for (int i = 0; i < entity.hanxins.size(); i++) {
+//
+//            //如果是可以恢复的  否则是不可以恢复的
+//            if(entity.hanxins.get(i).getSelf_recoverable().equals("Y")){
+//                zhCnBeanHXSY.add(entity.hanxins.get(i));
+//            }else if(entity.hanxins.get(i).getSelf_recoverable().equals("N")){
+//                zhCnBeanHXSN.add(entity.hanxins.get(i));
+//            }
+//        }
+//
+//        //愚公 可以恢复
+//        List<GetErrorCodeEntity.InfoBean.YugongBean.Yg00a00020071211000n00BeanX.ZhCnBeanXX> zhCnBeanYGY = new ArrayList<>();
+//        //愚公 不可以恢复
+//        List<GetErrorCodeEntity.InfoBean.YugongBean.Yg00a00020071211000n00BeanX.ZhCnBeanXX> zhCnBeanYGN = new ArrayList<>();
+//        for (int i = 0; i < entity.yugongs.size(); i++) {
+//
+//            //如果是可以恢复的  否则是不可以恢复的
+//            if(entity.yugongs.get(i).getSelf_recoverable().equals("Y")){
+//                zhCnBeanYGY.add(entity.yugongs.get(i));
+//            }else if(entity.yugongs.get(i).getSelf_recoverable().equals("N")){
+//                zhCnBeanYGN.add(entity.yugongs.get(i));
+//            }
+//        }
 
 
 

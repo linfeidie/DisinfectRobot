@@ -17,6 +17,7 @@ import com.linfd.scri.disinfectrobot.BaseApplication;
 import com.linfd.scri.disinfectrobot.Contanst;
 import com.linfd.scri.disinfectrobot.Tools;
 import com.linfd.scri.disinfectrobot.entity.BaseEntity;
+import com.linfd.scri.disinfectrobot.entity.BaseEntity2;
 import com.linfd.scri.disinfectrobot.entity.BitoLoginEntity;
 import com.linfd.scri.disinfectrobot.entity.CancelTaskEntity;
 import com.linfd.scri.disinfectrobot.entity.CancelTasksEntity;
@@ -158,7 +159,7 @@ public class HttpRequestManager {
         mMyOkHttp.get()
                 .url(url)
                 .tag(this)
-                .enqueue(new GsonResponseHandler<BaseEntity>() {
+                .enqueue(new GsonResponseHandler<BaseEntity2>() {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
@@ -166,7 +167,7 @@ public class HttpRequestManager {
                     }
 
                     @Override
-                    public void onSuccess(int statusCode, BaseEntity response) {
+                    public void onSuccess(int statusCode, BaseEntity2 response) {
 
                         httpCallbackEntity.onSuccess((T) response);
 
@@ -291,7 +292,7 @@ public class HttpRequestManager {
         mMyOkHttp.get()
                 .url(url)
                 .tag(this)
-                .enqueue(new GsonResponseHandler<CancelTaskEntity>() {
+                .enqueue(new GsonResponseHandler<BaseEntity2>() {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
@@ -299,7 +300,7 @@ public class HttpRequestManager {
                     }
 
                     @Override
-                    public void onSuccess(int statusCode, CancelTaskEntity response) {
+                    public void onSuccess(int statusCode, BaseEntity2 response) {
 
                         httpCallbackEntity.onSuccess((T) response);
 
@@ -349,7 +350,7 @@ public class HttpRequestManager {
                             return;
                         }
                         JSONObject infoObject = JSONObject.parseObject(response).getJSONObject("info");
-                        String[] agentType = {"charging_station1", "hanxin", "yugong"};
+                        String[] agentType = {"charging_station", "hanxin", "yugong"};
                         //String[] agentList = {"cj02", "yg00a00020071211000n00"};
 //                        for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
 //                            JSONObject obj = (JSONObject) entry.getValue();// obj -->hanxin
@@ -459,7 +460,11 @@ public class HttpRequestManager {
      * 重置机器人
      * */
     public <T> void reset_agents(final HttpCallbackEntity<T> httpCallbackEntity) {
-        String url = Contanst.api_reset_agents;
+        if (TextUtils.isEmpty(Contanst.ROBOT_SERIAL)) {
+            Tools.showToast("机器未注册，请启动韩信");
+            return;
+        }
+        String url = Contanst.api_reset_agents + Contanst.ROBOT_SERIAL;
         mMyOkHttp.get()
                 .url(url)
                 .tag(this)

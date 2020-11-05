@@ -3,15 +3,20 @@ package com.linfd.scri.disinfectrobot.manager;
 import com.linfd.scri.disinfectrobot.Contanst;
 import com.linfd.scri.disinfectrobot.Tools;
 import com.linfd.scri.disinfectrobot.entity.BaseEntity;
+import com.linfd.scri.disinfectrobot.entity.BaseEntity2;
 import com.linfd.scri.disinfectrobot.entity.CancelTasksEntity;
 import com.linfd.scri.disinfectrobot.entity.ChargingStationsEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAgentsRegisterableEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAllTasksEntity;
 import com.linfd.scri.disinfectrobot.entity.GetErrorCodeResultEntity;
+import com.linfd.scri.disinfectrobot.entity.GetRobotPerformTaskEntity;
 import com.linfd.scri.disinfectrobot.entity.PauseRobotEntity;
 import com.linfd.scri.disinfectrobot.entity.ResumeRobotEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotRegisterEntity;
+import com.linfd.scri.disinfectrobot.entity.RobotUnregisterEntity;
 import com.linfd.scri.disinfectrobot.listener.SimpleHttpCallbackEntity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -122,14 +127,14 @@ public class BitoAPIManager {
     * 关闭韩信
     * */
     public void hanxin_stop(){
-        HttpRequestManager.getInstance().hanxin_stop(new SimpleHttpCallbackEntity<BaseEntity>() {
+        HttpRequestManager.getInstance().hanxin_stop(new SimpleHttpCallbackEntity<BaseEntity2>() {
 
             @Override
-            public void onSuccess(BaseEntity entity) {
-                if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+            public void onSuccess(BaseEntity2 entity) {
+                if (entity.getCode() == Contanst.REQUEST_OK_200){
                     Tools.showToast("韩信已关闭");
                 }else{
-                    onFailure(entity.getErrmsg());
+                    onFailure(entity.getMessage());
                 }
             }
         });
@@ -227,13 +232,13 @@ public class BitoAPIManager {
      *重复充电任务，先查询所有任务信息
      * */
     public void repeat_tasks_charge_man(){
-        HttpRequestManager.getInstance().switch_charging_mode(1, new SimpleHttpCallbackEntity<BaseEntity>() {
+        HttpRequestManager.getInstance().switch_charging_mode(1, new SimpleHttpCallbackEntity<BaseEntity2>() {
             @Override
-            public void onSuccess(BaseEntity baseEntity) {
-                if (baseEntity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+            public void onSuccess(BaseEntity2 baseEntity) {
+                if (baseEntity.getCode() == Contanst.REQUEST_OK_200){
                     repeat_tasks_charge();
                 }else{
-                    onFailure(baseEntity.getErrmsg());
+                    onFailure(baseEntity.getMessage());
                 }
             }
         });
@@ -282,27 +287,45 @@ public class BitoAPIManager {
     * */
     public void cancel_task_charge_man(){
 
-        HttpRequestManager.getInstance().switch_charging_mode(1, new SimpleHttpCallbackEntity<BaseEntity>() {
+        HttpRequestManager.getInstance().switch_charging_mode(1, new SimpleHttpCallbackEntity<BaseEntity2>() {
             @Override
-            public void onSuccess(BaseEntity baseEntity) {
-                if (baseEntity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
-                    cancel_task_charge();
+            public void onSuccess(BaseEntity2 baseEntity) {
+                if (baseEntity.getCode() ==Contanst.REQUEST_OK_200){
+                    cancel_task_byID();
                 }else{
-                    onFailure(baseEntity.getErrmsg());
+                    onFailure(baseEntity.getMessage());
                 }
             }
         });
 
     }
 
-    /*
-    * 未手动模式之前
-    * */
-    private void cancel_task_charge() {
-        if (chargeTaskId == -1){
-            return;
-        }
+   /*
+   * 获得
+   * */
+    public void cancel_task_byID() {
 
+        // 先查询当前任务 获得id
+        HttpRequestManager.getInstance().get_robot_perform_task(new SimpleHttpCallbackEntity<GetRobotPerformTaskEntity>() {
+
+            @Override
+            public void onSuccess(GetRobotPerformTaskEntity entity) {
+                if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+                    if (entity.getData() != null && entity.getData().getTasks().size() != 0)
+                    cancel_task_charge(entity.getData().getTasks().get(0).getId());//获得id
+                }else{
+                    onFailure(entity.getErrmsg());
+                }
+            }
+        });
+
+
+    }
+
+    /*
+     * 未手动模式之前
+     * */
+    private void cancel_task_charge(int chargeTaskId) {
         HttpRequestManager.getInstance().cancel_tasks(chargeTaskId,new SimpleHttpCallbackEntity<CancelTasksEntity>() {
 
             @Override
@@ -318,7 +341,7 @@ public class BitoAPIManager {
     }
 
     /*
-     * 重置机器人
+     * 重置机器人（重置+注销）
      * */
     public void reset_agents(){
         HttpRequestManager.getInstance().reset_agents(new SimpleHttpCallbackEntity<BaseEntity>() {
@@ -326,7 +349,8 @@ public class BitoAPIManager {
             @Override
             public void onSuccess(BaseEntity baseEntity) {
                 if (baseEntity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
-                    Tools.showToast("重置成功");
+                    //Tools.showToast("重置成功");
+                    robot_unregister();//再注销
                 }else{
                     onFailure(baseEntity.getErrmsg());
                 }
@@ -346,6 +370,23 @@ public class BitoAPIManager {
 
             }
 
+        });
+    }
+
+    /*
+     * 注销机器人
+     * */
+    public void robot_unregister(){
+        HttpRequestManager.getInstance().robot_unregister(new SimpleHttpCallbackEntity<RobotUnregisterEntity>() {
+
+            @Override
+            public void onSuccess(RobotUnregisterEntity entity) {
+                if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+                    Tools.showToast("注销成功");
+                }else{
+                    onFailure(entity.getErrmsg());
+                }
+            }
         });
     }
 

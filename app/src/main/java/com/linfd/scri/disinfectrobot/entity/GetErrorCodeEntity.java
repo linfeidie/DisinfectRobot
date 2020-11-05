@@ -321,6 +321,13 @@ public class GetErrorCodeEntity extends BaseEntity{
                     public int hashCode() {
                         return Objects.hash(getDTC());
                     }
+
+                    @Override
+                    public String toString() {
+                        return "EnBean{" +
+                                "error_mode='" + error_mode + '\'' +
+                                '}';
+                    }
                 }
 
                 public static class ZhCnBean {
@@ -1854,6 +1861,13 @@ public class GetErrorCodeEntity extends BaseEntity{
 
                     public void setSystem_version(Object system_version) {
                         this.system_version = system_version;
+                    }
+
+                    @Override
+                    public String toString() {
+                        return "ZhCnBeanXX{" +
+                                "error_mode='" + error_mode + '\'' +
+                                '}';
                     }
                 }
 
