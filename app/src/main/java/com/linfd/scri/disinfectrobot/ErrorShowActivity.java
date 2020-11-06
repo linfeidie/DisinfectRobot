@@ -1,8 +1,12 @@
 package com.linfd.scri.disinfectrobot;
 
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.linfd.scri.disinfectrobot.adapter.ErrorAdapter;
 import com.linfd.scri.disinfectrobot.entity.GetErrorCodeEntity;
 import com.linfd.scri.disinfectrobot.entity.GetErrorCodeResultEntity;
 import com.linfd.scri.disinfectrobot.manager.HeartbeatManager5;
@@ -17,13 +21,16 @@ public class ErrorShowActivity extends BaseActivity {
 
     public static final String TAG = ErrorShowActivity.class.getSimpleName();
     private TextView tv_charging_station,tv_hanxin,tv_yugong;
-    private StringBuilder sb_hanxin ,sb_yugong;
+    private StringBuilder sb_hanxin ;
+    private RecyclerView rv_show_err;
+    private ErrorAdapter errorAdapter;
     @Override
     public void initView() {
         setContentView(R.layout.activity_error_show);
         tv_charging_station = findViewById(R.id.tv_charging_station);
         tv_hanxin = findViewById(R.id.tv_hanxin);
-        tv_yugong = findViewById(R.id.tv_yugong);
+        rv_show_err = findViewById(R.id.rv_show_err);
+        initView2();
     }
 
     @Override
@@ -43,33 +50,46 @@ public class ErrorShowActivity extends BaseActivity {
      * */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveMsg(GetErrorCodeResultEntity entity) {
-        Log.e(TAG,entity.charges.get(0).getError_mode());
+       // Log.e(TAG,entity.charges.get(0).getError_mode());
         sb_hanxin = new StringBuilder();
-        //充电桩的
-        List<GetErrorCodeEntity.InfoBean.ChargingStationBean.Cj02Bean.EnBean> zhCnBeanXES = new ArrayList<>();//过滤掉重复的
-        for (int i = 0; i < entity.charges.size(); i++) {
-            if (!zhCnBeanXES.contains(entity.charges.get(i))) {//如果不包含就加入
-                zhCnBeanXES.add(entity.charges.get(i));
-
-            }
-        }
-        tv_charging_station.setText(zhCnBeanXES.toString());
+        //entity.charges
+        entity.hanxins.addAll(GetErrorCodeEntity.EnBeanToZhCnBeanX(entity.charges));
+       // tv_charging_station.setText(zhCnBeanXES.toString());
         //韩信  可以恢复的异常
-        List<GetErrorCodeEntity.InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX> zhCnBeanHXSY = new ArrayList<>();
+        //List<GetErrorCodeEntity.InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX> zhCnBeanHXSY = new ArrayList<>();
         //不可恢复的
-        List<GetErrorCodeEntity.InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX> zhCnBeanHXSN = new ArrayList<>();
-        for (int i = 0; i < entity.hanxins.size(); i++) {
-
-            //如果是可以恢复的  否则是不可以恢复的
-            if (entity.hanxins.get(i).getSelf_recoverable().equals("Y")) {
-                zhCnBeanHXSY.add(entity.hanxins.get(i));
-            } else if (entity.hanxins.get(i).getSelf_recoverable().equals("N")) {
-                zhCnBeanHXSN.add(entity.hanxins.get(i));
-            }
-            sb_hanxin.append(entity.hanxins.get(i).getError_mode()).append(",");
+       // List<GetErrorCodeEntity.InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX> zhCnBeanHXSN = new ArrayList<>();
+//        for (int i = 0; i < entity.hanxins.size(); i++) {
+//
+//            //如果是可以恢复的  否则是不可以恢复的
+//            if (entity.hanxins.get(i).getSelf_recoverable().equalsIgnoreCase("Y")) {
+//                zhCnBeanHXSY.add(entity.hanxins.get(i));
+//            } else if (entity.hanxins.get(i).getSelf_recoverable().equalsIgnoreCase("N")) {
+//                zhCnBeanHXSN.add(entity.hanxins.get(i));
+//            }
+//      //      sb_hanxin.append(zhCnBeanHXSY.get(i).getError_mode()).append(",");
+//        }
+        errorAdapter = new ErrorAdapter(this, entity.hanxins, R.layout.item_error);
+        if (errorAdapter != null){
+            rv_show_err.setAdapter(errorAdapter);
         }
-
         tv_hanxin.setText(sb_hanxin.toString());
+
+    }
+
+    private void initView2() {
+        //initData();
+        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
+        mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rv_show_err.setLayoutManager(mLinearLayoutManager);
+        //添加Android自带的分割线
+        rv_show_err.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+
+        //errorAdapter = new ErrorAdapter(this, entity.hanxins, R.layout.item_error);
+   //     mAdapter.setOnItemClickListner( this );
+
+//        mUserSimpleRecycleAdapter = new UserSimpleRecycleAdapter(mContext, datas);
+
 
     }
 }
