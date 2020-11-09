@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.stx.xhb.commontitlebar.CustomTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:titlebar_bg_color="@color/colorPrimary" />
+
+    <EditText
+        android:id="@+id/et_repeat"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:hint="重复次数"
+        android:text="1"></EditText>
+
+    <EditText
+        android:id="@+id/et_ssid"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:hint="热点名"
+        android:text="TP-LINK_msg"></EditText>
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:hint="热点密码"
+        android:text="123456@#"></EditText>
+    <Button
+        android:id="@+id/bt_sure"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="确定"></Button>
+</LinearLayout>

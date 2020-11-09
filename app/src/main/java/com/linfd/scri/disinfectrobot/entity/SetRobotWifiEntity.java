@@ -9,7 +9,7 @@ public class SetRobotWifiEntity extends TypeEntity {
      "to_id":"",
      "type":"set_robot_wifi",
      "wifi_type":"hotspot",//wifi类型,"hotspot"自身发射热点,"ap"连接其他热点
-     "action": "create",//"create"新建立一个热点或连接一个ap,"up"启动已连接的热点或ap,"down"关闭已连接的热点或ap
+     "action": "create",//"create"新建立一个热点或连接一个ap,"up"启动已连接的热点或ap,"down"关闭已连接的热点或ap(ps:up 已废弃)
      "passwd":"xxxxxxxx",//当类型为"ap"时有效
      "ssid":"xxxxxx",//当类型为"ap"时有效
      */

@@ -730,21 +730,21 @@ public class UdpControlSendManager {
     * 打开热点
     * */
     public void set_robot_wifi_open(String id, String to_id){
-        this.set_robot_wifi(id,to_id,"hotspot","up","","");
+        this.set_robot_wifi(id,to_id,"hotspot","create","123","12345678");
     }
 
     /*
     * 关闭热点
     * */
     public void set_robot_wifi_close(String id, String to_id){
-        this.set_robot_wifi(id,to_id,"hotspot","down","","");
+        this.set_robot_wifi(id,to_id,"hotspot","down","123","12345678");
     }
 
     /*
     * 连接其他热点
     * */
     public void set_robot_wifi_ap_open(String id, String to_id){
-        this.set_robot_wifi(id,to_id,"ap","up","","");
+        this.set_robot_wifi(id,to_id,"ap","create",Contanst.ssid,Contanst.passwd);
     }
 
     /*

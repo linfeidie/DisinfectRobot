@@ -48,6 +48,8 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
+import static com.linfd.scri.disinfectrobot.Contanst.repeat_num;
+
 public class HttpRequestManager {
 
     public static final String TAG = HttpRequestManager.class.getSimpleName();
@@ -262,7 +264,7 @@ public class HttpRequestManager {
         List<Integer> id_list = new ArrayList<>();
         id_list.add(taskId);
 
-        map.put("repeat_num", 1);
+        map.put("repeat_num", repeat_num);
         map.put("id_list", id_list);
 
         mMyOkHttp.post()

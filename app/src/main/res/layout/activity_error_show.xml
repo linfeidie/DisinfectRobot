@@ -9,17 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         app:titlebar_bg_color="@color/colorPrimary" />
-    <TextView
-    android:id="@+id/tv_charging_station"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="11111111111"></TextView>
-    <TextView
-        android:id="@+id/tv_hanxin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="11111111111"></TextView>
+
+
     <LinearLayout
+        android:id="@+id/ll_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

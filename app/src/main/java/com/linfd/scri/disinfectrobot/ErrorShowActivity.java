@@ -4,6 +4,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.linfd.scri.disinfectrobot.adapter.ErrorAdapter;
@@ -20,16 +22,16 @@ import java.util.List;
 public class ErrorShowActivity extends BaseActivity {
 
     public static final String TAG = ErrorShowActivity.class.getSimpleName();
-    private TextView tv_charging_station,tv_hanxin,tv_yugong;
+    private TextView tv_yugong;
     private StringBuilder sb_hanxin ;
     private RecyclerView rv_show_err;
     private ErrorAdapter errorAdapter;
+    private LinearLayout ll_title;
     @Override
     public void initView() {
         setContentView(R.layout.activity_error_show);
-        tv_charging_station = findViewById(R.id.tv_charging_station);
-        tv_hanxin = findViewById(R.id.tv_hanxin);
         rv_show_err = findViewById(R.id.rv_show_err);
+        ll_title = findViewById(R.id.ll_title);
         initView2();
     }
 
@@ -69,11 +71,17 @@ public class ErrorShowActivity extends BaseActivity {
 //            }
 //      //      sb_hanxin.append(zhCnBeanHXSY.get(i).getError_mode()).append(",");
 //        }
+        if (entity.hanxins.size() == 0){
+            rv_show_err.setVisibility(View.GONE);
+            ll_title.setVisibility(View.GONE);
+        }else {
+            rv_show_err.setVisibility(View.VISIBLE);
+            ll_title.setVisibility(View.VISIBLE);
+        }
         errorAdapter = new ErrorAdapter(this, entity.hanxins, R.layout.item_error);
         if (errorAdapter != null){
             rv_show_err.setAdapter(errorAdapter);
         }
-        tv_hanxin.setText(sb_hanxin.toString());
 
     }
 

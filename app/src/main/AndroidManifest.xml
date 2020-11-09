@@ -78,6 +78,7 @@
 
         </activity>
         <activity android:name=".ErrorShowActivity"></activity>
+        <activity android:name=".BitoSettingActivity"></activity>
         <receiver
             android:name=".BootBroadcastReceiver"
             android:enabled="true"

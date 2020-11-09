@@ -26,7 +26,9 @@ import com.linfd.scri.disinfectrobot.entity.GetHanxinStatusEntity;
 import com.linfd.scri.disinfectrobot.entity.GetRobotPerformTaskEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.TaskStatusEntity;
+import com.linfd.scri.disinfectrobot.eventbus.ChargeModeEvent;
 import com.linfd.scri.disinfectrobot.eventbus.EventPoint;
+import com.linfd.scri.disinfectrobot.eventbus.RobotRegisterEvent;
 import com.linfd.scri.disinfectrobot.listener.HttpCallbackEntity;
 import com.linfd.scri.disinfectrobot.listener.SimpleHttpCallbackEntity;
 import com.linfd.scri.disinfectrobot.manager.AckListenerService;
@@ -86,7 +88,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     private BinTongActivity2.NoLeakHandler mHandler;
     private int power;
     private boolean isCharge = false;// 是否在充电
-    private TextView tv_power;
+    private TextView tv_power,tv_setting,tv_robot_register,tv_robot_mode;
     private CountdownView countdown_view;
     private MyStatusLayout status_layout_spary, status_layout_box_store;
     private SwitchButton switch_button;
@@ -108,6 +110,9 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         switch_button = findViewById(R.id.switch_button);
         tv_get_hanxin_status = findViewById(R.id.tv_get_hanxin_status);
         tv_get_robot_perform_task = findViewById(R.id.tv_get_robot_perform_task);
+        tv_setting = findViewById(R.id.tv_setting);
+        tv_robot_register = findViewById(R.id.tv_robot_register);
+        tv_robot_mode = findViewById(R.id.tv_robot_mode);
         data();
         super.initView();
         mTopBar.setVisibility(View.GONE);
@@ -147,17 +152,21 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                        // BitoAPIManager.getInstance().cancel_task_walk();
                         BitoAPIManager.getInstance().cancel_task_byID();//
                         break;
-                    case 6://充电
+                    case 6://手动模式下充电
                         BitoAPIManager.getInstance().repeat_tasks_charge_man();
                         break;
-                    case 7://取消充电
+                    case 7://取消手动充电
                         BitoAPIManager.getInstance().cancel_task_charge_man();
                         break;
-                    case 8://开启喷雾
-                        auto_q();
+                    case 8:  //自动模式下充电
+
+                        BitoAPIManager.getInstance().repeat_tasks_charge_auto();
                         break;
-                    case 9://关闭喷雾
-                        disin_cmd_spray_off();
+                    case 9:
+
+                        break;
+                    case 10:
+
                         break;
                    case 12://控制
                        Tools.showToast("控制");
@@ -197,6 +206,12 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                     case 28://重置机器人
                         BitoAPIManager.getInstance().reset_agents();
                         break;
+                    case 29://开启喷雾
+                        //auto_q();
+                        break;
+                    case 30://关闭喷雾
+                        // disin_cmd_spray_off();
+                        break;
 
                 }
             }
@@ -222,6 +237,13 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
             @Override
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
                 switch_button.setChecked(isChecked);
+            }
+        });
+        tv_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(BinTongActivity2.this,BitoSettingActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -312,6 +334,15 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
 
 
     }
+    /*
+     * 充电模式监听
+     * */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiveMsg(ChargeModeEvent event) {
+        tv_robot_mode.setText(event.getMode());
+
+    }
+
 
     public void setGridView(View view, final int type, List data) {
 //        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -574,10 +605,10 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         mList.add(new MyIconModel("暂停消毒",R.drawable.icon_stop));
         mList.add(new MyIconModel("恢复消毒",R.drawable.icon_resume_robot));
         mList.add(new MyIconModel("取消消毒",R.drawable.icon_cancel_walk));
-        mList.add(new MyIconModel("充电",R.drawable.icon_charge));
-        mList.add(new MyIconModel("取消充电",R.drawable.icon_cancel_charge));
-        mList.add(new MyIconModel("开启喷雾",R.drawable.icon_fog_q));
-        mList.add(new MyIconModel("关闭喷雾",R.drawable.icon_fog_close));
+        mList.add(new MyIconModel("手动充电",R.drawable.icon_charge));
+        mList.add(new MyIconModel("取消手动充电",R.drawable.icon_cancel_charge));
+        mList.add(new MyIconModel("自动充电",R.drawable.icon_charge_auto));
+        mList.add(new MyIconModel("",R.drawable.icon_transparent));
         mList.add(new MyIconModel("",R.drawable.icon_transparent));
         mList.add(new MyIconModel("",R.drawable.icon_transparent));
 
@@ -602,6 +633,8 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         mList.add(new MyIconModel("锁屏",R.drawable.icon_lock_screen));
         mList.add(new MyIconModel("关机",R.drawable.icon_turn_off));
         mList.add(new MyIconModel("重置机器人",R.drawable.icon_reset_agents));
+        mList.add(new MyIconModel("开启喷雾",R.drawable.icon_fog_q));
+        mList.add(new MyIconModel("关闭喷雾",R.drawable.icon_fog_close));
 
     }
 
@@ -670,6 +703,15 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         Log.e(TAG,"韩信："+ BitoHanxinManager.obtainState(entity.getStatus()));
         tv_get_hanxin_status.setText("韩信："+ BitoHanxinManager.obtainState(entity.getStatus()));
     }
+
+    /*
+     * 接收机器人注册状态
+     * */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiveMsg(RobotRegisterEvent event) {
+
+        tv_robot_register.setText(event.getStatus());
+    }
     /*
           正在执行的任务状态
     * */
@@ -682,6 +724,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
             tv_get_robot_perform_task.setText(BitoActionStateManager.obtainState(entity.getData().getTasks().get(0).getStatus()));
         }else{
             Tools.showToast("当前没有任务状态");
+            tv_get_robot_perform_task.setText("当前没有任务状态");
         }
     }
 
@@ -690,7 +733,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
      * */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveMsg(GetErrorCodeResultEntity entity) {
-        Log.e(TAG,entity.charges.get(0).getError_mode());
+        //Log.e(TAG,entity.charges.get(0).getError_mode());
 //        //充电桩的
 //        List<GetErrorCodeEntity.InfoBean.ChargingStationBean.Cj02Bean.EnBean> zhCnBeanXES = new ArrayList<>();//过滤掉重复的
 //        for (int i = 0; i < entity.charges.size(); i++) {

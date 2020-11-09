@@ -71,11 +71,19 @@ public class Contanst {
 
     public static final int REQUEST_OK_200 = 200;
 
+    public static final int REQUEST_OK_0 = 0;
+
+    public static String ssid = "";//热点名
+
+    public static String passwd = ""; //热点密码
+
     public static  String ROBOT_SERIAL = "yg00a00020071211000n00";
 
     public static String CHARGING_STATION_SERIAL = "cj02"; //充电桩序列号
 
     public static  int MAP_HASHCODE = -1;//正在展示的地图的哈希码
+
+    public static int repeat_num = 1;//设置机器人行走消毒次数
 
     public static final String ROOT = Environment.getExternalStorageDirectory().getAbsolutePath();//根目录
 
