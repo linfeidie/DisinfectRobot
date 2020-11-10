@@ -26,6 +26,7 @@ import com.linfd.scri.disinfectrobot.entity.GetHanxinStatusEntity;
 import com.linfd.scri.disinfectrobot.entity.GetRobotPerformTaskEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.TaskStatusEntity;
+import com.linfd.scri.disinfectrobot.entity.TasksEntity;
 import com.linfd.scri.disinfectrobot.eventbus.ChargeModeEvent;
 import com.linfd.scri.disinfectrobot.eventbus.EventPoint;
 import com.linfd.scri.disinfectrobot.eventbus.RobotRegisterEvent;
@@ -39,6 +40,7 @@ import com.linfd.scri.disinfectrobot.manager.ExceptionCodesHelper;
 import com.linfd.scri.disinfectrobot.manager.HeartbeatManager3;
 import com.linfd.scri.disinfectrobot.manager.HeartbeatManager4;
 import com.linfd.scri.disinfectrobot.manager.HeartbeatManager5;
+import com.linfd.scri.disinfectrobot.manager.HeartbeatManager6;
 import com.linfd.scri.disinfectrobot.manager.HttpRequestManager;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
 import com.linfd.scri.disinfectrobot.manager.UpdateStateControlManager;
@@ -82,7 +84,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     public static final String TAG = BinTongActivity2.class.getSimpleName();
 
     private PageGridView<MyIconModel> mPageGridView;
-    private TextView tv_exception,tv_get_hanxin_status,tv_get_robot_perform_task;
+    private TextView tv_exception,tv_get_hanxin_status,tv_get_robot_perform_task,tv_pre_tasks;
     private List<ExceptionEntity> entities;
     private PowerConsumptionRankingsBatteryView mBatteryView;
     private BinTongActivity2.NoLeakHandler mHandler;
@@ -113,6 +115,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         tv_setting = findViewById(R.id.tv_setting);
         tv_robot_register = findViewById(R.id.tv_robot_register);
         tv_robot_mode = findViewById(R.id.tv_robot_mode);
+        tv_pre_tasks = findViewById(R.id.tv_pre_tasks);
         data();
         super.initView();
         mTopBar.setVisibility(View.GONE);
@@ -207,10 +210,22 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                         BitoAPIManager.getInstance().reset_agents();
                         break;
                     case 29://开启喷雾
-                        //auto_q();
+                        auto_q();
                         break;
                     case 30://关闭喷雾
-                        // disin_cmd_spray_off();
+                         disin_cmd_spray_off();
+//                        HttpRequestManager.getInstance().tasks(new HttpCallbackEntity<BaseEntity>() {
+//
+//                            @Override
+//                            public void onSuccess(BaseEntity entity) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onFailure(String errmsg) {
+//
+//                            }
+//                        });
                         break;
 
                 }
@@ -255,7 +270,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         HeartbeatManager3.getInstance().start();//获取韩信状态
         HeartbeatManager4.getInstance().start();//当前任务状态
        // HeartbeatManager5.getInstance().start();//异常状态获取
-
+        HeartbeatManager6.getInstance().start();//未执行任务
         List<Integer> list = new ArrayList<>();
         list.add(99999);
         list.add(12405);
@@ -280,6 +295,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         HeartbeatManager3.getInstance().stop();//关闭韩信
         HeartbeatManager4.getInstance().stop();//关闭任务状态
         //HeartbeatManager5.getInstance().stop();//关闭异常
+        HeartbeatManager6.getInstance().stop();//关闭任务状态
     }
 
     @Override
@@ -726,6 +742,14 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
             Tools.showToast("当前没有任务状态");
             tv_get_robot_perform_task.setText("当前没有任务状态");
         }
+    }
+    /*
+     * 接收未执行的任务
+     * */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiveMsg(TasksEntity event) {
+
+        tv_pre_tasks.setText("未执行任务："+ event.getData().getTasks().size());
     }
 
     /*

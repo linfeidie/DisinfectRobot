@@ -9,6 +9,7 @@ import com.linfd.scri.disinfectrobot.entity.CancelTasksEntity;
 import com.linfd.scri.disinfectrobot.entity.ChargingStationsEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAgentsRegisterableEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAllTasksEntity;
+import com.linfd.scri.disinfectrobot.entity.GetChargingStatusEntity;
 import com.linfd.scri.disinfectrobot.entity.GetErrorCodeResultEntity;
 import com.linfd.scri.disinfectrobot.entity.GetRobotPerformTaskEntity;
 import com.linfd.scri.disinfectrobot.entity.PauseRobotEntity;
@@ -422,5 +423,39 @@ public class BitoAPIManager {
             }
         });
     }
+    /*
+    * 查询⾃动充电开关状态
+    * */
+    public void get_charging_status(){
+        HttpRequestManager.getInstance().get_charging_status(new SimpleHttpCallbackEntity<GetChargingStatusEntity>() {
+            @Override
+            public void onSuccess(GetChargingStatusEntity entity) {
 
+            }
+        });
+    }
+
+    /*
+     * 开启⾃动充电
+     * */
+   public void start_charging_server(){
+       HttpRequestManager.getInstance().start_charging_server(new SimpleHttpCallbackEntity<BaseEntity>() {
+           @Override
+           public void onSuccess(BaseEntity entity) {
+
+           }
+       });
+   }
+
+   /*
+   * 关闭⾃动充电
+   * */
+   public void stop_charging_server(){
+       HttpRequestManager.getInstance().stop_charging_server(new SimpleHttpCallbackEntity<BaseEntity>() {
+           @Override
+           public void onSuccess(BaseEntity entity) {
+
+           }
+       });
+   }
 }

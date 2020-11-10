@@ -168,6 +168,12 @@
             android:layout_height="wrap_content"
             android:text="手动充电模式"></TextView>
         <TextView
+            android:id="@+id/tv_pre_tasks"
+            android:layout_below="@+id/tv_robot_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="还有剩余任务"></TextView>
+        <TextView
             android:id="@+id/tv_exception"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

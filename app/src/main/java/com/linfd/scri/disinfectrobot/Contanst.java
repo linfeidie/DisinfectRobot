@@ -15,7 +15,7 @@ public class Contanst {
 
     public static final int LocalPort = 8989 ;//本地端口
 
-    public static final String bitoIP = "http://192.168.2.108:9999/";//宾通的IP  http://192.168.2.108:9999/(无线)
+    public static final String bitoIP = "http://192.168.2.100:9999/";//宾通的IP  http://192.168.2.108:9999/(无线)
 
     public static final String bitoAPI = bitoIP + "api/v1/";
 
@@ -66,6 +66,14 @@ public class Contanst {
     public static final String api_pause_robot = bitoRobot + "pause_robot?serial=";//暂停机器人
 
     public static final String api_resume_robot = bitoRobot + "resume_robot?serial=";//恢复机器人
+
+    public static final String api_get_charging_status = bitoMonitor + "get_charging_status";//查询自动充电开关
+
+    public static final String api_stop_charging_server = bitoMonitor + "stop_charging_server";//关闭⾃动充电
+
+    public static final String api_start_charging_server = bitoMonitor + "start_charging_server";//开启自动充电
+
+    public static final String api_tasks = bitoTask + "tasks";//查询任务信息 - 根据相关条件
 
     public static final String REQUEST_OK = "0";
 
