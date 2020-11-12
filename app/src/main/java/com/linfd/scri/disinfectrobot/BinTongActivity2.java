@@ -137,32 +137,77 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                 Toast.makeText(BinTongActivity2.this,position+"",Toast.LENGTH_SHORT).show();
                 switch (position){
                     case 0://启动系统
+                        if (Contanst.status_hanxin == 1){
+                            Tools.showToast("韩信已经开启，无需再启动");
+                            return;
+                        }
+                        if (Contanst.isCurrentChargeTask){
+                            Tools.showToast("现在在充电，先取消充电");
+                            return;
+                        }
                         BitoAPIManager.getInstance().hanxin_start();
                         break;
                     case 1://关闭系统
+                        if (Contanst.status_hanxin == 0){
+                            Tools.showToast("韩信已经关闭");
+                            return;
+                        }
+//                        if (Contanst.isCurrentChargeTask){
+//                            Tools.showToast("现在在充电，先取消充电");
+//                            return;
+//                        }
+                        //核心
                         BitoAPIManager.getInstance().hanxin_stop();
                         break;
                     case 2://启动消毒
-                        BitoAPIManager.getInstance().repeat_tasks();
+                        if (Contanst.status_hanxin == 0){
+                            Tools.showToast("韩信已经关闭");
+                            return;
+                        }
+                       // BitoAPIManager.getInstance().repeat_tasks();
+                        BitoAPIManager.getInstance().add_task();
                         break;
                     case 3://暂停消毒
+                        if (Contanst.status_hanxin == 0){
+                            Tools.showToast("韩信已经关闭");
+                            return;
+                        }
                         BitoAPIManager.getInstance().pause_robot();
                         break;
                     case 4://恢复消毒
+                        if (Contanst.status_hanxin == 0){
+                            Tools.showToast("韩信已经关闭");
+                            return;
+                        }
                         BitoAPIManager.getInstance().resume_robot();
                         break;
                     case 5://取消消毒
+                        if (Contanst.status_hanxin == 0){
+                            Tools.showToast("韩信已经关闭");
+                            return;
+                        }
                        // BitoAPIManager.getInstance().cancel_task_walk();
                         BitoAPIManager.getInstance().cancel_task_byID();//
                         break;
                     case 6://手动模式下充电
+                        if (Contanst.status_hanxin == 0){
+                            Tools.showToast("韩信已经关闭");
+                            return;
+                        }
                         BitoAPIManager.getInstance().repeat_tasks_charge_man();
                         break;
                     case 7://取消手动充电
+                        if (Contanst.status_hanxin == 0){
+                            Tools.showToast("韩信已经关闭");
+                            return;
+                        }
                         BitoAPIManager.getInstance().cancel_task_charge_man();
                         break;
                     case 8:  //自动模式下充电
-
+                        if (Contanst.status_hanxin == 0){
+                            Tools.showToast("韩信已经关闭");
+                            return;
+                        }
                         BitoAPIManager.getInstance().repeat_tasks_charge_auto();
                         break;
                     case 9:
@@ -177,9 +222,17 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                            startActivity(intent);
                         break;
                     case 13://释放
+                        if (Contanst.status_hanxin == 0){
+                            Tools.showToast("韩信已经关闭，请开启");
+                            return;
+                        }
                         switch_open();
                         break;
                     case 14://锁轴
+                        if (Contanst.status_hanxin == 0){
+                            Tools.showToast("韩信已经关闭，请开启");
+                            return;
+                        }
                         switch_close();
                         break;
                     case 15://打开热点
@@ -355,6 +408,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
      * */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveMsg(ChargeModeEvent event) {
+        Contanst.mode = event.mode;//赋值
         tv_robot_mode.setText(event.getMode());
 
     }
@@ -717,6 +771,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveMsg(GetHanxinStatusEntity entity) {
         Log.e(TAG,"韩信："+ BitoHanxinManager.obtainState(entity.getStatus()));
+        Contanst.status_hanxin = entity.getStatus();
         tv_get_hanxin_status.setText("韩信："+ BitoHanxinManager.obtainState(entity.getStatus()));
     }
 
@@ -738,7 +793,14 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK) && entity.getData().getTasks().size() != 0){
             Log.e(TAG, BitoActionStateManager.obtainState(entity.getData().getTasks().get(0).getStatus()));
             tv_get_robot_perform_task.setText(BitoActionStateManager.obtainState(entity.getData().getTasks().get(0).getStatus()));
+            if (entity.getData().getTasks().get(0).getGoal_action() == 10){//10代表充电
+                Contanst.isCurrentChargeTask = true;
+            }else{
+                Contanst.isCurrentChargeTask = false;
+            }
+
         }else{
+            Contanst.isCurrentChargeTask = false;
             Tools.showToast("当前没有任务状态");
             tv_get_robot_perform_task.setText("当前没有任务状态");
         }

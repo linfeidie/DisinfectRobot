@@ -5,7 +5,7 @@ package com.linfd.scri.disinfectrobot.entity;
 public class GetHanxinStatusEntity extends BaseEntity {
 
     /**
-     * status : 1
+     * status : 韩信状态（1：已开启状态， 0：未开启状态）
      */
 
     private int status;

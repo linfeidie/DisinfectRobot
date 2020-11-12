@@ -37,6 +37,7 @@ import com.linfd.scri.disinfectrobot.tools.ClickProxy;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BitoControlActivity extends BaseActivity {
@@ -234,7 +235,9 @@ public class BitoControlActivity extends BaseActivity {
                 if (disinTaskId == -1){
                     return;
                 }
-                HttpRequestManager.getInstance().cancel_tasks(disinTaskId,new SimpleHttpCallbackEntity<CancelTasksEntity>() {
+                List<Integer> id_list = new ArrayList<>();
+                id_list.add(disinTaskId);
+                HttpRequestManager.getInstance().cancel_tasks(id_list,new SimpleHttpCallbackEntity<CancelTasksEntity>() {
 
                     @Override
                     public void onSuccess(CancelTasksEntity entity) {
@@ -253,8 +256,9 @@ public class BitoControlActivity extends BaseActivity {
                 if (chargeTaskId == -1){
                     return;
                 }
-
-                HttpRequestManager.getInstance().cancel_tasks(chargeTaskId,new SimpleHttpCallbackEntity<CancelTasksEntity>() {
+                List<Integer> id_list = new ArrayList<>();
+                id_list.add(chargeTaskId);
+                HttpRequestManager.getInstance().cancel_tasks(id_list,new SimpleHttpCallbackEntity<CancelTasksEntity>() {
 
                     @Override
                     public void onSuccess(CancelTasksEntity entity) {
@@ -444,7 +448,9 @@ public class BitoControlActivity extends BaseActivity {
         bt_cancel_tasks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HttpRequestManager.getInstance().cancel_tasks(1, new SimpleHttpCallbackEntity<CancelTasksEntity>() {
+                List<Integer> id_list = new ArrayList<>();
+                id_list.add(1);
+                HttpRequestManager.getInstance().cancel_tasks(id_list, new SimpleHttpCallbackEntity<CancelTasksEntity>() {
                     @Override
                     public void onSuccess(CancelTasksEntity entity) {
                         if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){

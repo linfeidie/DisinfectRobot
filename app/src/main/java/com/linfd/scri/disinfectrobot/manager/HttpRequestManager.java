@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 import com.linfd.scri.disinfectrobot.BaseApplication;
 import com.linfd.scri.disinfectrobot.Contanst;
 import com.linfd.scri.disinfectrobot.Tools;
+import com.linfd.scri.disinfectrobot.entity.AddTaskEntity;
 import com.linfd.scri.disinfectrobot.entity.BaseEntity;
 import com.linfd.scri.disinfectrobot.entity.BaseEntity2;
 import com.linfd.scri.disinfectrobot.entity.BitoLoginEntity;
@@ -306,7 +307,10 @@ public class HttpRequestManager {
                     @Override
                     public void onSuccess(int statusCode, BaseEntity2 response) {
 
-                        httpCallbackEntity.onSuccess((T) response);
+                        if (httpCallbackEntity != null){
+                            httpCallbackEntity.onSuccess((T) response);
+                        }
+
 
                     }
                 });
@@ -598,12 +602,11 @@ public class HttpRequestManager {
     /*
      * 取消所有任务
      * */
-    public <T> void cancel_tasks(int taskId, final HttpCallbackEntity<T> httpCallbackEntity) {
+    public <T> void cancel_tasks(List<Integer> id_list, final HttpCallbackEntity<T> httpCallbackEntity) {
 
         String url = Contanst.api_cancel_tasks;
         Map<String, Object> map = new HashMap<>();
-        List<Integer> id_list = new ArrayList<>();
-        id_list.add(taskId);
+//
 
         map.put("language", "zh_cn");
         map.put("id_lst", id_list);
@@ -758,13 +761,12 @@ public class HttpRequestManager {
     * 查询任务信息 - 根据相关条件
     * */
 
-    public <T> void tasks(int status,final HttpCallbackEntity<T> httpCallbackEntity) {
+    public <T> void tasks(List<Integer> condition,final HttpCallbackEntity<T> httpCallbackEntity) {
 
         String url = Contanst.api_tasks;
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> conditionMap = new HashMap<>();
-        List<Integer> condition = new ArrayList<>();
-        condition.add(status);
+//
         conditionMap.put("status",condition);
 
         map.put("page", 1);
@@ -790,4 +792,47 @@ public class HttpRequestManager {
                 });
     }
 
+    /*
+    * 添加任务
+    * */
+    public <T> void add_task( final HttpCallbackEntity<T> httpCallbackEntity) {
+
+        if (TextUtils.isEmpty(Contanst.ROBOT_SERIAL)) {
+            Tools.showToast("机器未注册，请启动韩信");
+            return;
+        }
+
+        String url = Contanst.api_add_task;
+        Map<String, Object> map = new HashMap<>();
+//
+
+        map.put("start", "A5");
+        map.put("goal", "A2");
+        map.put("start_action", 0);
+        map.put("goal_action", 0);
+        map.put("item_type", "");
+        map.put("priority", 20);
+        map.put("preassignment", Contanst.ROBOT_SERIAL);
+        map.put("task_id", "");
+        map.put("plan_time", "");
+        map.put("repeat", 1);
+        mMyOkHttp.post()
+                .url(url)
+                .tag(this).jsonParams(gson.toJson(map))
+                .enqueue(new GsonResponseHandler<AddTaskEntity>() {
+
+                    @Override
+                    public void onFailure(int statusCode, String error_msg) {
+
+                        httpCallbackEntity.onFailure(error_msg);
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, AddTaskEntity response) {
+
+                        httpCallbackEntity.onSuccess((T) response);
+
+                    }
+                });
+    }
 }

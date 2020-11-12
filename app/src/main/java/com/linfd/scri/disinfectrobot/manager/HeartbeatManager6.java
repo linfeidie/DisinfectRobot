@@ -10,6 +10,9 @@ import com.linfd.scri.disinfectrobot.listener.SimpleHttpCallbackEntity;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * 文件描述：.
@@ -55,7 +58,9 @@ public class HeartbeatManager6 {
     private class MyRunnable implements Runnable {
         @Override
         public void run() {
-            HttpRequestManager.getInstance().tasks(1,new SimpleHttpCallbackEntity<TasksEntity>() {
+            List<Integer> condition = new ArrayList<>();
+            condition.add(1);
+            HttpRequestManager.getInstance().tasks(condition,new SimpleHttpCallbackEntity<TasksEntity>() {
 
                 @Override
                 public void onSuccess(TasksEntity entity) {

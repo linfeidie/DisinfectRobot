@@ -75,6 +75,8 @@ public class Contanst {
 
     public static final String api_tasks = bitoTask + "tasks";//查询任务信息 - 根据相关条件
 
+    public static final String api_add_task = bitoTask + "add_task";//添加任务
+
     public static final String REQUEST_OK = "0";
 
     public static final int REQUEST_OK_200 = 200;
@@ -85,9 +87,15 @@ public class Contanst {
 
     public static String passwd = ""; //热点密码
 
-    public static  String ROBOT_SERIAL = "yg00a00020071211000n00";
+    public static  String ROBOT_SERIAL = "";//yg00a00020071211000n00
 
-    public static String CHARGING_STATION_SERIAL = "cj02"; //充电桩序列号
+    public static String CHARGING_STATION_SERIAL = ""; //充电桩序列号  cj02
+
+    public static int status_hanxin = 0;//记录实时韩信状态  0关闭 ，1开启
+
+    public static boolean isCurrentChargeTask = false;//判断当前是否说充电任务
+
+    public static int mode = -1;//充电模式  1:纯手动，2:半自动，3:纯自动，4:混动
 
     public static  int MAP_HASHCODE = -1;//正在展示的地图的哈希码
 
