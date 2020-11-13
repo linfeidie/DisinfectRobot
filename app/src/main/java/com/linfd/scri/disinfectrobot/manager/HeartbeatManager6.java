@@ -58,16 +58,19 @@ public class HeartbeatManager6 {
     private class MyRunnable implements Runnable {
         @Override
         public void run() {
-            List<Integer> condition = new ArrayList<>();
-            condition.add(1);
-            HttpRequestManager.getInstance().tasks(condition,new SimpleHttpCallbackEntity<TasksEntity>() {
+            if (Contanst.status_hanxin == 1){
+                List<Integer> condition = new ArrayList<>();
+                condition.add(1);
+                HttpRequestManager.getInstance().tasks(condition,new SimpleHttpCallbackEntity<TasksEntity>() {
 
-                @Override
-                public void onSuccess(TasksEntity entity) {
-                    EventBus.getDefault().post(entity);
-                }
+                    @Override
+                    public void onSuccess(TasksEntity entity) {
+                        EventBus.getDefault().post(entity);
+                    }
 
-            });
+                });
+            }
+
             mHandler.postDelayed(this, Contanst.CHARGEPOLLING);
         }
     }

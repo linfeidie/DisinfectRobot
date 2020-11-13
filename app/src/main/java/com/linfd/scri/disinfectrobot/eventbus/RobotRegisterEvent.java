@@ -9,11 +9,11 @@ public class RobotRegisterEvent {
     public String getStatus() {
         String des = "";
         if (status == 0){
-            des = "注册成功";
+            des = "机器已注册";//注册成功
         }else if(status == 1){
-            des = "注册失败";
+            des = "机器未注册";//注册失败
         }else if(status == 2){
-            des = "注销成功";
+            des = "机器未注册";//注销成功
         }else if(status == 3){
             des = "注销失败";
         }else {

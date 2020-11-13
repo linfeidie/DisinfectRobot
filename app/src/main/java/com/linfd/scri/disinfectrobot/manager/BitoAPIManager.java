@@ -240,13 +240,33 @@ public class BitoAPIManager {
     }
 
     /*
-    * 添加任务
+    * 添加任务 充电任务
     * */
-    public void add_task(){
-        HttpRequestManager.getInstance().add_task(new SimpleHttpCallbackEntity<AddTaskEntity>() {
+    public void add_task_charge(){
+        HttpRequestManager.getInstance().add_task_charge(new SimpleHttpCallbackEntity<AddTaskEntity>() {
             @Override
-            public void onSuccess(AddTaskEntity addTaskEntity) {
-                Tools.showToast(addTaskEntity.getId()+"");
+            public void onSuccess(AddTaskEntity entity) {
+                if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+                    Tools.showToast("添加充电任务"+entity.getId());
+                }else{
+                    onFailure(entity.getErrmsg());
+                }
+            }
+        });
+    }
+
+    /*
+     * 添加任务 充电任务
+     * */
+    public void add_task_walk(){
+        HttpRequestManager.getInstance().add_task_walk(new SimpleHttpCallbackEntity<AddTaskEntity>() {
+            @Override
+            public void onSuccess(AddTaskEntity entity) {
+                if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+                    Tools.showToast("添加消毒任务"+entity.getId());
+                }else{
+                    onFailure(entity.getErrmsg());
+                }
             }
         });
     }
@@ -328,11 +348,12 @@ public class BitoAPIManager {
             @Override
             public void onSuccess(BaseEntity2 baseEntity) {
                 if (baseEntity.getCode() == Contanst.REQUEST_OK_200){
-                    repeat_tasks_charge();
+                    add_task_charge();
+                    //repeat_tasks_charge();
                     //发送模式变化监听
-                    ChargeModeEvent event = new ChargeModeEvent();
-                    event.mode = mode;
-                    EventBus.getDefault().post(event);
+//                    ChargeModeEvent event = new ChargeModeEvent();  不自己维护了，轮询服务器
+//                    event.mode = mode;
+//                    EventBus.getDefault().post(event);
                 }else{
                     onFailure(baseEntity.getMessage());
                 }
@@ -388,7 +409,7 @@ public class BitoAPIManager {
             @Override
             public void onSuccess(BaseEntity2 baseEntity) {
                 if (baseEntity.getCode() ==Contanst.REQUEST_OK_200){
-                    cancel_task_byID();
+                    cancel_task_current();
                 }else{
                     onFailure(baseEntity.getMessage());
                 }
@@ -398,9 +419,9 @@ public class BitoAPIManager {
     }
 
    /*
-   * 获得
+   * 取消当前任务（内部获得当前id 再取消）
    * */
-    public void cancel_task_byID() {
+    public void cancel_task_current() {
 
         // 先查询当前任务 获得id
         HttpRequestManager.getInstance().get_robot_perform_task(new SimpleHttpCallbackEntity<GetRobotPerformTaskEntity>() {
@@ -408,8 +429,11 @@ public class BitoAPIManager {
             @Override
             public void onSuccess(GetRobotPerformTaskEntity entity) {
                 if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
-                    if (entity.getData() != null && entity.getData().getTasks().size() != 0)
-                    cancel_task_charge(entity.getData().getTasks().get(0).getId());//获得id
+                    if (entity.getData() != null && entity.getData().getTasks().size() != 0) {
+                        cancel_task_by_id(entity.getData().getTasks().get(0).getId());//获得id
+                    }else if (entity.getData() != null && entity.getData().getTasks().size() == 0){
+                        Tools.showToast("当前没有任务");
+                    }
                 }else{
                     onFailure(entity.getErrmsg());
                 }
@@ -422,9 +446,26 @@ public class BitoAPIManager {
     /*
      * 未手动模式之前
      * */
-    private void cancel_task_charge(int chargeTaskId) {
+    private void cancel_task_charge(int taskId) {
         List<Integer> id_list = new ArrayList<>();
-        id_list.add(chargeTaskId);
+        id_list.add(taskId);
+        HttpRequestManager.getInstance().cancel_tasks(id_list,new SimpleHttpCallbackEntity<CancelTasksEntity>() {
+
+            @Override
+            public void onSuccess(CancelTasksEntity entity) {
+                if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+                    Tools.showToast("取消成功");
+                }else{
+                    onFailure(entity.getErrmsg());
+                }
+            }
+
+        });
+    }
+
+    private void cancel_task_by_id(int taskId) {
+        List<Integer> id_list = new ArrayList<>();
+        id_list.add(taskId);
         HttpRequestManager.getInstance().cancel_tasks(id_list,new SimpleHttpCallbackEntity<CancelTasksEntity>() {
 
             @Override
@@ -499,7 +540,8 @@ public class BitoAPIManager {
         HttpRequestManager.getInstance().get_charging_status(new SimpleHttpCallbackEntity<GetChargingStatusEntity>() {
             @Override
             public void onSuccess(GetChargingStatusEntity entity) {
-
+                //发送模式变化监听
+                    EventBus.getDefault().post(entity);
             }
         });
     }

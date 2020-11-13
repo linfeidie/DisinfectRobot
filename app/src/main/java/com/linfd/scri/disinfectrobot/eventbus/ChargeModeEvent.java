@@ -1,5 +1,6 @@
 package com.linfd.scri.disinfectrobot.eventbus;
 /*
+废弃
 * 手动自动充电模式监听   充电模式  1:纯手动，2:半自动，3:纯自动，4:混动
 * */
 public class ChargeModeEvent {

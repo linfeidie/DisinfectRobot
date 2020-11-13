@@ -4,11 +4,13 @@ import android.os.Handler;
 
 import com.linfd.scri.disinfectrobot.BaseApplication;
 import com.linfd.scri.disinfectrobot.Contanst;
-import com.linfd.scri.disinfectrobot.entity.GetErrorCodeResultEntity;
-import com.linfd.scri.disinfectrobot.entity.GetRobotPerformTaskEntity;
+import com.linfd.scri.disinfectrobot.entity.TasksEntity;
 import com.linfd.scri.disinfectrobot.listener.SimpleHttpCallbackEntity;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -17,26 +19,26 @@ import org.greenrobot.eventbus.EventBus;
  * 作者：Created by 林飞堞 on 2020/1/7
  * <p>
  * 版本号：donghaoProect
- * 先暂时借用的类，轮询当前异常
+ * 先暂时借用的类，查询充电模式  手动还是自动
  */
-public class HeartbeatManager5 {
+public class HeartbeatManager7 {
 
-    public static final String TAG = HeartbeatManager5.class.getSimpleName();
+    public static final String TAG = HeartbeatManager7.class.getSimpleName();
     private MyRunnable mRunnable;
     private Handler mHandler;
-    private static HeartbeatManager5 instance;
-    public static HeartbeatManager5 getInstance(){
+    private static HeartbeatManager7 instance;
+    public static HeartbeatManager7 getInstance(){
         if(instance == null) {
-            synchronized (HeartbeatManager5.class){
+            synchronized (HeartbeatManager7.class){
                 if(instance == null) {
-                    instance = new HeartbeatManager5();
+                    instance = new HeartbeatManager7();
                 }
             }
         }
         return instance;
     }
 
-    public HeartbeatManager5() {
+    public HeartbeatManager7() {
         mHandler = BaseApplication.getHandler();
     }
 
@@ -55,18 +57,12 @@ public class HeartbeatManager5 {
     private class MyRunnable implements Runnable {
         @Override
         public void run() {
-            //韩信开启才轮询
+            /*
+            * 韩信开始才轮询
+            * */
             if (Contanst.status_hanxin == 1){
-                HttpRequestManager.getInstance().get_error_code(new SimpleHttpCallbackEntity<GetErrorCodeResultEntity>() {
-
-                    @Override
-                    public void onSuccess(GetErrorCodeResultEntity entity) {
-                        EventBus.getDefault().post(entity);
-                    }
-
-                });
+                BitoAPIManager.getInstance().get_charging_status();
             }
-
             mHandler.postDelayed(this, Contanst.CHARGEPOLLING);
         }
     }

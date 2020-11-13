@@ -15,7 +15,7 @@ public class Contanst {
 
     public static final int LocalPort = 8989 ;//本地端口
 
-    public static final String bitoIP = "http://192.168.2.100:9999/";//宾通的IP  http://192.168.2.108:9999/(无线)
+    public static final String bitoIP = "http://192.168.2.105:9999/";//宾通的IP  http://192.168.2.108:9999/(无线)
 
     public static final String bitoAPI = bitoIP + "api/v1/";
 
@@ -87,6 +87,16 @@ public class Contanst {
 
     public static String passwd = ""; //热点密码
 
+    public static String start_walk_positon = "A5";//行走开始点
+
+    public static String goal_walk_position = "A2";//结束点
+
+    public static String charge_position = "A1";//充电起始点
+
+    public static final int priority_walk = 11;//行走优先级
+
+    public static final int priority_charge = 20; //充电优先级
+
     public static  String ROBOT_SERIAL = "";//yg00a00020071211000n00
 
     public static String CHARGING_STATION_SERIAL = ""; //充电桩序列号  cj02
@@ -95,7 +105,7 @@ public class Contanst {
 
     public static boolean isCurrentChargeTask = false;//判断当前是否说充电任务
 
-    public static int mode = -1;//充电模式  1:纯手动，2:半自动，3:纯自动，4:混动
+    //public static int mode = -1;//充电模式  1:纯手动，2:半自动，3:纯自动，4:混动 （废弃）
 
     public static  int MAP_HASHCODE = -1;//正在展示的地图的哈希码
 

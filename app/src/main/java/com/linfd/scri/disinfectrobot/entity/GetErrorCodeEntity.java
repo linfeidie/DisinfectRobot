@@ -2068,7 +2068,7 @@ public class GetErrorCodeEntity extends BaseEntity{
     }
 
     /*
-    * 充电桩实例转成韩信实例
+    * 充电桩实例转成韩信实例 韩信实例在P987  充电桩实例P99 愚公实例P1648
     * */
     public static List<InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX >EnBeanToZhCnBeanX(List<GetErrorCodeEntity.InfoBean.ChargingStationBean.Cj02Bean.EnBean> charges){
         List<InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX > zhCnBeanXES = new ArrayList<>();
@@ -2078,6 +2078,22 @@ public class GetErrorCodeEntity extends BaseEntity{
             zhCnBeanX.setCreate_time(charges.get(i).getCreate_time());
             zhCnBeanX.setError_mode(charges.get(i).getError_mode());
             zhCnBeanX.setInstruction(charges.get(i).getInstruction());
+            zhCnBeanXES.add(zhCnBeanX);
+        }
+        return zhCnBeanXES;
+    }
+
+    /*
+     * 愚公实例转成韩信实例 韩信实例在P987  充电桩实例P99 愚公实例P1648
+     * */
+    public static List<InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX >EnBeanToZhCnBeanXX(List<InfoBean.YugongBean.Yg00a00020071211000n00BeanX.ZhCnBeanXX> yugongs){
+        List<InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX > zhCnBeanXES = new ArrayList<>();
+        for (int i = 0; i < yugongs.size(); i++) {
+            InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX zhCnBeanX = new InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX();
+            zhCnBeanX.setSelf_recoverable(yugongs.get(i).getSelf_recoverable());
+            zhCnBeanX.setCreate_time(yugongs.get(i).getCreate_time());
+            zhCnBeanX.setError_mode(yugongs.get(i).getError_mode());
+            zhCnBeanX.setInstruction(yugongs.get(i).getInstruction());
             zhCnBeanXES.add(zhCnBeanX);
         }
         return zhCnBeanXES;

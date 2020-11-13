@@ -53,9 +53,18 @@ public class ErrorShowActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveMsg(GetErrorCodeResultEntity entity) {
        // Log.e(TAG,entity.charges.get(0).getError_mode());
-        sb_hanxin = new StringBuilder();
         //entity.charges
+//        if (entity.hanxins == null){
+//
+//        }
+        /*
+        * 因为韩信和愚公不知道哪个有值 如果韩信为0，那加入愚公
+        * */
+        if (entity.hanxins.size() == 0){
+            entity.hanxins.addAll(GetErrorCodeEntity.EnBeanToZhCnBeanXX(entity.yugongs));
+        }
         entity.hanxins.addAll(GetErrorCodeEntity.EnBeanToZhCnBeanX(entity.charges));
+
        // tv_charging_station.setText(zhCnBeanXES.toString());
         //韩信  可以恢复的异常
         //List<GetErrorCodeEntity.InfoBean.HanxinBean.Yg00a00020071211000n00Bean.ZhCnBeanX> zhCnBeanHXSY = new ArrayList<>();

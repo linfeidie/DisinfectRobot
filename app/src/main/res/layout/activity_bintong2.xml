@@ -154,7 +154,7 @@
             android:layout_below="@+id/tv_get_hanxin_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="注册"></TextView>
+            android:text="未注册"></TextView>
         <TextView
             android:id="@+id/tv_get_robot_perform_task"
             android:layout_below="@+id/tv_robot_register"
@@ -166,7 +166,7 @@
             android:layout_below="@+id/tv_get_robot_perform_task"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="手动充电模式"></TextView>
+            android:text="充电模式"></TextView>
         <TextView
             android:id="@+id/tv_pre_tasks"
             android:layout_below="@+id/tv_robot_mode"

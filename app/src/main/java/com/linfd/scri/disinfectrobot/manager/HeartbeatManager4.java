@@ -57,17 +57,20 @@ public class HeartbeatManager4 {
     private class MyRunnable implements Runnable {
         @Override
         public void run() {
-            HttpRequestManager.getInstance().get_robot_perform_task(new SimpleHttpCallbackEntity<GetRobotPerformTaskEntity>() {
+            if (Contanst.status_hanxin != 0){ //韩信关闭就不执行行了
+                HttpRequestManager.getInstance().get_robot_perform_task(new SimpleHttpCallbackEntity<GetRobotPerformTaskEntity>() {
 
-                @Override
-                public void onSuccess(GetRobotPerformTaskEntity entity) {
-                    if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
-                        EventBus.getDefault().post(entity);
-                    }else{
-                        onFailure(entity.getErrmsg());
+                    @Override
+                    public void onSuccess(GetRobotPerformTaskEntity entity) {
+                        if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+                            EventBus.getDefault().post(entity);
+                        }else{
+                            onFailure(entity.getErrmsg());
+                        }
                     }
-                }
-            });
+                });
+            }
+
             mHandler.postDelayed(this, Contanst.CHARGEPOLLING);
         }
     }

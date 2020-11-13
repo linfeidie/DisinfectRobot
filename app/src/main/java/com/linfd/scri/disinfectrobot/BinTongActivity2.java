@@ -20,6 +20,7 @@ import com.linfd.scri.disinfectrobot.entity.BaseEntity;
 import com.linfd.scri.disinfectrobot.entity.DesinStateCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionCodesCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionEntity;
+import com.linfd.scri.disinfectrobot.entity.GetChargingStatusEntity;
 import com.linfd.scri.disinfectrobot.entity.GetErrorCodeEntity;
 import com.linfd.scri.disinfectrobot.entity.GetErrorCodeResultEntity;
 import com.linfd.scri.disinfectrobot.entity.GetHanxinStatusEntity;
@@ -41,6 +42,7 @@ import com.linfd.scri.disinfectrobot.manager.HeartbeatManager3;
 import com.linfd.scri.disinfectrobot.manager.HeartbeatManager4;
 import com.linfd.scri.disinfectrobot.manager.HeartbeatManager5;
 import com.linfd.scri.disinfectrobot.manager.HeartbeatManager6;
+import com.linfd.scri.disinfectrobot.manager.HeartbeatManager7;
 import com.linfd.scri.disinfectrobot.manager.HttpRequestManager;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
 import com.linfd.scri.disinfectrobot.manager.UpdateStateControlManager;
@@ -138,18 +140,19 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                 switch (position){
                     case 0://启动系统
                         if (Contanst.status_hanxin == 1){
-                            Tools.showToast("韩信已经开启，无需再启动");
+                            Tools.showToast("系统已经开启，无需再启动");
                             return;
                         }
                         if (Contanst.isCurrentChargeTask){
                             Tools.showToast("现在在充电，先取消充电");
                             return;
                         }
+                        //核心
                         BitoAPIManager.getInstance().hanxin_start();
                         break;
                     case 1://关闭系统
                         if (Contanst.status_hanxin == 0){
-                            Tools.showToast("韩信已经关闭");
+                            Tools.showToast("系统已经关闭");
                             return;
                         }
 //                        if (Contanst.isCurrentChargeTask){
@@ -165,7 +168,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                             return;
                         }
                        // BitoAPIManager.getInstance().repeat_tasks();
-                        BitoAPIManager.getInstance().add_task();
+                        BitoAPIManager.getInstance().add_task_walk();
                         break;
                     case 3://暂停消毒
                         if (Contanst.status_hanxin == 0){
@@ -187,7 +190,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                             return;
                         }
                        // BitoAPIManager.getInstance().cancel_task_walk();
-                        BitoAPIManager.getInstance().cancel_task_byID();//
+                        BitoAPIManager.getInstance().cancel_task_current();//
                         break;
                     case 6://手动模式下充电
                         if (Contanst.status_hanxin == 0){
@@ -324,6 +327,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         HeartbeatManager4.getInstance().start();//当前任务状态
        // HeartbeatManager5.getInstance().start();//异常状态获取
         HeartbeatManager6.getInstance().start();//未执行任务
+        HeartbeatManager7.getInstance().start();//轮询充电手动或自动模式
         List<Integer> list = new ArrayList<>();
         list.add(99999);
         list.add(12405);
@@ -349,6 +353,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         HeartbeatManager4.getInstance().stop();//关闭任务状态
         //HeartbeatManager5.getInstance().stop();//关闭异常
         HeartbeatManager6.getInstance().stop();//关闭任务状态
+        HeartbeatManager7.getInstance().stop();//轮询充电手动或自动模式
     }
 
     @Override
@@ -407,9 +412,9 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
      * 充电模式监听
      * */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onReceiveMsg(ChargeModeEvent event) {
-        Contanst.mode = event.mode;//赋值
-        tv_robot_mode.setText(event.getMode());
+    public void onReceiveMsg(GetChargingStatusEntity event) {
+        //Contanst.mode = event.mode;//赋值
+        tv_robot_mode.setText(event.getStatus());
 
     }
 
@@ -772,7 +777,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     public void onReceiveMsg(GetHanxinStatusEntity entity) {
         Log.e(TAG,"韩信："+ BitoHanxinManager.obtainState(entity.getStatus()));
         Contanst.status_hanxin = entity.getStatus();
-        tv_get_hanxin_status.setText("韩信："+ BitoHanxinManager.obtainState(entity.getStatus()));
+        tv_get_hanxin_status.setText("系统："+ BitoHanxinManager.obtainState(entity.getStatus()));
     }
 
     /*
