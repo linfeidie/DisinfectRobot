@@ -12,6 +12,7 @@ import com.linfd.scri.disinfectrobot.adapter.ErrorAdapter;
 import com.linfd.scri.disinfectrobot.entity.GetErrorCodeEntity;
 import com.linfd.scri.disinfectrobot.entity.GetErrorCodeResultEntity;
 import com.linfd.scri.disinfectrobot.manager.HeartbeatManager5;
+import com.linfd.scri.disinfectrobot.view.recyclerviewUtil.BaseRecyclerViewAdapter;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -92,6 +93,7 @@ public class ErrorShowActivity extends BaseActivity {
             rv_show_err.setAdapter(errorAdapter);
         }
 
+
     }
 
     private void initView2() {
@@ -106,6 +108,7 @@ public class ErrorShowActivity extends BaseActivity {
    //     mAdapter.setOnItemClickListner( this );
 
 //        mUserSimpleRecycleAdapter = new UserSimpleRecycleAdapter(mContext, datas);
+
 
 
     }

@@ -1,13 +1,12 @@
 package com.linfd.scri.disinfectrobot;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.linfd.scri.disinfectrobot.entity.GetRobotPerformTaskEntity;
-import com.linfd.scri.disinfectrobot.manager.BitoActionStateManager;
+import com.linfd.scri.disinfectrobot.tools.SPUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -36,9 +35,21 @@ public class BitoSettingActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        int repeat_num = SPUtils.get(SPUtils.repeat_num,1);
+        et_repeat.setText(repeat_num+"");
+        String ssid =  SPUtils.get(SPUtils.ssid,"");
+        et_ssid.setText(ssid);
+        et_start_walk_positon.setText(SPUtils.get(SPUtils.start_walk_positon,""));
+        et_goal_walk_position.setText(SPUtils.get(SPUtils.goal_walk_position,""));
+        et_charge_position.setText(SPUtils.get(SPUtils.charge_position,""));
+    }
+
     /*
-              正在执行的任务状态
-        * */
+                  正在执行的任务状态
+            * */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveMsg(GetRobotPerformTaskEntity entity) {
 
@@ -52,25 +63,32 @@ public class BitoSettingActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (!TextUtils.isEmpty(et_repeat.getText().toString())){
-                    Contanst.repeat_num =  Integer.valueOf(et_repeat.getText().toString());
+                   // Contanst.repeat_num =  Integer.valueOf(et_repeat.getText().toString());
+                    SPUtils.put(SPUtils.repeat_num,Integer.valueOf(et_repeat.getText().toString()));
                 }
                 if (!TextUtils.isEmpty(et_ssid.getText().toString())){
-                    Contanst.ssid = et_ssid.getText().toString();
+                    //Contanst.ssid = et_ssid.getText().toString();
+                    SPUtils.put(SPUtils.ssid,et_ssid.getText().toString());
                 }
                 if (!TextUtils.isEmpty(et_password.getText().toString())){
-                    Contanst.passwd =  et_password.getText().toString();
+                    //Contanst.passwd =  et_password.getText().toString();
+                    SPUtils.put(SPUtils.passwd,et_password.getText().toString());
                 }
                 if (!TextUtils.isEmpty(et_start_walk_positon.getText().toString())){
-                    Contanst.start_walk_positon =  et_start_walk_positon.getText().toString();
+                   // Contanst.start_walk_positon =  et_start_walk_positon.getText().toString();
+                    SPUtils.put(SPUtils.start_walk_positon,et_start_walk_positon.getText().toString());
                 }
                 if (!TextUtils.isEmpty(et_goal_walk_position.getText().toString())){
-                    Contanst.goal_walk_position =  et_goal_walk_position.getText().toString();
+                   // Contanst.goal_walk_position =  et_goal_walk_position.getText().toString();
+                    SPUtils.put(SPUtils.goal_walk_position,et_goal_walk_position.getText().toString());
                 }
                 if (!TextUtils.isEmpty(et_charge_position.getText().toString())){
-                    Contanst.charge_position =  et_charge_position.getText().toString();
+                    //Contanst.charge_position =  et_charge_position.getText().toString();
+                    SPUtils.put(SPUtils.charge_position,et_charge_position.getText().toString());
                 }
                 finish();
             }
         });
     }
+
 }

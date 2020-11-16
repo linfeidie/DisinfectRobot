@@ -35,9 +35,11 @@ import com.linfd.scri.disinfectrobot.entity.PauseRobotEntity;
 import com.linfd.scri.disinfectrobot.entity.ResumeRobotEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotRegisterEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotUnregisterEntity;
+import com.linfd.scri.disinfectrobot.entity.SolveErrorCodeEntity;
 import com.linfd.scri.disinfectrobot.entity.TaskStatusEntity;
 import com.linfd.scri.disinfectrobot.entity.TasksEntity;
 import com.linfd.scri.disinfectrobot.listener.HttpCallbackEntity;
+import com.linfd.scri.disinfectrobot.tools.SPUtils;
 import com.tsy.sdk.myokhttp.MyOkHttp;
 import com.tsy.sdk.myokhttp.response.GsonResponseHandler;
 import com.tsy.sdk.myokhttp.response.RawResponseHandler;
@@ -210,7 +212,7 @@ public class HttpRequestManager {
      * */
     public <T> void robot_register(final HttpCallbackEntity<T> httpCallbackEntity) {
         if (TextUtils.isEmpty(Contanst.ROBOT_SERIAL)) {
-            Tools.showToast("机器未注册，请启动韩信");
+            Tools.showToast("机器未注册，请启动系统");
             return;
         }
         String url = Contanst.api_robot_register + Contanst.ROBOT_SERIAL;
@@ -267,7 +269,7 @@ public class HttpRequestManager {
         List<Integer> id_list = new ArrayList<>();
         id_list.add(taskId);
 
-        map.put("repeat_num", Contanst.repeat_num);
+        map.put("repeat_num", SPUtils.get(SPUtils.repeat_num,1));
         map.put("id_list", id_list);
 
         mMyOkHttp.post()
@@ -301,7 +303,10 @@ public class HttpRequestManager {
 
                     @Override
                     public void onFailure(int statusCode, String error_msg) {
-                        httpCallbackEntity.onFailure(error_msg);
+                        if (httpCallbackEntity != null){
+                            httpCallbackEntity.onFailure(error_msg);
+                        }
+
                     }
 
                     @Override
@@ -353,7 +358,7 @@ public class HttpRequestManager {
                     public void onSuccess(int statusCode, String response) {
 
                         if (TextUtils.isEmpty(Contanst.ROBOT_SERIAL) || TextUtils.isEmpty(Contanst.CHARGING_STATION_SERIAL)) {
-                            Tools.showToast("机器未注册，请启动韩信");
+                            Tools.showToast("机器未注册，请启动系统");
                             return;
                         }
                         JSONObject infoObject = JSONObject.parseObject(response).getJSONObject("info");
@@ -477,7 +482,7 @@ public class HttpRequestManager {
      * */
     public <T> void reset_agents(final HttpCallbackEntity<T> httpCallbackEntity) {
         if (TextUtils.isEmpty(Contanst.ROBOT_SERIAL)) {
-            Tools.showToast("机器未注册，请启动韩信");
+            Tools.showToast("机器未注册，请启动系统");
             return;
         }
         String url = Contanst.api_reset_agents + Contanst.ROBOT_SERIAL;
@@ -506,7 +511,7 @@ public class HttpRequestManager {
     public <T> void robot_unregister(final HttpCallbackEntity<T> httpCallbackEntity) {
 
         if (TextUtils.isEmpty(Contanst.ROBOT_SERIAL)) {
-            Tools.showToast("机器未注册，请启动韩信");
+            Tools.showToast("机器未注册，请启动系统");
             return;
         }
         String url = Contanst.api_robot_unregister + Contanst.ROBOT_SERIAL;
@@ -645,7 +650,7 @@ public class HttpRequestManager {
     public <T> void pause_robot(final HttpCallbackEntity<T> httpCallbackEntity) {
 
         if (TextUtils.isEmpty(Contanst.ROBOT_SERIAL)) {
-            Tools.showToast("机器未注册，请启动韩信");
+            Tools.showToast("机器未注册，请启动系统");
             return;
         }
 
@@ -675,7 +680,7 @@ public class HttpRequestManager {
     public <T> void resume_robot(final HttpCallbackEntity<T> httpCallbackEntity) {
 
         if (TextUtils.isEmpty(Contanst.ROBOT_SERIAL)) {
-            Tools.showToast("机器未注册，请启动韩信");
+            Tools.showToast("机器未注册，请启动系统");
             return;
         }
 
@@ -819,20 +824,27 @@ public class HttpRequestManager {
     public <T> void add_task( int type,final HttpCallbackEntity<T> httpCallbackEntity) {
 
         if (TextUtils.isEmpty(Contanst.ROBOT_SERIAL)) {
-            Tools.showToast("机器未注册，请启动韩信");
+            Tools.showToast("机器未注册，请启动系统");
+            return;
+        }
+        /*
+        * 本地没有保存起始点
+        * */
+        if (TextUtils.isEmpty(SPUtils.get(SPUtils.start_walk_positon,"") ) || TextUtils.isEmpty(SPUtils.get(SPUtils.goal_walk_position,"") )|| TextUtils.isEmpty(SPUtils.get(SPUtils.charge_position,"") )){
+            Tools.showToast("未设置起始点");
             return;
         }
 
         String url = Contanst.api_add_task;
         Map<String, Object> map = new HashMap<>();
         if (type == 0){
-            map.put("start", Contanst.start_walk_positon);
-            map.put("goal", Contanst.goal_walk_position);
+            map.put("start", SPUtils.get(SPUtils.start_walk_positon,""));
+            map.put("goal", SPUtils.get(SPUtils.goal_walk_position,""));
             map.put("priority", Contanst.priority_walk);
             map.put("goal_action", 0);
         }else if (type == 1){
-            map.put("start", Contanst.charge_position);
-            map.put("goal", Contanst.charge_position);
+            map.put("start", SPUtils.get(SPUtils.charge_position,""));
+            map.put("goal", SPUtils.get(SPUtils.charge_position,""));
             map.put("priority", Contanst.priority_charge);
             map.put("goal_action", 10);
         }
@@ -843,7 +855,7 @@ public class HttpRequestManager {
         map.put("preassignment", Contanst.ROBOT_SERIAL);
         map.put("task_id", "");
         map.put("plan_time", "");
-        map.put("repeat", Contanst.repeat_num);
+        map.put("repeat", SPUtils.get(SPUtils.repeat_num,1));
         mMyOkHttp.post()
                 .url(url)
                 .tag(this).jsonParams(gson.toJson(map))
@@ -869,7 +881,7 @@ public class HttpRequestManager {
     * */
     public <T> void reset_charging_station(final HttpCallbackEntity<T> httpCallbackEntity){
         if (TextUtils.isEmpty(Contanst.CHARGING_STATION_SERIAL)) {
-            Tools.showToast("机器未注册，请启动韩信");
+            Tools.showToast("机器未注册，请启动系统");
             return;
         }
         String url = Contanst.api_reset_charging_station + Contanst.CHARGING_STATION_SERIAL;
@@ -885,6 +897,30 @@ public class HttpRequestManager {
 
                     @Override
                     public void onSuccess(int statusCode, BaseEntity2 response) {
+
+                        httpCallbackEntity.onSuccess((T) response);
+                    }
+                });
+    }
+
+    /*
+    *修改故障信息状态
+    * */
+
+    public <T> void solve_error_code(int id,final HttpCallbackEntity<T> httpCallbackEntity) {
+        String url = Contanst.api_solve_error_code + id;
+        mMyOkHttp.get()
+                .url(url)
+                .tag(this)
+                .enqueue(new GsonResponseHandler<SolveErrorCodeEntity>() {
+
+                    @Override
+                    public void onFailure(int statusCode, String error_msg) {
+                        httpCallbackEntity.onFailure(error_msg);
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, SolveErrorCodeEntity response) {
 
                         httpCallbackEntity.onSuccess((T) response);
                     }

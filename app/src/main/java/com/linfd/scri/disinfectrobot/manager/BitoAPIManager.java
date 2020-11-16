@@ -17,6 +17,7 @@ import com.linfd.scri.disinfectrobot.entity.PauseRobotEntity;
 import com.linfd.scri.disinfectrobot.entity.ResumeRobotEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotRegisterEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotUnregisterEntity;
+import com.linfd.scri.disinfectrobot.entity.SolveErrorCodeEntity;
 import com.linfd.scri.disinfectrobot.entity.TasksEntity;
 import com.linfd.scri.disinfectrobot.eventbus.ChargeModeEvent;
 import com.linfd.scri.disinfectrobot.eventbus.RobotRegisterEvent;
@@ -58,12 +59,12 @@ public class BitoAPIManager {
             @Override
             public void onSuccess(BaseEntity baseEntity) {
                 if (baseEntity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
-                    Tools.showToast("韩信启动成功");
+                    Tools.showToast("系统启动成功");
                     get_agents_registerable();//获取机器人系列号 并注册机器人
                     charing_stations();//获取充电桩序列号
                     HttpRequestManager.getInstance().switch_charging_mode(3,null);//自动充电模式
                 }else{
-                    Tools.showToast("韩信启动失败");
+                    Tools.showToast("系统启动失败");
                 };
             }
 
@@ -194,7 +195,7 @@ public class BitoAPIManager {
             public void onSuccess(BaseEntity2 entity) {
                 RobotRegisterEvent event = new RobotRegisterEvent();
                 if (entity.getCode() == Contanst.REQUEST_OK_0){
-                    Tools.showToast("韩信已关闭");
+                    Tools.showToast("系统已关闭");
                     event.status = 2;
 
                 }else{
@@ -578,6 +579,16 @@ public class BitoAPIManager {
        HttpRequestManager.getInstance().reset_charging_station(new SimpleHttpCallbackEntity<BaseEntity2>() {
            @Override
            public void onSuccess(BaseEntity2 baseEntity2) {
+
+           }
+       });
+   }
+
+   public void solve_error_code(int id ){
+       HttpRequestManager.getInstance().solve_error_code(id, new SimpleHttpCallbackEntity<SolveErrorCodeEntity>() {
+
+           @Override
+           public void onSuccess(SolveErrorCodeEntity solveErrorCodeEntity) {
 
            }
        });

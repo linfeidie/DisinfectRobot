@@ -164,7 +164,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                         break;
                     case 2://启动消毒
                         if (Contanst.status_hanxin == 0){
-                            Tools.showToast("韩信已经关闭");
+                            Tools.showToast("系统已经关闭");
                             return;
                         }
                        // BitoAPIManager.getInstance().repeat_tasks();
@@ -172,21 +172,21 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                         break;
                     case 3://暂停消毒
                         if (Contanst.status_hanxin == 0){
-                            Tools.showToast("韩信已经关闭");
+                            Tools.showToast("系统已经关闭");
                             return;
                         }
                         BitoAPIManager.getInstance().pause_robot();
                         break;
                     case 4://恢复消毒
                         if (Contanst.status_hanxin == 0){
-                            Tools.showToast("韩信已经关闭");
+                            Tools.showToast("系统已经关闭");
                             return;
                         }
                         BitoAPIManager.getInstance().resume_robot();
                         break;
                     case 5://取消消毒
                         if (Contanst.status_hanxin == 0){
-                            Tools.showToast("韩信已经关闭");
+                            Tools.showToast("系统已经关闭");
                             return;
                         }
                        // BitoAPIManager.getInstance().cancel_task_walk();
@@ -194,21 +194,25 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                         break;
                     case 6://手动模式下充电
                         if (Contanst.status_hanxin == 0){
-                            Tools.showToast("韩信已经关闭");
+                            Tools.showToast("系统已经关闭");
                             return;
                         }
                         BitoAPIManager.getInstance().repeat_tasks_charge_man();
                         break;
                     case 7://取消手动充电
                         if (Contanst.status_hanxin == 0){
-                            Tools.showToast("韩信已经关闭");
+                            Tools.showToast("系统已经关闭");
                             return;
                         }
                         BitoAPIManager.getInstance().cancel_task_charge_man();
                         break;
                     case 8:  //自动模式下充电
                         if (Contanst.status_hanxin == 0){
-                            Tools.showToast("韩信已经关闭");
+                            Tools.showToast("系统已经关闭");
+                            return;
+                        }
+                        if (Contanst.isCurrentChargeTask){
+                            Tools.showToast("当前正在充电哦");
                             return;
                         }
                         BitoAPIManager.getInstance().repeat_tasks_charge_auto();
@@ -226,14 +230,14 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                         break;
                     case 13://释放
                         if (Contanst.status_hanxin == 0){
-                            Tools.showToast("韩信已经关闭，请开启");
+                            Tools.showToast("系统已经关闭，请开启");
                             return;
                         }
                         switch_open();
                         break;
                     case 14://锁轴
                         if (Contanst.status_hanxin == 0){
-                            Tools.showToast("韩信已经关闭，请开启");
+                            Tools.showToast("系统已经关闭，请开启");
                             return;
                         }
                         switch_close();
@@ -374,18 +378,31 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         tv_power.setText("电量:"+ (int)entity.getBattery_percent()/10 + "%");
 
         //如果有异常字段为真
-        if (entity.isException()){
-            //获取异常
-            UdpControlSendManager.getInstance().get_robot_exception(Contanst.id,Contanst.to_id);
-        }else {
+//        if (entity.isException()){
+//            //获取异常
+//            UdpControlSendManager.getInstance().get_robot_exception(Contanst.id,Contanst.to_id);
+//        }else {
+//
+//        };
+//
+//        if (entity.isCharge_state()){
+//            startCharge();
+//        }else{
+//            // Tools.showToast("停止充电");
+//            stopCharge();
+//        }
+        //电量达到100 就弹出
 
-        };
+        if ((int)entity.getBattery_percent()/10 == 100){
+            BitoAPIManager.getInstance().cancel_task_charge_man();//先切换成手动再取消充电
+            //延迟处理
+            BaseApplication.getHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    HttpRequestManager.getInstance().switch_charging_mode(3,null);//自动充电模式
+                }
+            },1000);
 
-        if (entity.isCharge_state()){
-            startCharge();
-        }else{
-            // Tools.showToast("停止充电");
-            stopCharge();
         }
     }
 

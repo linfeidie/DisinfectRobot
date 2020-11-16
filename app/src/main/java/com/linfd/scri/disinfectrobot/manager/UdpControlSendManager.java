@@ -1,5 +1,6 @@
 package com.linfd.scri.disinfectrobot.manager;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 
@@ -11,6 +12,7 @@ import com.blanke.xsocket.udp.client.bean.UdpMsg;
 import com.blanke.xsocket.udp.client.listener.UdpClientListener;
 import com.linfd.scri.disinfectrobot.Contanst;
 import com.linfd.scri.disinfectrobot.GsonUtil;
+import com.linfd.scri.disinfectrobot.Tools;
 import com.linfd.scri.disinfectrobot.entity.GetApmtStateEntity;
 import com.linfd.scri.disinfectrobot.entity.GetChargerPoseEntity;
 import com.linfd.scri.disinfectrobot.entity.GetDisinStateEntity;
@@ -41,6 +43,7 @@ import com.linfd.scri.disinfectrobot.entity.SetNaviModeEntity;
 import com.linfd.scri.disinfectrobot.entity.SetRobotWifiEntity;
 import com.linfd.scri.disinfectrobot.entity.SetSaveMapEntity;
 import com.linfd.scri.disinfectrobot.entity.SetWorkModeEntity;
+import com.linfd.scri.disinfectrobot.tools.SPUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -744,7 +747,11 @@ public class UdpControlSendManager {
     * 连接其他热点
     * */
     public void set_robot_wifi_ap_open(String id, String to_id){
-        this.set_robot_wifi(id,to_id,"ap","create",Contanst.ssid,Contanst.passwd);
+        if (TextUtils.isEmpty(SPUtils.get(SPUtils.ssid,"")) || TextUtils.isEmpty(SPUtils.get(SPUtils.passwd,""))){
+            Tools.showToast("热点密码或热点名未设置");
+            return;
+        }
+        this.set_robot_wifi(id,to_id,"ap","create", SPUtils.get(SPUtils.ssid,""),SPUtils.get(SPUtils.passwd,""));
     }
 
     /*

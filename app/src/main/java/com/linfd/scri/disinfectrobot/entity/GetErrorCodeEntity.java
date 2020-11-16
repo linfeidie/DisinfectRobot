@@ -2078,6 +2078,7 @@ public class GetErrorCodeEntity extends BaseEntity{
             zhCnBeanX.setCreate_time(charges.get(i).getCreate_time());
             zhCnBeanX.setError_mode(charges.get(i).getError_mode());
             zhCnBeanX.setInstruction(charges.get(i).getInstruction());
+            zhCnBeanX.setId(charges.get(i).getId());
             zhCnBeanXES.add(zhCnBeanX);
         }
         return zhCnBeanXES;
@@ -2094,6 +2095,7 @@ public class GetErrorCodeEntity extends BaseEntity{
             zhCnBeanX.setCreate_time(yugongs.get(i).getCreate_time());
             zhCnBeanX.setError_mode(yugongs.get(i).getError_mode());
             zhCnBeanX.setInstruction(yugongs.get(i).getInstruction());
+            zhCnBeanX.setId(yugongs.get(i).getId());
             zhCnBeanXES.add(zhCnBeanX);
         }
         return zhCnBeanXES;

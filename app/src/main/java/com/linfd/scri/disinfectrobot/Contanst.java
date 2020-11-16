@@ -79,21 +79,23 @@ public class Contanst {
 
     public static final String api_add_task = bitoTask + "add_task";//添加任务
 
+    public static final String api_solve_error_code = bitoMonitor + "solve_error_code?";//修改错误信息状态
+
     public static final String REQUEST_OK = "0";
 
     public static final int REQUEST_OK_200 = 200;
 
     public static final int REQUEST_OK_0 = 0;
 
-    public static String ssid = "";//热点名
+    //public static String ssid = "";//热点名
 
-    public static String passwd = ""; //热点密码
+   // public static String passwd = ""; //热点密码
 
-    public static String start_walk_positon = "A5";//行走开始点
-
-    public static String goal_walk_position = "A2";//结束点
-
-    public static String charge_position = "A1";//充电起始点
+//    public static String start_walk_positon = "A5";//行走开始点
+//
+//    public static String goal_walk_position = "A2";//结束点
+//
+//    public static String charge_position = "A1";//充电起始点
 
     public static final int priority_walk = 11;//行走优先级
 
@@ -111,7 +113,7 @@ public class Contanst {
 
     public static  int MAP_HASHCODE = -1;//正在展示的地图的哈希码
 
-    public static int repeat_num = 1;//设置机器人行走消毒次数
+   // public static int repeat_num = 1;//设置机器人行走消毒次数
 
     public static final String ROOT = Environment.getExternalStorageDirectory().getAbsolutePath();//根目录
 

@@ -1,10 +1,11 @@
-package com.linfd.scri.disinfectrobot;
+package com.linfd.scri.disinfectrobot.tools;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
+import com.linfd.scri.disinfectrobot.BaseApplication;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -195,5 +196,19 @@ public class SPUtils {
             }
             editor.commit();
         }
+
+
     }
+
+    public static final String repeat_num = "repeat_num";//重复任务次数
+
+    public static final String ssid = "ssid";//热点名
+
+    public static final String passwd = "passwd"; //热点密码
+
+    public static String start_walk_positon = "A5";//行走开始点
+
+    public static String goal_walk_position = "A2";//结束点
+
+    public static String charge_position = "A1";//充电起始点
 }

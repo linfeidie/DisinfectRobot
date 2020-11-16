@@ -60,6 +60,7 @@ public class HeartbeatManager6 {
         public void run() {
             if (Contanst.status_hanxin == 1){
                 List<Integer> condition = new ArrayList<>();
+                condition.add(0);
                 condition.add(1);
                 HttpRequestManager.getInstance().tasks(condition,new SimpleHttpCallbackEntity<TasksEntity>() {
 
