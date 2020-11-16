@@ -139,7 +139,8 @@ public class BitoAPIManager {
     * */
     //同步是按顺序来  异步是不按顺序来
     public void hanxin_stop(){
-        reset_agents();//重置
+        reset_agents();//重置机器人
+        reset_charging_station();//重置充电桩
         HttpRequestManager.getInstance().pause_robot(new SimpleHttpCallbackEntity<PauseRobotEntity>(){
 
             @Override
@@ -565,6 +566,18 @@ public class BitoAPIManager {
        HttpRequestManager.getInstance().stop_charging_server(new SimpleHttpCallbackEntity<BaseEntity>() {
            @Override
            public void onSuccess(BaseEntity entity) {
+
+           }
+       });
+   }
+
+   /*
+   * 重置充电桩信息
+   * */
+   public void reset_charging_station(){
+       HttpRequestManager.getInstance().reset_charging_station(new SimpleHttpCallbackEntity<BaseEntity2>() {
+           @Override
+           public void onSuccess(BaseEntity2 baseEntity2) {
 
            }
        });

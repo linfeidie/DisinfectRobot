@@ -19,13 +19,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_gravity="center_horizontal"
-            android:textSize="22sp"
-            android:text="消毒时间"></TextView>
+
         <cn.iwgang.countdownview.CountdownView
             android:layout_marginLeft="20dp"
             android:id="@+id/countdown_view"
@@ -52,16 +46,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginLeft="35dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-
                 android:textSize="22sp"
                 android:gravity="bottom"
                 android:text="线速度："
-                android:textColor="@color/colorMajor" />
+                 />
 
             <TextView
                 android:id="@+id/tv_linear_velocity"
@@ -79,16 +72,15 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="35dp"
             android:layout_marginTop="20dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="45dp"
                 android:layout_gravity="center_vertical"
-                android:textSize="22sp"
                 android:gravity="bottom"
                 android:text="角速度："
-                android:textColor="@color/colorMajor" />
+                android:textSize="22sp" />
 
             <TextView
                 android:id="@+id/tv_angular_velocity"
@@ -100,6 +92,43 @@
                 android:layout_gravity="center"
                 ></TextView>
 
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_get_hanxin_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:text="韩信状态"></TextView>
+
+            <TextView
+                android:id="@+id/tv_robot_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:text="未注册"></TextView>
+            <TextView
+                android:id="@+id/tv_get_robot_perform_task"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:text="当前任务状态"></TextView>
+            <TextView
+                android:id="@+id/tv_robot_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:text="充电模式"></TextView>
+            <TextView
+                android:id="@+id/tv_pre_tasks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:text="还有剩余任务"></TextView>
         </LinearLayout>
         <com.linfd.scri.disinfectrobot.view.MyStatusLayout
             android:layout_marginTop="40dp"
@@ -141,38 +170,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/b"
+        android:background="@drawable/robot"
         android:layout_toRightOf="@id/ll_left"
         android:layout_toLeftOf="@id/vp_grid_view">
-        <TextView
-            android:id="@+id/tv_get_hanxin_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="韩信状态"></TextView>
-        <TextView
-            android:id="@+id/tv_robot_register"
-            android:layout_below="@+id/tv_get_hanxin_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="未注册"></TextView>
-        <TextView
-            android:id="@+id/tv_get_robot_perform_task"
-            android:layout_below="@+id/tv_robot_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="当前任务状态"></TextView>
-        <TextView
-            android:id="@+id/tv_robot_mode"
-            android:layout_below="@+id/tv_get_robot_perform_task"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="充电模式"></TextView>
-        <TextView
-            android:id="@+id/tv_pre_tasks"
-            android:layout_below="@+id/tv_robot_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="还有剩余任务"></TextView>
+
         <TextView
             android:id="@+id/tv_exception"
             android:layout_width="wrap_content"
@@ -184,7 +185,8 @@
             android:id="@+id/tv_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/icon_exception"
+            android:background="@drawable/icon_setting"
+            android:layout_marginLeft="10dp"
             android:layout_alignTop="@id/tv_exception"
            android:layout_toRightOf="@id/tv_exception"
             ></TextView>

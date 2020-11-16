@@ -8,7 +8,7 @@ import com.linfd.scri.disinfectrobot.entity.GetMapParamCallbackEntity;
 public class Contanst {
 
     public static  String map_time ; //192.168.1.101（1009） 连接网线  "127.0.0.1"  192.168.2.103 是网络地址  10.42.0.1
-
+    //1.0是有线网段
     public static final String TargetIp = "192.168.1.101";//10.42.0.1  目标IP地址   192.168.2.107  117  192.168.5.100
 
     public static final int TargetPort = 8999; //目标端口8999 8080
@@ -72,6 +72,8 @@ public class Contanst {
     public static final String api_stop_charging_server = bitoMonitor + "stop_charging_server";//关闭⾃动充电
 
     public static final String api_start_charging_server = bitoMonitor + "start_charging_server";//开启自动充电
+
+    public static final String api_reset_charging_station = bitoMonitor + "reset_charging_station/";
 
     public static final String api_tasks = bitoTask + "tasks";//查询任务信息 - 根据相关条件
 

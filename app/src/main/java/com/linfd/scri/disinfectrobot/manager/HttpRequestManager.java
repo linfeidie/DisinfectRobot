@@ -51,7 +51,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
-import static com.linfd.scri.disinfectrobot.Contanst.repeat_num;
+
 
 public class HttpRequestManager {
 
@@ -267,7 +267,7 @@ public class HttpRequestManager {
         List<Integer> id_list = new ArrayList<>();
         id_list.add(taskId);
 
-        map.put("repeat_num", repeat_num);
+        map.put("repeat_num", Contanst.repeat_num);
         map.put("id_list", id_list);
 
         mMyOkHttp.post()
@@ -814,7 +814,7 @@ public class HttpRequestManager {
         this.add_task(1,httpCallbackEntity);
     }
     /*
-    * 添加任务 type  0是行走 1是消毒
+    * 添加任务 type  0是行走 1是充电
     * */
     public <T> void add_task( int type,final HttpCallbackEntity<T> httpCallbackEntity) {
 
@@ -829,19 +829,21 @@ public class HttpRequestManager {
             map.put("start", Contanst.start_walk_positon);
             map.put("goal", Contanst.goal_walk_position);
             map.put("priority", Contanst.priority_walk);
+            map.put("goal_action", 0);
         }else if (type == 1){
             map.put("start", Contanst.charge_position);
             map.put("goal", Contanst.charge_position);
             map.put("priority", Contanst.priority_charge);
+            map.put("goal_action", 10);
         }
         map.put("start_action", 0);
-        map.put("goal_action", 0);
+
         map.put("item_type", "");
 
         map.put("preassignment", Contanst.ROBOT_SERIAL);
         map.put("task_id", "");
         map.put("plan_time", "");
-        map.put("repeat", 1);
+        map.put("repeat", Contanst.repeat_num);
         mMyOkHttp.post()
                 .url(url)
                 .tag(this).jsonParams(gson.toJson(map))
@@ -858,6 +860,33 @@ public class HttpRequestManager {
 
                         httpCallbackEntity.onSuccess((T) response);
 
+                    }
+                });
+    }
+
+    /*
+    * 重置充电桩信息
+    * */
+    public <T> void reset_charging_station(final HttpCallbackEntity<T> httpCallbackEntity){
+        if (TextUtils.isEmpty(Contanst.CHARGING_STATION_SERIAL)) {
+            Tools.showToast("机器未注册，请启动韩信");
+            return;
+        }
+        String url = Contanst.api_reset_charging_station + Contanst.CHARGING_STATION_SERIAL;
+        mMyOkHttp.put()
+                .url(url)
+                .tag(this)
+                .enqueue(new GsonResponseHandler<BaseEntity2>() {
+
+                    @Override
+                    public void onFailure(int statusCode, String error_msg) {
+                        httpCallbackEntity.onFailure(error_msg);
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, BaseEntity2 response) {
+
+                        httpCallbackEntity.onSuccess((T) response);
                     }
                 });
     }

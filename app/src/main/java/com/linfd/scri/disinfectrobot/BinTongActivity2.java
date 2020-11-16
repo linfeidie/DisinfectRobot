@@ -263,7 +263,8 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                         power_off();
                         break;
                     case 28://重置机器人
-                        BitoAPIManager.getInstance().reset_agents();
+                        BitoAPIManager.getInstance().reset_agents();//重置机器人
+                        BitoAPIManager.getInstance().reset_charging_station();//重置充电桩
                         break;
                     case 29://开启喷雾
                         auto_q();
