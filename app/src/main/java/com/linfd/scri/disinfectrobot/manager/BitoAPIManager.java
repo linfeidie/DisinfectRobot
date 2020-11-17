@@ -350,7 +350,7 @@ public class BitoAPIManager {
             @Override
             public void onSuccess(BaseEntity2 baseEntity) {
                 if (baseEntity.getCode() == Contanst.REQUEST_OK_200){
-                    add_task_charge();
+                  //  add_task_charge();  自动充电不需要添加任务
                     //repeat_tasks_charge();
                     //发送模式变化监听
 //                    ChargeModeEvent event = new ChargeModeEvent();  不自己维护了，轮询服务器
@@ -424,7 +424,6 @@ public class BitoAPIManager {
    * 取消当前任务（内部获得当前id 再取消）
    * */
     public void cancel_task_current() {
-
         // 先查询当前任务 获得id
         HttpRequestManager.getInstance().get_robot_perform_task(new SimpleHttpCallbackEntity<GetRobotPerformTaskEntity>() {
 
@@ -590,6 +589,55 @@ public class BitoAPIManager {
            @Override
            public void onSuccess(SolveErrorCodeEntity solveErrorCodeEntity) {
 
+           }
+       });
+   }
+
+   /*
+   * 取消消毒（先暂停，然后取消所有未执行的任务，任何再取消现在的任务）
+   * */
+   public void cancle_walk(){
+       HttpRequestManager.getInstance().pause_robot(new SimpleHttpCallbackEntity<PauseRobotEntity>(){
+
+           @Override
+           public void onSuccess(PauseRobotEntity entity) {
+               if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+                   List<Integer> condition = new ArrayList<>();
+                   condition.add(1);
+                   condition.add(0);
+                   HttpRequestManager.getInstance().tasks(condition, new SimpleHttpCallbackEntity<TasksEntity>() {
+                       @Override
+                       public void onSuccess(TasksEntity tasksEntity) {
+                           //有任务的情况
+                           if (tasksEntity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK) && tasksEntity.getData().getTasks().size() != 0){
+                               List<Integer> id_list = new ArrayList<>();
+
+                               for (int i = 0; i < tasksEntity.getData().getTasks().size(); i++) {
+                                   id_list.add(tasksEntity.getData().getTasks().get(i).getId());
+                               }
+                               HttpRequestManager.getInstance().cancel_tasks(id_list, new SimpleHttpCallbackEntity<CancelTasksEntity>() {
+                                   @Override
+                                   public void onSuccess(CancelTasksEntity entity) {
+                                       if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+                                           cancel_task_current();
+                                       }else{
+                                           onFailure(entity.getErrmsg());
+                                       }
+                                   }
+
+
+                               });
+                               //没任务的情况
+                           }else if(tasksEntity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK) && tasksEntity.getData().getTasks().size() == 0){
+                               cancel_task_current();
+                           }
+
+
+                       }
+                   });
+               }else{
+                   onFailure(entity.getErrmsg());
+               }
            }
        });
    }

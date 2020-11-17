@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -71,8 +72,11 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 
 import java.lang.ref.WeakReference;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -91,8 +95,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     private PowerConsumptionRankingsBatteryView mBatteryView;
     private BinTongActivity2.NoLeakHandler mHandler;
     private int power;
-    private boolean isCharge = false;// 是否在充电
-    private TextView tv_power,tv_setting,tv_robot_register,tv_robot_mode;
+    private TextView tv_power,tv_setting,tv_robot_register,tv_robot_mode,tv_current_time;
     private CountdownView countdown_view;
     private MyStatusLayout status_layout_spary, status_layout_box_store;
     private SwitchButton switch_button;
@@ -118,6 +121,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         tv_robot_register = findViewById(R.id.tv_robot_register);
         tv_robot_mode = findViewById(R.id.tv_robot_mode);
         tv_pre_tasks = findViewById(R.id.tv_pre_tasks);
+        tv_current_time = findViewById(R.id.tv_current_time);
         data();
         super.initView();
         mTopBar.setVisibility(View.GONE);
@@ -132,11 +136,12 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         super.initData();
 
         initData2();
+        startTiming();//不能放onstart中
         mPageGridView.setData(mList);
         mPageGridView.setOnItemClickListener(new PageGridView.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(BinTongActivity2.this,position+"",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(BinTongActivity2.this,position+"",Toast.LENGTH_SHORT).show();
                 switch (position){
                     case 0://启动系统
                         if (Contanst.status_hanxin == 1){
@@ -160,7 +165,14 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
 //                            return;
 //                        }
                         //核心
-                        BitoAPIManager.getInstance().hanxin_stop();
+                        mDialogHelper.showConfirmDialog("关闭系统", new OnDialogConfirmListener() {
+                            @Override
+                            public void onDialogConfirmListener(AlertDialog dialog) {
+                                BitoAPIManager.getInstance().hanxin_stop();
+                                dialog.dismiss();
+                            }
+                        });
+
                         break;
                     case 2://启动消毒
                         if (Contanst.status_hanxin == 0){
@@ -175,6 +187,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                             Tools.showToast("系统已经关闭");
                             return;
                         }
+
                         BitoAPIManager.getInstance().pause_robot();
                         break;
                     case 4://恢复消毒
@@ -189,12 +202,27 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                             Tools.showToast("系统已经关闭");
                             return;
                         }
+                        if (Contanst.isCurrentChargeTask){
+                            Tools.showToast("当前正在充电哦");
+                            return;
+                        }
                        // BitoAPIManager.getInstance().cancel_task_walk();
-                        BitoAPIManager.getInstance().cancel_task_current();//
+                        mDialogHelper.showConfirmDialog("取消消毒", new OnDialogConfirmListener() {
+                            @Override
+                            public void onDialogConfirmListener(AlertDialog dialog) {
+                                BitoAPIManager.getInstance().cancle_walk();//
+                                dialog.dismiss();
+                            }
+                        });
+
                         break;
                     case 6://手动模式下充电
                         if (Contanst.status_hanxin == 0){
                             Tools.showToast("系统已经关闭");
+                            return;
+                        }
+                        if (Contanst.isCurrentChargeTask){
+                            Tools.showToast("当前正在充电哦");
                             return;
                         }
                         BitoAPIManager.getInstance().repeat_tasks_charge_man();
@@ -211,10 +239,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                             Tools.showToast("系统已经关闭");
                             return;
                         }
-                        if (Contanst.isCurrentChargeTask){
-                            Tools.showToast("当前正在充电哦");
-                            return;
-                        }
+
                         BitoAPIManager.getInstance().repeat_tasks_charge_auto();
                         break;
                     case 9:
@@ -223,57 +248,64 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                     case 10:
 
                         break;
-                   case 12://控制
+                   case 15://控制
                        Tools.showToast("控制");
                            Intent intent = new Intent(BinTongActivity2.this,WalkingDirectionActivity.class);
                            startActivity(intent);
                         break;
-                    case 13://释放
+                    case 16://释放
                         if (Contanst.status_hanxin == 0){
                             Tools.showToast("系统已经关闭，请开启");
                             return;
                         }
                         switch_open();
                         break;
-                    case 14://锁轴
+                    case 17://锁轴
                         if (Contanst.status_hanxin == 0){
                             Tools.showToast("系统已经关闭，请开启");
                             return;
                         }
                         switch_close();
                         break;
-                    case 15://打开热点
+                    case 19://打开热点
                         robot_wifi_open();
                         break;
-                    case 16://关闭热点
+                    case 20://关闭热点
                         robot_wifi_close();
                         break;
-                    case 17://连接AP
+                    case 21://连接AP
                         robot_wifi_ap_open();
                         break;
-                    case 18://关闭AP
+                    case 22://关闭AP
                         robot_wifi_ap_close();
                         break;
-                    case 24://建图
+                    case 30://建图
                         navi_mode_build();
                         break;
-                    case 25://建图完成
+                    case 31://建图完成
                         set_save_map();
                         break;
-                    case 26://锁屏
+                    case 32://锁屏
                         lock_screen();
                         break;
-                    case 27://关机
+                    case 33://关机
                         power_off();
                         break;
-                    case 28://重置机器人
-                        BitoAPIManager.getInstance().reset_agents();//重置机器人
-                        BitoAPIManager.getInstance().reset_charging_station();//重置充电桩
+                    case 34://重置机器人
+                        mDialogHelper.showConfirmDialog("恢复机器", new OnDialogConfirmListener() {
+                            @Override
+                            public void onDialogConfirmListener(AlertDialog dialog) {
+                                BitoAPIManager.getInstance().reset_agents();//重置机器人
+                                BitoAPIManager.getInstance().reset_charging_station();//重置充电桩
+                                dialog.dismiss();
+                            }
+                        });
+
                         break;
-                    case 29://开启喷雾
+                    case 35://开启喷雾
                         auto_q();
                         break;
-                    case 30://关闭喷雾
+                    case 36://关闭喷雾
                          disin_cmd_spray_off();
 //                        HttpRequestManager.getInstance().tasks(new HttpCallbackEntity<BaseEntity>() {
 //
@@ -296,7 +328,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
 
 
     private void data(){
-        switch_button.setChecked(false);
+        switch_button.setChecked(true);
     }
     @Override
     protected void initListener() {
@@ -313,6 +345,11 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
             @Override
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
                 switch_button.setChecked(isChecked);
+                if (isChecked){
+                    mPageGridView.setVisibility(View.INVISIBLE);
+                }else {
+                    mPageGridView.setVisibility(View.VISIBLE);
+                }
             }
         });
         tv_setting.setOnClickListener(new View.OnClickListener() {
@@ -333,22 +370,21 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
        // HeartbeatManager5.getInstance().start();//异常状态获取
         HeartbeatManager6.getInstance().start();//未执行任务
         HeartbeatManager7.getInstance().start();//轮询充电手动或自动模式
-        List<Integer> list = new ArrayList<>();
-        list.add(99999);
-        list.add(12405);
-        ExceptionCodesCallbackEntity entity = new ExceptionCodesCallbackEntity();
-        List<Integer> list2 = new ArrayList<>();
-        list2.add(2);
-        list2.add(3);
-        entity.setNums(list2);
-        entity.setCodes(list);
-        List<Integer> list3 = new ArrayList<>();
-        list3.add(145455);
-        list3.add(334636);
-        entity.setStamps(list3);
+//        List<Integer> list = new ArrayList<>();
+//        list.add(99999);
+//        list.add(12405);
+//        ExceptionCodesCallbackEntity entity = new ExceptionCodesCallbackEntity();
+//        List<Integer> list2 = new ArrayList<>();
+//        list2.add(2);
+//        list2.add(3);
+//        entity.setNums(list2);
+//        entity.setCodes(list);
+//        List<Integer> list3 = new ArrayList<>();
+//        list3.add(145455);
+//        list3.add(334636);
+//        entity.setStamps(list3);
+//        entities = ExceptionCodesHelper.instance.obtainExceptionEntitys(entity);
 
-
-        entities = ExceptionCodesHelper.instance.obtainExceptionEntitys(entity);
     }
 
     @Override
@@ -359,6 +395,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         //HeartbeatManager5.getInstance().stop();//关闭异常
         HeartbeatManager6.getInstance().stop();//关闭任务状态
         HeartbeatManager7.getInstance().stop();//轮询充电手动或自动模式
+        stopTiming();//停止计时
     }
 
     @Override
@@ -432,7 +469,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveMsg(GetChargingStatusEntity event) {
         //Contanst.mode = event.mode;//赋值
-        tv_robot_mode.setText(event.getStatus());
+        tv_robot_mode.setText("充电模式:" + event.getStatus());
 
     }
 
@@ -640,8 +677,15 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     }
 
     private void set_save_map() {
-        UdpControlSendManager.getInstance().set_save_map(Contanst.id,Contanst.to_id);
-        Tools.showToast("保存地图成功");
+        mDialogHelper.showConfirmDialog("保存地图", new OnDialogConfirmListener() {
+            @Override
+            public void onDialogConfirmListener(AlertDialog dialog) {
+                UdpControlSendManager.getInstance().set_save_map(Contanst.id,Contanst.to_id);
+                Tools.showToast("保存地图成功");
+                dialog.dismiss();
+            }
+        });
+
     }
 
     private void action_cmd_stop() {
@@ -704,10 +748,13 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         mList.add(new MyIconModel("",R.drawable.icon_transparent));
         mList.add(new MyIconModel("",R.drawable.icon_transparent));
         mList.add(new MyIconModel("",R.drawable.icon_transparent));
+        mList.add(new MyIconModel("",R.drawable.icon_transparent));
+        mList.add(new MyIconModel("",R.drawable.icon_transparent));
+        mList.add(new MyIconModel("",R.drawable.icon_transparent));
 
 
         mList.add(new MyIconModel("控制",R.drawable.icon_control));
-        mList.add(new MyIconModel("释放",R.drawable.icon_lock_open));
+        mList.add(new MyIconModel("释放锁轴",R.drawable.icon_lock_open));
         mList.add(new MyIconModel("锁轴",R.drawable.icon_lock_close));
         mList.add(new MyIconModel("打开热点",R.drawable.icon_wifi_open));
         mList.add(new MyIconModel("关闭热点",R.drawable.icon_wifi_close));
@@ -719,13 +766,16 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         mList.add(new MyIconModel("",R.drawable.icon_transparent));
         mList.add(new MyIconModel("",R.drawable.icon_transparent));
         mList.add(new MyIconModel("",R.drawable.icon_transparent));
+        mList.add(new MyIconModel("",R.drawable.icon_transparent));
+        mList.add(new MyIconModel("",R.drawable.icon_transparent));
+        mList.add(new MyIconModel("",R.drawable.icon_transparent));
 
         mList.add(new MyIconModel("建图",R.drawable.icon_map));
         mList.add(new MyIconModel("建图完成",R.drawable.icon_map_finish));
         //mList.add(new MyIconModel("导航",R.drawable.icon_navigation));
         mList.add(new MyIconModel("锁屏",R.drawable.icon_lock_screen));
         mList.add(new MyIconModel("关机",R.drawable.icon_turn_off));
-        mList.add(new MyIconModel("重置机器人",R.drawable.icon_reset_agents));
+        mList.add(new MyIconModel("恢复机器",R.drawable.icon_reset_agents));
         mList.add(new MyIconModel("开启喷雾",R.drawable.icon_fog_q));
         mList.add(new MyIconModel("关闭喷雾",R.drawable.icon_fog_close));
 
@@ -735,20 +785,13 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     public void callBack(Message msg) {
         switch (msg.what) {
             case 0:
-                if (!isCharge){//搞不清楚 为什么老是回调，只能这样简单粗暴处理了
-                    break;
-                }
-                mBatteryView.setLevelHeight(power += 5);
-                if (power == 100) {
-                    power = 0;
-                }
-//                if (power < 30) {
-//                    mPowerConsumptionRankingsBatteryView.setLowerPower();
-//                } else if (power < 60) {
-//                    mPowerConsumptionRankingsBatteryView.setOffline();
-//                } else {
-//                    mPowerConsumptionRankingsBatteryView.setOnline();
-//                }
+
+//                long sysTime = System.currentTimeMillis();
+//                CharSequence sysTimeStr = DateFormat.format("hh:mm:ss", sysTime);
+                String currentDateTimeString =
+                        new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.CHINA).format(new Date());
+                tv_current_time.setText(currentDateTimeString);
+                //Log.e(TAG,currentDateTimeString);
                 break;
             default:
                 break;
@@ -771,22 +814,26 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
             }
         }
     }
-    private void stopCharge() {
-        // mHandler.removeCallbacksAndMessages(null);
-        mHandler.removeMessages(0);
-        isCharge = false;
-    }
 
-    private void startCharge() {
-        if (!isCharge){
-            isCharge = true;
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    mHandler.sendEmptyMessage(0);
-                }
-            }, 0, 500);
-        }
+    /*
+    * 关闭定时
+    *
+    * */
+    private void stopTiming() {
+         mHandler.removeCallbacksAndMessages(null);
+        mHandler.removeMessages(0);
+
+    }
+    /*
+    * 开始计时
+    * */
+    private void startTiming() {
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                mHandler.sendEmptyMessage(0);
+            }
+        }, 0, 1000);
     }
     /*
      * 接收韩信状态
@@ -815,7 +862,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         //返回正确且有值
         if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK) && entity.getData().getTasks().size() != 0){
             Log.e(TAG, BitoActionStateManager.obtainState(entity.getData().getTasks().get(0).getStatus()));
-            tv_get_robot_perform_task.setText(BitoActionStateManager.obtainState(entity.getData().getTasks().get(0).getStatus()));
+            tv_get_robot_perform_task.setText("当前任务:"+BitoActionStateManager.obtainState(entity.getData().getTasks().get(0).getStatus()));
             if (entity.getData().getTasks().get(0).getGoal_action() == 10){//10代表充电
                 Contanst.isCurrentChargeTask = true;
             }else{
@@ -834,7 +881,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveMsg(TasksEntity event) {
 
-        tv_pre_tasks.setText("未执行任务："+ event.getData().getTasks().size());
+        tv_pre_tasks.setText("剩余任务："+ event.getData().getTasks().size());
     }
 
     /*

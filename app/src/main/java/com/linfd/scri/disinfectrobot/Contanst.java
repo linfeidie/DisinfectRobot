@@ -9,7 +9,7 @@ public class Contanst {
 
     public static  String map_time ; //192.168.1.101（1009） 连接网线  "127.0.0.1"  192.168.2.103 是网络地址  10.42.0.1
     //1.0是有线网段
-    public static final String TargetIp = "192.168.1.101";//10.42.0.1  目标IP地址   192.168.2.107  117  192.168.5.100
+    public static final String TargetIp = "192.168.2.105";//10.42.0.1  目标IP地址   192.168.2.107  117  192.168.5.100
 
     public static final int TargetPort = 8999; //目标端口8999 8080
 
@@ -79,7 +79,7 @@ public class Contanst {
 
     public static final String api_add_task = bitoTask + "add_task";//添加任务
 
-    public static final String api_solve_error_code = bitoMonitor + "solve_error_code?";//修改错误信息状态
+    public static final String api_solve_error_code = bitoMonitor + "solve_error_code?id=";//修改错误信息状态
 
     public static final String REQUEST_OK = "0";
 

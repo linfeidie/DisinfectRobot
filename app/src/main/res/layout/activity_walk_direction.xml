@@ -88,6 +88,7 @@
 
         <ezy.ui.view.RoundButton
             android:id="@+id/bt_set_base_cmd_power_off"
+            android:visibility="gone"
             style="@style/RoundButton"
             android:layout_width="100dp"
             android:layout_height="50dp"

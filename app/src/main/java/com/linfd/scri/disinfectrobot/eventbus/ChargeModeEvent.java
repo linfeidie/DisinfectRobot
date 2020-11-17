@@ -13,7 +13,7 @@ public class ChargeModeEvent {
         }else if (mode == 2){
             des = "半自动模式充电";
         }else if (mode == 3){
-            des = "纯自动模式充电";
+            des = "自动模式充电";
         }else if (mode == 4){
             des = "混动充电";
         }else {
