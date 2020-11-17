@@ -5,7 +5,7 @@ import android.graphics.Color;
 import android.util.Log;
 
 
-import com.linfd.scri.disinfectrobot.Tools;
+import com.linfd.scri.disinfectrobot.tools.Tools;
 
 import java.util.List;
 

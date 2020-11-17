@@ -2,9 +2,7 @@ package com.linfd.scri.disinfectrobot;
 
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -12,18 +10,13 @@ import android.widget.Toast;
 
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
 import com.linfd.scri.disinfectrobot.listener.OnSimpleSeekChangeListener;
-import com.linfd.scri.disinfectrobot.manager.AckListenerService;
-import com.linfd.scri.disinfectrobot.manager.DrawPathManager;
-import com.linfd.scri.disinfectrobot.manager.ControlDirectionManager;
-import com.linfd.scri.disinfectrobot.manager.HeartbeatManager;
-import com.linfd.scri.disinfectrobot.manager.TimerManager3;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
 import com.linfd.scri.disinfectrobot.nicedialog.BaseNiceDialog;
 import com.linfd.scri.disinfectrobot.nicedialog.NiceDialog;
 import com.linfd.scri.disinfectrobot.nicedialog.ViewConvertListener;
 import com.linfd.scri.disinfectrobot.nicedialog.ViewHolder;
+import com.linfd.scri.disinfectrobot.tools.Tools;
 import com.suke.widget.SwitchButton;
-import com.td.framework.module.dialog.inf.OnDialogConfirmListener;
 import com.warkiz.widget.IndicatorSeekBar;
 
 import org.greenrobot.eventbus.Subscribe;

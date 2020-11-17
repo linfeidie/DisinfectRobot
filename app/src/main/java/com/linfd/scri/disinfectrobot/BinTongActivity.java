@@ -1,16 +1,9 @@
 package com.linfd.scri.disinfectrobot;
 
 import android.content.Intent;
-import android.media.MediaCodecInfo;
-import android.media.MediaCodecList;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -20,20 +13,18 @@ import com.linfd.scri.disinfectrobot.entity.DesinStateCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionCodesCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
-import com.linfd.scri.disinfectrobot.manager.AckListenerService;
 import com.linfd.scri.disinfectrobot.manager.ExceptionCodesHelper;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
 import com.linfd.scri.disinfectrobot.nicedialog.BaseNiceDialog;
 import com.linfd.scri.disinfectrobot.nicedialog.NiceDialog;
 import com.linfd.scri.disinfectrobot.nicedialog.ViewConvertListener;
 import com.linfd.scri.disinfectrobot.nicedialog.ViewHolder;
+import com.linfd.scri.disinfectrobot.tools.Tools;
 import com.linfd.scri.disinfectrobot.view.MyStatusLayout;
-import com.linfd.scri.disinfectrobot.view.PinchImageView;
 import com.linfd.scri.disinfectrobot.view.battery.BaseHandlerCallBack;
 import com.linfd.scri.disinfectrobot.view.battery.PowerConsumptionRankingsBatteryView;
 import com.linfd.scri.disinfectrobot.view.recyclerviewpoll.AutoPollAdapter;
 import com.linfd.scri.disinfectrobot.view.recyclerviewpoll.AutoPollRecyclerView;
-import com.td.framework.module.dialog.inf.OnDialogConfirmListener;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

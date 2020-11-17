@@ -4,9 +4,8 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.linfd.scri.disinfectrobot.Contanst;
-import com.linfd.scri.disinfectrobot.GsonUtil;
-import com.linfd.scri.disinfectrobot.Tools;
-import com.linfd.scri.disinfectrobot.entity.ChargerPoseCallbackEntity;
+import com.linfd.scri.disinfectrobot.tools.GsonUtil;
+import com.linfd.scri.disinfectrobot.tools.Tools;
 import com.linfd.scri.disinfectrobot.entity.DataEntity;
 import com.linfd.scri.disinfectrobot.entity.GetMapCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.GetMapParamCallbackEntity;
@@ -15,8 +14,6 @@ import com.linfd.scri.disinfectrobot.observer.DataChanger;
 import com.linfd.scri.disinfectrobot.observer.DataWatcher;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 
 /*

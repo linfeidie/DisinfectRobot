@@ -1,4 +1,4 @@
-package com.linfd.scri.disinfectrobot;
+package com.linfd.scri.disinfectrobot.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.linfd.scri.disinfectrobot.ButtonModel;
+import com.linfd.scri.disinfectrobot.R;
 
 import java.util.List;
 

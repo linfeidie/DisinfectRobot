@@ -1,4 +1,4 @@
-package com.linfd.scri.disinfectrobot;
+package com.linfd.scri.disinfectrobot.tools;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -11,6 +11,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
 import android.widget.Toast;
+
+import com.linfd.scri.disinfectrobot.BaseApplication;
+import com.linfd.scri.disinfectrobot.Contanst;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

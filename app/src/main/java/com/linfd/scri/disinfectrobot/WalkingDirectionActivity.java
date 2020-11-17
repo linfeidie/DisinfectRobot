@@ -9,8 +9,8 @@ import android.view.View;
 import com.linfd.scri.disinfectrobot.eventbus.EventConnect;
 import com.linfd.scri.disinfectrobot.manager.AckListenerService;
 import com.linfd.scri.disinfectrobot.manager.ControlDirectionManager;
-import com.linfd.scri.disinfectrobot.manager.TimerManager3;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
+import com.linfd.scri.disinfectrobot.tools.Tools;
 import com.td.framework.module.dialog.inf.OnDialogConfirmListener;
 
 import org.greenrobot.eventbus.Subscribe;

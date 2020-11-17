@@ -4,44 +4,31 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.text.format.DateFormat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ProgressBar;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.daimajia.numberprogressbar.NumberProgressBar;
-import com.linfd.scri.disinfectrobot.entity.BaseEntity;
 import com.linfd.scri.disinfectrobot.entity.DesinStateCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionCodesCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionEntity;
 import com.linfd.scri.disinfectrobot.entity.GetChargingStatusEntity;
-import com.linfd.scri.disinfectrobot.entity.GetErrorCodeEntity;
 import com.linfd.scri.disinfectrobot.entity.GetErrorCodeResultEntity;
 import com.linfd.scri.disinfectrobot.entity.GetHanxinStatusEntity;
 import com.linfd.scri.disinfectrobot.entity.GetRobotPerformTaskEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
-import com.linfd.scri.disinfectrobot.entity.TaskStatusEntity;
 import com.linfd.scri.disinfectrobot.entity.TasksEntity;
-import com.linfd.scri.disinfectrobot.eventbus.ChargeModeEvent;
 import com.linfd.scri.disinfectrobot.eventbus.EventPoint;
 import com.linfd.scri.disinfectrobot.eventbus.RobotRegisterEvent;
-import com.linfd.scri.disinfectrobot.listener.HttpCallbackEntity;
-import com.linfd.scri.disinfectrobot.listener.SimpleHttpCallbackEntity;
 import com.linfd.scri.disinfectrobot.manager.AckListenerService;
 import com.linfd.scri.disinfectrobot.manager.BitoAPIManager;
 import com.linfd.scri.disinfectrobot.manager.BitoActionStateManager;
 import com.linfd.scri.disinfectrobot.manager.BitoHanxinManager;
-import com.linfd.scri.disinfectrobot.manager.ExceptionCodesHelper;
 import com.linfd.scri.disinfectrobot.manager.HeartbeatManager3;
 import com.linfd.scri.disinfectrobot.manager.HeartbeatManager4;
-import com.linfd.scri.disinfectrobot.manager.HeartbeatManager5;
 import com.linfd.scri.disinfectrobot.manager.HeartbeatManager6;
 import com.linfd.scri.disinfectrobot.manager.HeartbeatManager7;
 import com.linfd.scri.disinfectrobot.manager.HttpRequestManager;
@@ -52,24 +39,17 @@ import com.linfd.scri.disinfectrobot.nicedialog.NiceDialog;
 import com.linfd.scri.disinfectrobot.nicedialog.ViewConvertListener;
 import com.linfd.scri.disinfectrobot.nicedialog.ViewHolder;
 import com.linfd.scri.disinfectrobot.test.MyIconModel;
-import com.linfd.scri.disinfectrobot.test.TestActivity;
+import com.linfd.scri.disinfectrobot.tools.Tools;
 import com.linfd.scri.disinfectrobot.view.MyStatusLayout;
 import com.linfd.scri.disinfectrobot.view.battery.BaseHandlerCallBack;
 import com.linfd.scri.disinfectrobot.view.battery.PowerConsumptionRankingsBatteryView;
-import com.linfd.scri.disinfectrobot.view.recyclerviewpoll.AutoPollAdapter;
-import com.linfd.scri.disinfectrobot.view.recyclerviewpoll.AutoPollRecyclerView;
 import com.suke.widget.SwitchButton;
-import com.td.framework.module.dialog.DialogHelper;
 import com.td.framework.module.dialog.inf.OnDialogConfirmListener;
-import com.tsy.sdk.myokhttp.response.GsonResponseHandler;
-import com.tsy.sdk.myokhttp.response.JsonResponseHandler;
-import com.tsy.sdk.myokhttp.response.RawResponseHandler;
 import com.wihaohao.PageGridView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONArray;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
@@ -81,9 +61,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import cn.iwgang.countdownview.CountdownView;
-import ezy.ui.view.RoundButton;
-import fj.mtsortbutton.lib.DynamicSoreView;
-import fj.mtsortbutton.lib.Interface.IDynamicSore;
 
 public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCallBack {
 
@@ -95,7 +72,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     private PowerConsumptionRankingsBatteryView mBatteryView;
     private BinTongActivity2.NoLeakHandler mHandler;
     private int power;
-    private TextView tv_power,tv_setting,tv_robot_register,tv_robot_mode,tv_current_time;
+    private TextView tv_power,tv_robot_register,tv_robot_mode,tv_current_time;
     private CountdownView countdown_view;
     private MyStatusLayout status_layout_spary, status_layout_box_store;
     private SwitchButton switch_button;
@@ -117,7 +94,6 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         switch_button = findViewById(R.id.switch_button);
         tv_get_hanxin_status = findViewById(R.id.tv_get_hanxin_status);
         tv_get_robot_perform_task = findViewById(R.id.tv_get_robot_perform_task);
-        tv_setting = findViewById(R.id.tv_setting);
         tv_robot_register = findViewById(R.id.tv_robot_register);
         tv_robot_mode = findViewById(R.id.tv_robot_mode);
         tv_pre_tasks = findViewById(R.id.tv_pre_tasks);
@@ -242,11 +218,24 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
 
                         BitoAPIManager.getInstance().repeat_tasks_charge_auto();
                         break;
-                    case 9:
-
+                    case 9://建图
+                        navi_mode_build();
                         break;
-                    case 10:
-
+                    case 10://取消建图 （就是切换回定位模式）
+                        navi_mode_loc();
+                        break;
+                    case 11://建图完成
+                        set_save_map();
+                        break;
+                    case 12://重置机器人
+                        mDialogHelper.showConfirmDialog("恢复机器", new OnDialogConfirmListener() {
+                            @Override
+                            public void onDialogConfirmListener(AlertDialog dialog) {
+                                BitoAPIManager.getInstance().reset_agents();//重置机器人
+                                BitoAPIManager.getInstance().reset_charging_station();//重置充电桩
+                                dialog.dismiss();
+                            }
+                        });
                         break;
                    case 15://控制
                        Tools.showToast("控制");
@@ -267,39 +256,33 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                         }
                         switch_close();
                         break;
-                    case 19://打开热点
-                        robot_wifi_open();
+                    case 18:
+                        Intent i = new Intent(BinTongActivity2.this,BitoSettingActivity.class);
+                        startActivity(i);
                         break;
-                    case 20://关闭热点
-                        robot_wifi_close();
+                    case 20:
+
                         break;
-                    case 21://连接AP
-                        robot_wifi_ap_open();
+                    case 21:
+
                         break;
-                    case 22://关闭AP
-                        robot_wifi_ap_close();
+                    case 22:
+
                         break;
-                    case 30://建图
-                        navi_mode_build();
+                    case 30:
+
                         break;
-                    case 31://建图完成
-                        set_save_map();
+                    case 31:
+
                         break;
                     case 32://锁屏
-                        lock_screen();
+                       // lock_screen();
                         break;
                     case 33://关机
                         power_off();
                         break;
-                    case 34://重置机器人
-                        mDialogHelper.showConfirmDialog("恢复机器", new OnDialogConfirmListener() {
-                            @Override
-                            public void onDialogConfirmListener(AlertDialog dialog) {
-                                BitoAPIManager.getInstance().reset_agents();//重置机器人
-                                BitoAPIManager.getInstance().reset_charging_station();//重置充电桩
-                                dialog.dismiss();
-                            }
-                        });
+                    case 34:
+
 
                         break;
                     case 35://开启喷雾
@@ -328,7 +311,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
 
 
     private void data(){
-        switch_button.setChecked(true);
+        //switch_button.setChecked(true);
     }
     @Override
     protected void initListener() {
@@ -344,21 +327,39 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         switch_button.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
-                switch_button.setChecked(isChecked);
+               // switch_button.setChecked(isChecked);
                 if (isChecked){
-                    mPageGridView.setVisibility(View.INVISIBLE);
+                    NiceDialog.init().setLayoutId(R.layout.dialog_password).setConvertListener(new ViewConvertListener() {
+                        @Override
+                        public void convertView(final ViewHolder holder, final BaseNiceDialog dialog) {
+                            holder.setOnClickListener(R.id.tv_sure, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if ( ((EditText)holder.getView(R.id.et_password)).getText().toString().equalsIgnoreCase("123456")){
+                                        mPageGridView.setVisibility(View.VISIBLE);
+                                    }else if(TextUtils.isEmpty(((EditText)holder.getView(R.id.et_password)).getText().toString())){
+                                        Tools.showToast("密码不能为空");
+                                        switch_button.setChecked(false);
+
+                                    }else {
+                                        Tools.showToast("密码错误");
+                                        switch_button.setChecked(false);
+                                    }
+
+
+                                    dialog.dismiss();
+
+                                }
+                            });
+                        }
+                    }).setWidth(250).setHeight(250).setPosition(Gravity.CENTER).show(getSupportFragmentManager());
+
                 }else {
-                    mPageGridView.setVisibility(View.VISIBLE);
+                    mPageGridView.setVisibility(View.INVISIBLE);
                 }
             }
         });
-        tv_setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(BinTongActivity2.this,BitoSettingActivity.class);
-                startActivity(intent);
-            }
-        });
+
     }
 
     @Override
@@ -639,7 +640,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     }
 
     private void navi_mode_loc() {
-        Tools.showToast("已设成location模式");
+        //Tools.showToast("已设成location模式");
         UdpControlSendManager.getInstance().set_navi_mode_loc(Contanst.id, Contanst.to_id);
     }
 
@@ -662,13 +663,22 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
 
         NiceDialog.init().setLayoutId(R.layout.dialog_password).setConvertListener(new ViewConvertListener() {
             @Override
-            public void convertView(ViewHolder holder, final BaseNiceDialog dialog) {
+            public void convertView(final ViewHolder holder, final BaseNiceDialog dialog) {
                 holder.setOnClickListener(R.id.tv_sure, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        UdpControlSendManager.getInstance().set_navi_mode_build(Contanst.id,Contanst.to_id);
+                        if ( ((EditText)holder.getView(R.id.et_password)).getText().toString().equalsIgnoreCase("123456")){
+                            UdpControlSendManager.getInstance().set_navi_mode_build(Contanst.id,Contanst.to_id);
+                            Tools.showToast(getString(R.string.reset_map));
+                        }else if(TextUtils.isEmpty(((EditText)holder.getView(R.id.et_password)).getText().toString())){
+                            Tools.showToast("密码不能为空");
+                        }else {
+                            Tools.showToast("密码错误");
+                        }
+
+
                         dialog.dismiss();
-                        Tools.showToast(getString(R.string.reset_map));
+
                     }
                 });
             }
@@ -745,10 +755,10 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         mList.add(new MyIconModel("手动充电",R.drawable.icon_charge));
         mList.add(new MyIconModel("取消手动充电",R.drawable.icon_cancel_charge));
         mList.add(new MyIconModel("自动充电",R.drawable.icon_charge_auto));
-        mList.add(new MyIconModel("",R.drawable.icon_transparent));
-        mList.add(new MyIconModel("",R.drawable.icon_transparent));
-        mList.add(new MyIconModel("",R.drawable.icon_transparent));
-        mList.add(new MyIconModel("",R.drawable.icon_transparent));
+        mList.add(new MyIconModel("建图",R.drawable.icon_map));
+        mList.add(new MyIconModel("取消建图",R.drawable.icon_cancle_map));
+        mList.add(new MyIconModel("建图完成",R.drawable.icon_map_finish));
+        mList.add(new MyIconModel("恢复机器",R.drawable.icon_reset_agents));
         mList.add(new MyIconModel("",R.drawable.icon_transparent));
         mList.add(new MyIconModel("",R.drawable.icon_transparent));
 
@@ -756,11 +766,15 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         mList.add(new MyIconModel("控制",R.drawable.icon_control));
         mList.add(new MyIconModel("释放锁轴",R.drawable.icon_lock_open));
         mList.add(new MyIconModel("锁轴",R.drawable.icon_lock_close));
-        mList.add(new MyIconModel("打开热点",R.drawable.icon_wifi_open));
-        mList.add(new MyIconModel("关闭热点",R.drawable.icon_wifi_close));
-        mList.add(new MyIconModel("连接AP",R.drawable.icon_ap_open));
-        mList.add(new MyIconModel("断开AP",R.drawable.icon_ap_close));
+//        mList.add(new MyIconModel("打开热点",R.drawable.icon_wifi_open));
+//        mList.add(new MyIconModel("关闭热点",R.drawable.icon_wifi_close));
+//        mList.add(new MyIconModel("连接AP",R.drawable.icon_ap_open));
+//        mList.add(new MyIconModel("断开AP",R.drawable.icon_ap_close));
         //mList.add(new MyIconModel("充电_手动",R.drawable.icon_charging_mode_man));
+        mList.add(new MyIconModel("设置",R.drawable.icon_setting));
+        mList.add(new MyIconModel("",R.drawable.icon_transparent));
+        mList.add(new MyIconModel("",R.drawable.icon_transparent));
+        mList.add(new MyIconModel("",R.drawable.icon_transparent));
         mList.add(new MyIconModel("",R.drawable.icon_transparent));
         mList.add(new MyIconModel("",R.drawable.icon_transparent));
         mList.add(new MyIconModel("",R.drawable.icon_transparent));
@@ -770,12 +784,10 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         mList.add(new MyIconModel("",R.drawable.icon_transparent));
         mList.add(new MyIconModel("",R.drawable.icon_transparent));
 
-        mList.add(new MyIconModel("建图",R.drawable.icon_map));
-        mList.add(new MyIconModel("建图完成",R.drawable.icon_map_finish));
         //mList.add(new MyIconModel("导航",R.drawable.icon_navigation));
-        mList.add(new MyIconModel("锁屏",R.drawable.icon_lock_screen));
+        //mList.add(new MyIconModel("锁屏",R.drawable.icon_lock_screen));
         mList.add(new MyIconModel("关机",R.drawable.icon_turn_off));
-        mList.add(new MyIconModel("恢复机器",R.drawable.icon_reset_agents));
+
         mList.add(new MyIconModel("开启喷雾",R.drawable.icon_fog_q));
         mList.add(new MyIconModel("关闭喷雾",R.drawable.icon_fog_close));
 

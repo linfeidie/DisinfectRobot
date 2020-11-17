@@ -1,8 +1,7 @@
 package com.linfd.scri.disinfectrobot.manager;
 
 import com.linfd.scri.disinfectrobot.Contanst;
-import com.linfd.scri.disinfectrobot.R;
-import com.linfd.scri.disinfectrobot.Tools;
+import com.linfd.scri.disinfectrobot.tools.Tools;
 import com.linfd.scri.disinfectrobot.entity.AddTaskEntity;
 import com.linfd.scri.disinfectrobot.entity.BaseEntity;
 import com.linfd.scri.disinfectrobot.entity.BaseEntity2;
@@ -19,7 +18,6 @@ import com.linfd.scri.disinfectrobot.entity.RobotRegisterEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotUnregisterEntity;
 import com.linfd.scri.disinfectrobot.entity.SolveErrorCodeEntity;
 import com.linfd.scri.disinfectrobot.entity.TasksEntity;
-import com.linfd.scri.disinfectrobot.eventbus.ChargeModeEvent;
 import com.linfd.scri.disinfectrobot.eventbus.RobotRegisterEvent;
 import com.linfd.scri.disinfectrobot.listener.SimpleHttpCallbackEntity;
 

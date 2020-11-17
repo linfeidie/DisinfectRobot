@@ -4,8 +4,8 @@ import android.util.Log;
 
 import com.linfd.scri.disinfectrobot.BaseApplication;
 import com.linfd.scri.disinfectrobot.Contanst;
-import com.linfd.scri.disinfectrobot.GsonUtil;
-import com.linfd.scri.disinfectrobot.Tools;
+import com.linfd.scri.disinfectrobot.tools.GsonUtil;
+import com.linfd.scri.disinfectrobot.tools.Tools;
 import com.linfd.scri.disinfectrobot.entity.ApmtStateCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ChargerPoseCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.DataEntity;

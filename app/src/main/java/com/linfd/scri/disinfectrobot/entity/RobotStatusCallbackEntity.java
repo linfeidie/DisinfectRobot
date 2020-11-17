@@ -1,7 +1,7 @@
 package com.linfd.scri.disinfectrobot.entity;
 
 
-import com.linfd.scri.disinfectrobot.Tools;
+import com.linfd.scri.disinfectrobot.tools.Tools;
 
 import java.util.ArrayList;
 import java.util.List;

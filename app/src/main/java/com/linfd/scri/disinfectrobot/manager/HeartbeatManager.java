@@ -2,11 +2,8 @@ package com.linfd.scri.disinfectrobot.manager;
 
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.util.Log;
 
-import com.linfd.scri.disinfectrobot.BaseApplication;
 import com.linfd.scri.disinfectrobot.Contanst;
-import com.linfd.scri.disinfectrobot.Tools;
 
 
 /**注意  注意

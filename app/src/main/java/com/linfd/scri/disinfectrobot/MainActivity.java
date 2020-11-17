@@ -2,38 +2,27 @@ package com.linfd.scri.disinfectrobot;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.MediaCodecList;
-import android.os.Build;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.linfd.scri.disinfectrobot.entity.DesinStateCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
 import com.linfd.scri.disinfectrobot.eventbus.EventConnect;
-import com.linfd.scri.disinfectrobot.eventbus.EventMessage;
 import com.linfd.scri.disinfectrobot.manager.AckListenerService;
 import com.linfd.scri.disinfectrobot.manager.ComBitmapManager;
 import com.linfd.scri.disinfectrobot.manager.DrawPathManager;
-import com.linfd.scri.disinfectrobot.manager.MapDataObtainManager;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
 import com.linfd.scri.disinfectrobot.manager.UpdateStateControlManager;
+import com.linfd.scri.disinfectrobot.tools.Tools;
 import com.linfd.scri.disinfectrobot.view.MyStatusLayout;
 import com.linfd.scri.disinfectrobot.view.PinchImageView;
-import com.linfd.scri.disinfectrobot.view.SmButton;
-import com.td.framework.module.dialog.DialogHelper;
+import com.linfd.scri.disinfectrobot.view.WaterWaveView;
 import com.td.framework.module.dialog.inf.OnDialogCancelListener;
 import com.td.framework.module.dialog.inf.OnDialogConfirmListener;
-import com.whieenz.LogCook;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
 
 import cn.iwgang.countdownview.CountdownView;
 import ezy.ui.view.RoundButton;

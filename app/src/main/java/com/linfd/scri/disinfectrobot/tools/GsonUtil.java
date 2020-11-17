@@ -1,4 +1,4 @@
-package com.linfd.scri.disinfectrobot;
+package com.linfd.scri.disinfectrobot.tools;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

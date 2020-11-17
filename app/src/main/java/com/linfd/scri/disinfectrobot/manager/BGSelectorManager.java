@@ -2,7 +2,7 @@ package com.linfd.scri.disinfectrobot.manager;
 
 
 import com.linfd.scri.disinfectrobot.Contanst;
-import com.linfd.scri.disinfectrobot.Tools;
+import com.linfd.scri.disinfectrobot.tools.Tools;
 
 import java.io.File;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.linfd.scri.disinfectrobot;
+package com.linfd.scri.disinfectrobot.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,6 +14,8 @@ import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ProgressBar;
+
+import com.linfd.scri.disinfectrobot.R;
 
 /**
  * @author kince

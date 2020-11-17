@@ -1,8 +1,5 @@
 package com.linfd.scri.disinfectrobot;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -10,14 +7,11 @@ import android.widget.TextView;
 
 import com.linfd.scri.disinfectrobot.entity.BaseEntity;
 import com.linfd.scri.disinfectrobot.entity.BitoLoginEntity;
-import com.linfd.scri.disinfectrobot.entity.CancelTaskEntity;
 import com.linfd.scri.disinfectrobot.entity.CancelTasksEntity;
 import com.linfd.scri.disinfectrobot.entity.ChangePwbEntity;
 import com.linfd.scri.disinfectrobot.entity.ChargingStationsEntity;
-import com.linfd.scri.disinfectrobot.entity.ExceptionCodesCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAgentsRegisterableEntity;
 import com.linfd.scri.disinfectrobot.entity.GetAllTasksEntity;
-import com.linfd.scri.disinfectrobot.entity.GetErrorCodeEntity;
 import com.linfd.scri.disinfectrobot.entity.GetErrorCodeResultEntity;
 import com.linfd.scri.disinfectrobot.entity.GetHanxinStatusEntity;
 import com.linfd.scri.disinfectrobot.entity.GetRobotPerformTaskEntity;
@@ -25,7 +19,6 @@ import com.linfd.scri.disinfectrobot.entity.PauseRobotEntity;
 import com.linfd.scri.disinfectrobot.entity.ResumeRobotEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotRegisterEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotUnregisterEntity;
-import com.linfd.scri.disinfectrobot.listener.HttpCallbackEntity;
 import com.linfd.scri.disinfectrobot.listener.SimpleHttpCallbackEntity;
 import com.linfd.scri.disinfectrobot.manager.BitoActionStateManager;
 import com.linfd.scri.disinfectrobot.manager.BitoHanxinManager;
@@ -33,6 +26,7 @@ import com.linfd.scri.disinfectrobot.manager.HeartbeatManager3;
 import com.linfd.scri.disinfectrobot.manager.HeartbeatManager4;
 import com.linfd.scri.disinfectrobot.manager.HttpRequestManager;
 import com.linfd.scri.disinfectrobot.tools.ClickProxy;
+import com.linfd.scri.disinfectrobot.tools.Tools;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

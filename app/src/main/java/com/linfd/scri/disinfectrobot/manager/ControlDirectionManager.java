@@ -4,7 +4,6 @@ import android.os.Handler;
 
 import com.linfd.scri.disinfectrobot.BaseApplication;
 import com.linfd.scri.disinfectrobot.Contanst;
-import com.linfd.scri.disinfectrobot.Tools;
 import com.linfd.scri.disinfectrobot.entity.DataEntity;
 
 

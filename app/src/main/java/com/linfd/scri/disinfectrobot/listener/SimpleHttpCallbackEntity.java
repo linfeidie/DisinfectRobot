@@ -1,6 +1,6 @@
 package com.linfd.scri.disinfectrobot.listener;
 
-import com.linfd.scri.disinfectrobot.Tools;
+import com.linfd.scri.disinfectrobot.tools.Tools;
 
 public abstract  class SimpleHttpCallbackEntity<T> implements HttpCallbackEntity<T> {
 

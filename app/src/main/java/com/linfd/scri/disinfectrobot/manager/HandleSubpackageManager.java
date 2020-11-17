@@ -5,7 +5,6 @@ import android.util.Log;
 
 
 import com.linfd.scri.disinfectrobot.Contanst;
-import com.linfd.scri.disinfectrobot.Tools;
 import com.linfd.scri.disinfectrobot.entity.GetMapCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.GetMapParamCallbackEntity;
 

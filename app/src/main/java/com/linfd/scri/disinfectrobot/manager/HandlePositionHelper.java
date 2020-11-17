@@ -5,7 +5,6 @@ import android.util.Log;
 
 
 import com.linfd.scri.disinfectrobot.Contanst;
-import com.linfd.scri.disinfectrobot.Tools;
 
 import java.util.List;
 

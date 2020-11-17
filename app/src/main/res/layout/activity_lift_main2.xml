@@ -200,12 +200,12 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
-                <com.linfd.scri.disinfectrobot.WaterWaveView
+                <com.linfd.scri.disinfectrobot.view.WaterWaveView
                     android:id="@+id/wave_view_electric"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     app:waveName="@string/electric_quantity"
-                    ></com.linfd.scri.disinfectrobot.WaterWaveView>
+                    ></com.linfd.scri.disinfectrobot.view.WaterWaveView>
 
             </LinearLayout>
         </LinearLayout>

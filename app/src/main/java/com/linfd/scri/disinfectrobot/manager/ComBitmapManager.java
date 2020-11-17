@@ -17,7 +17,7 @@ import android.util.Log;
 import com.linfd.scri.disinfectrobot.BaseApplication;
 import com.linfd.scri.disinfectrobot.Contanst;
 import com.linfd.scri.disinfectrobot.R;
-import com.linfd.scri.disinfectrobot.Tools;
+import com.linfd.scri.disinfectrobot.tools.Tools;
 import com.linfd.scri.disinfectrobot.eventbus.EventPoint;
 
 import org.greenrobot.eventbus.EventBus;

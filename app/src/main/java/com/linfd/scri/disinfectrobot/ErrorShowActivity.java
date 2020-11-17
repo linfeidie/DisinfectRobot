@@ -33,6 +33,13 @@ public class ErrorShowActivity extends BaseActivity {
         setContentView(R.layout.activity_error_show);
         rv_show_err = findViewById(R.id.rv_show_err);
         ll_title = findViewById(R.id.ll_title);
+        super.initView();
+        mTopBar.addLeftBackImageButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         initView2();
     }
 

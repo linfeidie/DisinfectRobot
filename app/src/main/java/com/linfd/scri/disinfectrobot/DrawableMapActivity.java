@@ -2,25 +2,21 @@ package com.linfd.scri.disinfectrobot;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.linfd.scri.disinfectrobot.entity.ChargerPoseCallbackEntity;
-import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
 import com.linfd.scri.disinfectrobot.eventbus.EventPoint;
 import com.linfd.scri.disinfectrobot.manager.AckListenerService;
 import com.linfd.scri.disinfectrobot.manager.HeartbeatManager2;
 import com.linfd.scri.disinfectrobot.manager.TimerManager3;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
 import com.linfd.scri.disinfectrobot.manager.UpdateStateControlManager;
+import com.linfd.scri.disinfectrobot.tools.Tools;
 import com.linfd.scri.disinfectrobot.view.PinchImageView;
-import com.td.framework.module.dialog.DialogHelper;
 import com.td.framework.module.dialog.inf.OnDialogCancelListener;
 import com.td.framework.module.dialog.inf.OnDialogConfirmListener;
 import com.xyz.step.FlowViewHorizontal;
@@ -28,7 +24,6 @@ import com.xyz.step.FlowViewHorizontal;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.w3c.dom.Text;
 
 import ezy.ui.view.RoundButton;
 import me.caibou.rockerview.JoystickView;

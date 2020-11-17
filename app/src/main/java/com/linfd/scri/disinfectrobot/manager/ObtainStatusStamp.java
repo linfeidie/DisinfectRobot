@@ -2,7 +2,7 @@ package com.linfd.scri.disinfectrobot.manager;
 
 
 import com.linfd.scri.disinfectrobot.Contanst;
-import com.linfd.scri.disinfectrobot.GsonUtil;
+import com.linfd.scri.disinfectrobot.tools.GsonUtil;
 import com.linfd.scri.disinfectrobot.entity.DataEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
 import com.linfd.scri.disinfectrobot.observer.DataChanger;

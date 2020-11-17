@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
 import com.linfd.scri.disinfectrobot.manager.UdpControlSendManager;
+import com.linfd.scri.disinfectrobot.tools.Tools;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

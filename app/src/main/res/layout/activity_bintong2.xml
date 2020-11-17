@@ -202,15 +202,6 @@
             android:layout_alignParentBottom="true"
             android:background="@drawable/icon_exception"
             ></TextView>
-        <TextView
-            android:id="@+id/tv_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/icon_setting"
-            android:layout_marginLeft="10dp"
-            android:layout_alignTop="@id/tv_exception"
-           android:layout_toRightOf="@id/tv_exception"
-            ></TextView>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -246,7 +237,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="#ffffff"
-
+        android:visibility="invisible"
         android:layout_alignParentRight="true"
         app:isShowIndicator="true"
         app:itemView="@layout/my_item_view"
