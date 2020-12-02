@@ -46,9 +46,25 @@ public class RobotStatusCallbackEntity extends TypeEntity {
     private int humidity;
     private int action_state;
     private boolean charge_state = false;
+    private int nav_state;
+    private int action_id;
 
 
+    public int getNav_state() {
+        return nav_state;
+    }
 
+    public void setNav_state(int nav_state) {
+        this.nav_state = nav_state;
+    }
+
+    public int getAction_id() {
+        return action_id;
+    }
+
+    public void setAction_id(int action_id) {
+        this.action_id = action_id;
+    }
 
     public String getId() {
         return id;

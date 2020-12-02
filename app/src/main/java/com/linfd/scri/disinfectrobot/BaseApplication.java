@@ -65,8 +65,6 @@ public class BaseApplication extends Application {
     HttpRequestManager.getInstance().init();
 
 
-
-
   }
 
 

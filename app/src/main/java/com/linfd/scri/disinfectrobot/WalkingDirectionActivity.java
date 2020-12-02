@@ -66,7 +66,7 @@ public class WalkingDirectionActivity extends BaseActivity implements View.OnTou
                     @Override
                     public void onDialogConfirmListener(AlertDialog dialog) {
                        // Tools.showToast("关机");
-                        UdpControlSendManager.getInstance().set_base_cmd_power_off(Contanst.id, Contanst.to_id);
+                        //UdpControlSendManager.getInstance().set_base_cmd_power_off(Contanst.id, Contanst.to_id);
                         mDialogHelper.showLoadingDialog("");
                         dialog.dismiss();
                     }

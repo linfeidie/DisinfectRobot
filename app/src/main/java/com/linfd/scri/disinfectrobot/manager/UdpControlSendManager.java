@@ -488,23 +488,38 @@ public class UdpControlSendManager {
      * "power":0,//底盘电源,0无动作,1关机,2休眠
     "ext_power":true,//设置外部电源开关,true
      * */
-    public void set_base_cmd(String id, String to_id,int power,boolean charge_enable){
+    public void set_base_cmd(String id, String to_id,int power,int charge_enable,int motor_lock){
         SetBaseCmdEntity entity = new SetBaseCmdEntity();
         entity.setId(id);
         entity.setTo_id(to_id);
         entity.setPower(power);
         entity.setCharge_enable(charge_enable);
+        entity.setMotor_lock(motor_lock);
         sendOrder(entity);
     }
-    public void set_base_cmd_power_on(String id, String to_id){
-        this.set_base_cmd(id,to_id,1,false);
+    /*
+    * 释放锁轴
+    * */
+    public void open_shaft(){
+        this.set_base_cmd(Contanst.id,Contanst.to_id,0,0,2);
     }
+
+    /*
+    * 锁轴
+    * */
+    public void close_shaft(){
+        this.set_base_cmd(Contanst.id,Contanst.to_id,0,0,1);
+    }
+
+//    public void set_base_cmd_power_on(String id, String to_id){
+//        this.set_base_cmd(id,to_id,1,false);
+//    }
     public void set_base_cmd_power_off(String id, String to_id){
-        this.set_base_cmd(id,to_id,1,false);
+        this.set_base_cmd(id,to_id,1,0,0);
     }
-    public void set_base_cmd_power_sleep(String id, String to_id){
-        this.set_base_cmd(id,to_id,0,false);
-    }
+//    public void set_base_cmd_power_sleep(String id, String to_id){
+//        this.set_base_cmd(id,to_id,0,false);
+//    }
 
     /*
     *设置机器人定位

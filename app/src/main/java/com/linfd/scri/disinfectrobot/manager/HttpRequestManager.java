@@ -839,11 +839,13 @@ public class HttpRequestManager {
             map.put("goal", SPUtils.get(SPUtils.goal_walk_position,""));
             map.put("priority", Contanst.priority_walk);
             map.put("goal_action", 0);
+            map.put("repeat", SPUtils.get(SPUtils.repeat_num,1));
         }else if (type == 1){
             map.put("start", SPUtils.get(SPUtils.charge_position,""));
             map.put("goal", SPUtils.get(SPUtils.charge_position,""));
             map.put("priority", Contanst.priority_charge);
             map.put("goal_action", 10);
+            map.put("repeat", 1);
         }
         map.put("start_action", 0);
 
@@ -852,7 +854,7 @@ public class HttpRequestManager {
         map.put("preassignment", Contanst.ROBOT_SERIAL);
         map.put("task_id", "");
         map.put("plan_time", "");
-        map.put("repeat", SPUtils.get(SPUtils.repeat_num,1));
+
         mMyOkHttp.post()
                 .url(url)
                 .tag(this).jsonParams(gson.toJson(map))

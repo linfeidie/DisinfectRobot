@@ -35,9 +35,9 @@
     <string name="control">控制</string>
     <string name="autonomy">自主巡航</string>
     <string name="manual">手动巡航</string>
-    <string name="spray_intensity">喷雾化强度</string>
+    <string name="spray_intensity">喷雾强度</string>
     <string name="atomizer_level">雾化器液位</string>
-    <string name="reservoir_level">蓄水室液位</string>
+    <string name="reservoir_level">蓄水液位</string>
     <string name="pump">抽水</string>
     <string name="drainage">排水</string>
     <string name="forward">前进</string>

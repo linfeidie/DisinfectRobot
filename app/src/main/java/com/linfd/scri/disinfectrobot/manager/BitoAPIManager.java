@@ -280,6 +280,7 @@ public class BitoAPIManager {
             @Override
             public void onSuccess(PauseRobotEntity entity) {
                 if (entity.getErrno().equalsIgnoreCase(Contanst.REQUEST_OK)){
+
                     Tools.showToast("暂停机器人");
                 }else{
                     onFailure(entity.getErrmsg());
@@ -348,8 +349,11 @@ public class BitoAPIManager {
             @Override
             public void onSuccess(BaseEntity2 baseEntity) {
                 if (baseEntity.getCode() == Contanst.REQUEST_OK_200){
-                  //  add_task_charge();  自动充电不需要添加任务
-                    //repeat_tasks_charge();
+
+                    if (mode == 1){//1是手动
+                        add_task_charge();  //自动充电不需要添加任务
+                    }
+                  //  repeat_tasks_charge();
                     //发送模式变化监听
 //                    ChargeModeEvent event = new ChargeModeEvent();  不自己维护了，轮询服务器
 //                    event.mode = mode;

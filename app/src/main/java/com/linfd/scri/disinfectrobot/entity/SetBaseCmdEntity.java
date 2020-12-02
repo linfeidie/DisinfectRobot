@@ -27,9 +27,9 @@ public class SetBaseCmdEntity extends TypeEntity {
     private String to_id;
     private int power;
 //    private boolean ext_power;
-//    private boolean motor_lock;
+    private int  motor_lock;
 //    private boolean obs_enable;
-    private boolean charge_enable;
+    private int charge_enable;
 //    private boolean charger_dock_enable;
 
     public SetBaseCmdEntity() {
@@ -65,13 +65,17 @@ public class SetBaseCmdEntity extends TypeEntity {
     }
 
 
-    public boolean isCharge_enable() {
-        return charge_enable;
-    }
 
-    public void setCharge_enable(boolean charge_enable) {
+
+    public void setCharge_enable(int charge_enable) {
         this.charge_enable = charge_enable;
     }
 
+    public int getMotor_lock() {
+        return motor_lock;
+    }
 
+    public void setMotor_lock(int motor_lock) {
+        this.motor_lock = motor_lock;
+    }
 }

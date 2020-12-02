@@ -157,6 +157,7 @@
                 android:layout_height="50dp"
                 android:gravity="center_vertical"
                 android:textSize="22sp"
+                android:visibility="gone"
                 android:text="消毒时间:"></TextView>
             <TextView
                 android:id="@+id/tv_power"
@@ -169,6 +170,7 @@
 
         </LinearLayout>
         <com.linfd.scri.disinfectrobot.view.MyStatusLayout
+            android:visibility="gone"
             android:layout_marginLeft="35dp"
             android:id="@+id/status_layout_spary"
             android:layout_width="match_parent"
@@ -176,6 +178,7 @@
             app:showName="@string/spray_intensity"></com.linfd.scri.disinfectrobot.view.MyStatusLayout>
 
         <com.linfd.scri.disinfectrobot.view.MyStatusLayout
+            android:visibility="gone"
             android:layout_marginLeft="35dp"
             android:id="@+id/status_layout_box_store"
             android:layout_width="match_parent"
@@ -203,17 +206,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/robot1"
+        android:background="@drawable/robot_agv"
         android:layout_toRightOf="@id/ll_left"
         android:layout_toLeftOf="@id/vp_grid_view">
-        <TextView
-            android:id="@+id/tv_emergency"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/icon_scram"></TextView>
 
         <TextView
             android:id="@+id/tv_exception"

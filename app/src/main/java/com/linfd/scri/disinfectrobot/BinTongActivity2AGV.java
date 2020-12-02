@@ -4,15 +4,15 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.linfd.scri.disinfectrobot.entity.DesinStateCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.ExceptionCodesCallbackEntity;
@@ -22,12 +22,10 @@ import com.linfd.scri.disinfectrobot.entity.GetErrorCodeEntity;
 import com.linfd.scri.disinfectrobot.entity.GetErrorCodeResultEntity;
 import com.linfd.scri.disinfectrobot.entity.GetHanxinStatusEntity;
 import com.linfd.scri.disinfectrobot.entity.GetRobotPerformTaskEntity;
-import com.linfd.scri.disinfectrobot.entity.PauseRobotEntity;
 import com.linfd.scri.disinfectrobot.entity.RobotStatusCallbackEntity;
 import com.linfd.scri.disinfectrobot.entity.TasksEntity;
 import com.linfd.scri.disinfectrobot.eventbus.EventPoint;
 import com.linfd.scri.disinfectrobot.eventbus.RobotRegisterEvent;
-import com.linfd.scri.disinfectrobot.listener.SimpleHttpCallbackEntity;
 import com.linfd.scri.disinfectrobot.manager.AckListenerService;
 import com.linfd.scri.disinfectrobot.manager.BitoAPIManager;
 import com.linfd.scri.disinfectrobot.manager.BitoActionStateManager;
@@ -67,17 +65,17 @@ import java.util.TimerTask;
 
 import cn.iwgang.countdownview.CountdownView;
 
-public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCallBack {
+public class BinTongActivity2AGV extends  BaseActivity   implements  BaseHandlerCallBack {
 
-    public static final String TAG = BinTongActivity2.class.getSimpleName();
+    public static final String TAG = BinTongActivity2AGV.class.getSimpleName();
 
     private PageGridView<MyIconModel> mPageGridView;
     private TextView tv_exception,tv_get_hanxin_status,tv_get_robot_perform_task,tv_pre_tasks,tv_disin_time;
     private List<ExceptionEntity> entities;
     private PowerConsumptionRankingsBatteryView mBatteryView;
-    private BinTongActivity2.NoLeakHandler mHandler;
+    private BinTongActivity2AGV.NoLeakHandler mHandler;
     private int power;
-    private TextView tv_power,tv_robot_register,tv_robot_mode,tv_current_time,tv_emergency;
+    private TextView tv_power,tv_robot_register,tv_robot_mode,tv_current_time;
     private CountdownView countdown_view;
     private MyStatusLayout status_layout_spary, status_layout_box_store;
     private SwitchButton switch_button;
@@ -86,13 +84,14 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
     List<MyIconModel> mList;
     @Override
     public void initView() {
-        setContentView(R.layout.activity_bintong2);
+
+        setContentView(R.layout.activity_bintong2_agv);
         //dynamicSoreView = findViewById(R.id.dynamicSoreView);
         mPageGridView =findViewById(R.id.vp_grid_view);
         tv_exception = findViewById(R.id.tv_exception);
         mBatteryView = findViewById(R.id.mPowerConsumptionRankingsBatteryView);
         countdown_view = findViewById(R.id.countdown_view);
-        mHandler = new BinTongActivity2.NoLeakHandler(this);
+        mHandler = new BinTongActivity2AGV.NoLeakHandler(this);
         tv_power = findViewById(R.id.tv_power);
         status_layout_spary = findViewById(R.id.status_layout_spary);
         status_layout_box_store = findViewById(R.id.status_layout_box_store);
@@ -104,7 +103,6 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         tv_pre_tasks = findViewById(R.id.tv_pre_tasks);
         tv_current_time = findViewById(R.id.tv_current_time);
         tv_disin_time = findViewById(R.id.tv_disin_time);
-        tv_emergency = findViewById(R.id.tv_emergency);//紧急
         data();
         super.initView();
         mTopBar.setVisibility(View.GONE);
@@ -250,7 +248,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                         break;
                    case 15://控制
                        Tools.showToast("控制");
-                           Intent intent = new Intent(BinTongActivity2.this,WalkingDirectionActivity.class);
+                           Intent intent = new Intent(BinTongActivity2AGV.this,WalkingDirectionActivity.class);
                            startActivity(intent);
                         break;
                     case 16://释放
@@ -268,7 +266,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                         switch_close();
                         break;
                     case 18:
-                        Intent i = new Intent(BinTongActivity2.this,BitoSettingActivity.class);
+                        Intent i = new Intent(BinTongActivity2AGV.this,BitoSettingActivity.class);
                         startActivity(i);
                         break;
                     case 20:
@@ -330,7 +328,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         tv_exception.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(BinTongActivity2.this,ErrorShowActivity.class);
+                Intent intent = new Intent(BinTongActivity2AGV.this,ErrorShowActivity.class);
                 startActivity(intent);
 
             }
@@ -368,17 +366,6 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
                 }else {
                     mPageGridView.setVisibility(View.INVISIBLE);
                 }
-            }
-        });
-        tv_emergency.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void onClick(View view) {
-                if (Contanst.status_hanxin == 0){
-                    Tools.showToast("系统已经关闭");
-                    return;
-                }
-                BitoAPIManager.getInstance().pause_robot();
             }
         });
 
@@ -600,7 +587,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
 
     private void lock_screen() {
         Tools.showToast("锁屏");
-        Intent intent = new Intent(BinTongActivity2.this,LockScreenActivity.class);
+        Intent intent = new Intent(BinTongActivity2AGV.this,LockScreenActivity.class);
         startActivity(intent);
     }
 
@@ -789,10 +776,10 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         mList=new ArrayList<>();
         mList.add(new MyIconModel("启动系统",R.drawable.hanxin_start));
         mList.add(new MyIconModel("关闭系统",R.drawable.hanxin_stop));
-        mList.add(new MyIconModel("启动消毒",R.drawable.icon_start));
-        mList.add(new MyIconModel("暂停消毒",R.drawable.icon_stop));
-        mList.add(new MyIconModel("恢复消毒",R.drawable.icon_resume_robot));
-        mList.add(new MyIconModel("取消消毒",R.drawable.icon_cancel_walk));
+        mList.add(new MyIconModel("启动",R.drawable.icon_start));
+        mList.add(new MyIconModel("暂停",R.drawable.icon_stop));
+        mList.add(new MyIconModel("恢复",R.drawable.icon_resume_robot));
+        mList.add(new MyIconModel("取消",R.drawable.icon_cancel_walk));
         mList.add(new MyIconModel("手动充电",R.drawable.icon_charge));
         mList.add(new MyIconModel("取消手动充电",R.drawable.icon_cancel_charge));
         mList.add(new MyIconModel("自动充电",R.drawable.icon_charge_auto));
@@ -829,8 +816,8 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
         //mList.add(new MyIconModel("锁屏",R.drawable.icon_lock_screen));
         mList.add(new MyIconModel("关机",R.drawable.icon_turn_off));
 
-        mList.add(new MyIconModel("开启喷雾",R.drawable.icon_fog_q));
-        mList.add(new MyIconModel("关闭喷雾",R.drawable.icon_fog_close));
+//        mList.add(new MyIconModel("开启喷雾",R.drawable.icon_fog_q));
+//        mList.add(new MyIconModel("关闭喷雾",R.drawable.icon_fog_close));
 
     }
 
@@ -919,7 +906,7 @@ public class BinTongActivity2 extends  BaseActivity   implements  BaseHandlerCal
             if (entity.getData().getTasks().get(0).getGoal_action() == 10){//10代表充电
                 Contanst.isCurrentChargeTask = true;
             }else{
-                //tv_get_robot_perform_task.setText("当前任务:"+"无");
+                tv_get_robot_perform_task.setText("当前任务:"+"无");
                 Contanst.isCurrentChargeTask = false;
             }
 

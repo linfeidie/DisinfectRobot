@@ -73,7 +73,7 @@
                 android:layout_alignLeft="@id/et_ssid"
                 android:layout_marginTop="20dp"
                 android:hint="热点密码"
-                android:text="123456@#"></EditText>
+                android:text=""></EditText>
 
             <TextView
                 android:layout_width="wrap_content"

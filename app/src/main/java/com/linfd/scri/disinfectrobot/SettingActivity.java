@@ -90,14 +90,14 @@ public class SettingActivity extends BaseActivity  {
             @Override
             public void onClick(View view) {
                 Tools.showToast("打开充电桩");
-                UdpControlSendManager.getInstance().set_base_cmd(Contanst.id, Contanst.to_id,0,true);
+                //UdpControlSendManager.getInstance().set_base_cmd(Contanst.id, Contanst.to_id,0,true);
             }
         });
         bt_set_disin_cmd_charge_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Tools.showToast("关闭充电桩");
-                UdpControlSendManager.getInstance().set_base_cmd(Contanst.id, Contanst.to_id,0,false);
+               // UdpControlSendManager.getInstance().set_base_cmd(Contanst.id, Contanst.to_id,0,false);
             }
         });
 

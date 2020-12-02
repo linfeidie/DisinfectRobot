@@ -55,6 +55,7 @@ public class BitoSettingActivity extends BaseActivity {
         et_repeat.setText(repeat_num+"");
         String ssid =  SPUtils.get(SPUtils.ssid,"");
         et_ssid.setText(ssid);
+        et_password.setText(SPUtils.get(SPUtils.passwd,""));
         et_start_walk_positon.setText(SPUtils.get(SPUtils.start_walk_positon,""));
         et_goal_walk_position.setText(SPUtils.get(SPUtils.goal_walk_position,""));
         et_charge_position.setText(SPUtils.get(SPUtils.charge_position,""));
